@@ -1,0 +1,231 @@
+﻿/* Main section styles */
+.main-section {
+    background-color: #f1f1f1;
+    padding: 20px 20px 0;
+}
+
+/* Row styles */
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    padding: 20px 0;
+    margin: 0 auto; /* Center the row */
+    max-width: 1200px; /* Limit the row width */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2), 0 6px 20px rgba(0, 0, 0, 0.19);
+    transform: none; /* Reset transform */
+}
+
+.col-md-3,
+.col-sm-3,
+.col-xs-12,
+.image-main-section {
+    margin: 10px; /* Adjust margin for spacing */
+    width: calc(33.33% - 20px); /* Adjust width based on the gap */
+    max-width: 300px; /* Limit the width of each item */
+}
+
+.image-main-section {
+    margin-bottom: 20px;
+}
+
+.img-part {
+    border-radius: 10px;
+    border: 1px solid #DDDDDD;
+    background-color: #fff;
+    padding-bottom: 20px;
+}
+
+.img-section {
+    padding: 5px;
+}
+
+    .img-section img {
+        width: 100%;
+    }
+
+.image-title h3 {
+    margin: 0;
+    color: #4C4C4C;
+    padding: 15px 0 8px; /* Adjust padding */
+}
+
+.image-description p {
+    color: #848484;
+}
+
+.add-cart-btn {
+    border-radius: 0;
+    font-size: 11px;
+}
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:400,800');
+
+body {
+    font-size: 18px;
+    font-family: 'Open Sans', sans-serif;
+    min-width: 285px;
+}
+
+.container {
+    width: 95%;
+    margin: 0 auto;
+}
+
+/* Banner - shared styles */
+.banner {
+    background: orange;
+    padding: 1rem;
+    margin: 1rem;
+    min-height: 300px;
+    color: white;
+    line-height: 50px;
+    font-size: 30px;
+    letter-spacing: .1pt;
+    font-weight: 800;
+    position: relative;
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,.50);
+    cursor: pointer;
+    transition: all 200ms ease-in;
+    box-sizing: border-box;
+}
+
+    .banner:hover {
+        transform: scale(1.02);
+    }
+
+/* Banner text - shared styles */
+.headline {
+    color: white;
+    line-height: 50px;
+    font-size: 30px;
+    font-weight: 800;
+    position: absolute;
+    margin-top: 135px;
+    position: absolute;
+}
+
+/* Banner One styles */
+.banner-one {
+    background: url(https://ld-magento.template-help.com/magento_63845/pub/media/wysiwyg/banner-01.jpg);
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    margin-left:-40px;
+    
+}
+
+/* Banner SHOP NOW btn styles */
+.shop-btn {
+    position: absolute;
+    margin-top: 185px;
+    font-size: 20px;
+    padding: 5px 10px;
+    background: transparent;
+    border: 2px solid #dfdfdf;
+    color: white;
+    font-weight: 800;
+    transition: all 400ms ease-in-out;
+    cursor: pointer;
+}
+
+    .shop-btn:hover {
+        background: white;
+        border: 2px solid transparent;
+        color: #303030;
+    }
+
+/* Banner Two styles */
+.banner-two {
+    background: url(https://ld-magento.template-help.com/magento_63845/pub/media/wysiwyg/banner-02.jpg);
+    background-position: top;
+    background-size: cover;
+    background-repeat: no-repeat;
+   
+}
+
+    .banner-two .headline {
+        position: absolute;
+        top: 5px;
+        margin: 0px;
+        font-size: 18px;
+        font-weight: 800;
+        line-height: 25px;
+    }
+
+.banner-three {
+    background: url(https://ld-magento.template-help.com/magento_63845/pub/media/wysiwyg/banner-04.jpg);
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    margin-left: -40px;
+}
+
+    .banner-three .headline {
+        line-height: 40px;
+        margin-top: 100px;
+    }
+
+.banner-four {
+    background: url(https://ld-magento.template-help.com/magento_63845/pub/media/wysiwyg/banner-03.jpg);
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    min-height: 600px;
+    margin: 92px 90px;
+    
+}
+
+    .banner-four .headline {
+        font-size: 40px;
+        line-height: 50px;
+        position: absolute;
+        bottom: 80px;
+    }
+
+    .banner-four .subline {
+        position: absolute;
+        bottom: 10px;
+        line-height: 35px;
+    }
+
+.clear-fix {
+    clear: both;
+}
+
+@media (min-width: 800px) {
+    .banner-one, .banner-two {
+        width: 47%;
+        float: left;
+        margin-right: 0px;
+        margin-bottom: 0px;
+    }
+
+    .banner-two {
+        margin-left: 2%;
+    }
+}
+
+@media (min-width: 1000px) {
+    .banner-one, .banner-two {
+        width: 33%;
+    }
+
+    .banner-three {
+        width: 68%;
+    }
+
+    .banner-four {
+        position: absolute;
+        width: 29%;
+        top: 0px;
+        right: 0px;
+        height: 617px;
+    }
+}
+
+@media (min-width: 1400px) {
+    .banner-four {
+        width: 30%;
+    }
+}
