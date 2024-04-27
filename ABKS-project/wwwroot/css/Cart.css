@@ -43,16 +43,19 @@
 
     .img-section img {
         width: 100%;
+       
     }
 
 .image-title h3 {
     margin: 0;
     color: #4C4C4C;
     padding: 15px 0 8px; /* Adjust padding */
+    font-size: medium;
 }
 
 .image-description p {
     color: #848484;
+    
 }
 
 .add-cart-btn {
