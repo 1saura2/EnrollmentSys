@@ -6,6 +6,7 @@
 
 body {
     background-color: #f9f6f2;
+    
 }
 
 .card-img-top {
@@ -52,6 +53,6 @@ p.card-text {
 
 @media (min-width: 768px) {
     .row.row-cols-md-3 .col {
-        width: 21.33333%; /* Each column takes up one-third of the row's width */
+        width: 25%; /* Each column takes up one-third of the row's width */
     }
 }
