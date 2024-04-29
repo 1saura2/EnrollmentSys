@@ -11,7 +11,44 @@
           crossorigin="anonymous" />
     <link href="./css/style.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" asp-append-version="true" />
-    
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $.ajax({
+                url: 'https://api.escuelajs.co/api/v1/products',
+                type: 'GET',
+                success: function (response) {
+                    let productArray = response;
+                    console.log(productArray);
+                    var html = "";
+                    $.each(productArray, function (index, item) {
+                        var summary = item.description.substr(0, 50) + "...";
+                        if (item.category && item.category.image) {
+                            var productHtml = `
+                                                <div class="col">
+                                                    <div class="card">
+                                                        <img src="${item.category.image}" class="card-img-top" alt="..." />
+                                                        <div class="card-body">
+                                                            <h5 class="card-title">${item.title}</h5>
+                                                            <p class="card-text">${summary}</p>
+                                                        </div>
+                                                        <div class="mb-5 d-flex justify-content-around">
+                                                            <h3>$${item.price}</h3>
+                                                            <button class="btn btn-primary">Buy Now</button>
+                                                        </div>
+                                                    </div>
+                                                </div>`;
+                            html += productHtml;
+                        }
+                    });
+                    $(".row").html(html);
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.error('Error fetching products:', errorThrown);
+                },
+            });
+        });</script>
 </head>
 
 <body>
@@ -26,147 +63,7 @@
     <div class="container py-5">
         <h1 class="text-center">Training Materials</h1>
         <div class="row row-cols-1 row-cols-md-3 g-4 py-5">
-            <div class="col">
-                <div class="card">
-                    <img src="https://static-01.daraz.com.np/p/01e30d0e2a2233ba1db3dca6feff276d.png_300x0q75.webp"
-                         class="card-img-top"
-                         alt="..." />
-                    <div class="card-body">
-                        <h5 class="card-title">Power Bag</h5>
-                        <p class="card-text">
-                            Yog pro Power Bag 20 Kg Sandbag Weight Training Power Bag
-                        </p>
-                    </div>
-                    <div class="mb-5 d-flex justify-content-around">
-                        <h3>Rs.1190</h3>
-                        <button class="btn btn-primary">Buy Now</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col">
-                <div class="card">
-                    <img src="https://static-01.daraz.com.np/p/7f6fc598f20e753263c98de366c79df2.jpg_300x0q75.webp"
-                         class="card-img-top"
-                         alt="..." />
-                    <div class="card-body">
-                        <h5 class="card-title">Trekking Boot</h5>
-                        <p class="card-text">
-                            Men’s Outdoor Hiking & Camping Sports Trekking Casual Shoes
-                        </p>
-                    </div>
-                    <div class="mb-5 d-flex justify-content-around">
-                        <h3>Rs.2200</h3>
-                        <button class="btn btn-primary">Buy Now</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col">
-                <div class="card">
-                    <img src="https://static-01.daraz.pk/p/f41ed1499477e3ea72190e8e2525fca4.jpg_300x0q75.webp"
-                         class="card-img-top"
-                         alt="..." />
-                    <div class="card-body">
-                        <h5 class="card-title">Fabric Tshirts</h5>
-                        <p class="card-text">
-                            Pack of 2 | Black Summer Printed Tracksuit For Men & Boys
-                        </p>
-                    </div>
-                    <div class="mb-5 d-flex justify-content-around">
-                        <h3>Rs.1950</h3>
-                        <button class="btn btn-primary">Buy Now</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col">
-                <div class="card">
-                    <img src="https://static-01.daraz.com.np/p/0bd515d3cacf7fb037d705d8616da20d.jpg_300x0q75.webp"
-                         class="card-img-top"
-                         alt="..." />
-                    <div class="card-body">
-                        <h5 class="card-title">Exercise Bands</h5>
-                        <p class="card-text">Power Resistance Band Home Gym Equipment</p>
-                    </div>
-                    <div class="mb-5 d-flex justify-content-around">
-                        <h3>Rs.700</h3>
-                        <button class="btn btn-primary">Buy Now</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col">
-                <div class="card">
-                    <img src="https://static-01.daraz.com.np/p/00573600db30fa7d24b47f21f898203e.jpg_300x0q75.webp"
-                         class="card-img-top"
-                         alt="..." />
-                    <div class="card-body">
-                        <h5 class="card-title">Push-Up Stand</h5>
-                        <p class="card-text">
-                            Push Up Bar Push-Up Stand Grip Handles (1 Pair)
-                        </p>
-                    </div>
-
-                    <div class="mb-5 d-flex justify-content-around">
-                        <h3>Rs.1300</h3>
-                        <button class="btn btn-primary">Buy Now</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col">
-                <div class="card">
-                    <img src="https://static-01.daraz.com.np/p/d342696af4766e28887d55f5aa4ceabc.jpg_300x0q75.webp"
-                         class="card-img-top"
-                         alt="..." />
-                    <div class="card-body">
-                        <h5 class="card-title">Dumbbell Set</h5>
-                        <p class="card-text">Dumbbell Set-20 Kg ( Gym Equipment )</p>
-                    </div>
-
-                    <div class="mb-5 d-flex justify-content-around">
-                        <h3>Rs.3450</h3>
-                        <button class="btn btn-primary">Buy Now</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col">
-                <div class="card">
-                    <img src="https://static-01.daraz.com.np/p/28e3e689becee44406121f6a19f6e56c.jpg_300x0q75.webp"
-                         class="card-img-top"
-                         alt="..." />
-                    <div class="card-body">
-                        <h5 class="card-title">Dumbbell Set</h5>
-                        <p class="card-text">Dumbbell Set-20 Kg ( Gym Equipment )</p>
-                    </div>
-
-                    <div class="mb-5 d-flex justify-content-around">
-                        <h3>Rs.1050</h3>
-                        <button class="btn btn-primary">Buy Now</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col">
-                <div class="card">
-                    <img src="https://static-01.daraz.com.np/p/3d490c53661bfec53f7ee622fbeebe38.jpg_300x0q75.webp"
-                         class="card-img-top"
-                         alt="..." />
-                    <div class="card-body">
-                        <h5 class="card-title">Protein Shaker Bottle</h5>
-                        <p class="card-text">
-                            PProtein Shaker Bottle With Spider Spring 3 In 1 Gym Bottle
-                        </p>
-                    </div>
-
-                    <div class="mb-5 d-flex justify-content-around">
-                        <h3>Rs.950</h3>
-                        <button class="btn btn-primary">Buy Now</button>
-                    </div>
-                </div>
-            </div>
+            
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
