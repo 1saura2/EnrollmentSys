@@ -22,26 +22,38 @@
                     let productArray = response;
                     console.log(productArray);
                     var html = "";
+
+                    var maxItemsToShow = 10; // Change this to the desired maximum number of items to show
+                    var itemsShown = 0;
+
                     $.each(productArray, function (index, item) {
+                        if (itemsShown >= maxItemsToShow) {
+                            return false; // Exit the loop if the maximum number of items has been reached
+                        }
+
                         var summary = item.description.substr(0, 50) + "...";
+                        var titleLimited = item.title.substr(0, 20); // Limit the title to 20 characters
+
                         if (item.category && item.category.image) {
                             var productHtml = `
-                                                <div class="col">
-                                                    <div class="card">
-                                                        <img src="${item.category.image}" class="card-img-top" alt="..." />
-                                                        <div class="card-body">
-                                                            <h5 class="card-title">${item.title}</h5>
-                                                            <p class="card-text">${summary}</p>
-                                                        </div>
-                                                        <div class="mb-5 d-flex justify-content-around">
-                                                            <h3>$${item.price}</h3>
-                                                            <button class="btn btn-primary">Buy Now</button>
-                                                        </div>
+                                            <div class="col">
+                                                <div class="card">
+                                                    <img src="${item.category.image}" class="card-img-top" alt="..." />
+                                                    <div class="card-body">
+                                                                <h5 class="card-title">${titleLimited}</h5>
+                                                        <p class="card-text">${summary}</p>
                                                     </div>
-                                                </div>`;
+                                                    <div class="mb-5 d-flex justify-content-around">
+                                                        <h3>$${item.price}</h3>
+                                                        <button class="btn btn-primary">Buy Now</button>
+                                                    </div>
+                                                </div>
+                                            </div>`;
                             html += productHtml;
+                            itemsShown++; // Increment the counter
                         }
                     });
+
                     $(".row").html(html);
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
