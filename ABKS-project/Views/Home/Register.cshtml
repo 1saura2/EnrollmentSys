@@ -9,7 +9,7 @@
 
     <div class="grid">
 
-        <form action="https://httpbin.org/post" method="POST" class="form login">
+        <form action="your_submit_url_here" method="POST" class="form login">
 
             <div class="form__field">
                 <label for="login__fullname">
@@ -29,11 +29,6 @@
                        placeholder="Email" required>
             </div>
 
-           
-
-
-            
-
             <div class="form__field">
                 <label for="login__contactnumber">
                     <i class="bi bi-telephone opacity-50"></i>
@@ -43,12 +38,12 @@
                        class="form__input" placeholder="Contact Number" required>
             </div>
 
-            <div class="form__field" style="background-color:inherit; color:inherit !important;">
+            <div class="form__field">
                 <label for="login__education">
                     <i class="bi bi-book opacity-50"></i>
                     <span class="hidden">Education</span>
                 </label>
-                <select id="login__education" name="education" class="form__input" required ">
+                <select id="login__education" name="education" class="form__input px-3" required style="background-color: #444c55; color: white;opacity:60%;border: none;">
                     <option value="" disabled selected>Select Education</option>
                     <option value="SLC">Secondary</option>
                     <option value="+2">High School</option>
@@ -65,25 +60,26 @@
                        placeholder="Age" required>
             </div>
 
-
-            <div class="form__field">
-                <label for="login__citizenshipphoto">
-                    <i class="bi bi-image opacity-50"></i>
-                    <span class="">Citizenship</span>
+            <div class="form__field" height: 40px;">
+                <label for="login__citizenshipphoto" class= "d-flex align-items-center px-3 p-1">
+                    <i class="bi bi-image opacity-50 me-2"></i>
+                    <span class="me-2">Citizenship Upload :</span>
                 </label>
-                <input autocomplete="citizenshipphoto" id="login__citizenshipphoto"  type="file"
-                       name="citizenshipphoto" class="form__input" required>
+                <input autocomplete="citizenshipphoto" id="login__citizenshipphoto" type="file"
+                       name="citizenshipphoto" class="form__input" accept="image/*" required>
             </div>
 
-                <div class="form__field">
+
+
+            <div class="form__field">
                 <input type="submit" value="Sign Up">
             </div>
 
         </form>
 
         <p class="text--center">
-            Do you have an account ? <a href="Login">Log In Now</a>
-            <i class="bi bi-arrow-right"></i>
+            Do you have an account? <a href="Login">Log In Now</a>
+            <i class="bi bi-arrow-right opacity-50"></i>
         </p>
 
     </div>
