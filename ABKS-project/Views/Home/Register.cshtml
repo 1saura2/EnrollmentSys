@@ -1,4 +1,6 @@
-﻿<body style="background-color: var(--bodyBackgroundColor);
+﻿@model ABKS_project.ViewModels.UserViewModel
+
+<body style="background-color: var(--bodyBackgroundColor);
     color: var(--bodyColor);
     font-family: var(--bodyFontFamily), var(--bodyFontFamilyFallback);
     font-size: var(--bodyFontSize);
@@ -9,71 +11,99 @@
 
     <div class="grid">
 
-        <form action="your_submit_url_here" method="POST" class="form login">
+        <form asp-action="Register" method="post" class="form login" enctype="multipart/form-data">
+
+<div class="form__field">
+    <div>
+        <label for="login__fullname" class="d-flex align-items-center">
+            <i class="bi bi-person opacity-50 me-2"></i>
+            <span class="hidden">Full Name</span>
+        </label>
+    </div>
+    <div class="input-container">
+        <input asp-for="FullName" autocomplete="fullname" id="login__fullname" type="text" name="FullName" class="form__input login__input"
+               placeholder="Full Name">
+        <span asp-validation-for="FullName" class="text-danger"></span>
+    </div>
+</div>
+
+<div class="form__field">
+    <div>
+        <label for="login__email" class="d-flex align-items-center">
+            <i class="bi bi-envelope opacity-50 me-2"></i>
+            <span class="hidden">Email</span>
+        </label>
+    </div>
+    <div class="input-container">
+        <input asp-for="Email" autocomplete="email" id="login__email" type="text" name="Email" class="form__input login__input"
+               placeholder="Email">
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+</div>
+
+<div class="form__field">
+    <div>
+        <label for="login__contactnumber" class="d-flex align-items-center">
+            <i class="bi bi-telephone opacity-50 me-2"></i>
+            <span class="hidden">Contact Number</span>
+        </label>
+    </div>
+    <div class="input-container">
+        <input asp-for="ContactNumber" autocomplete="contactnumber" id="login__contactnumber" type="text" name="ContactNumber"
+               class="form__input login__input" placeholder="Contact Number">
+        <span asp-validation-for="ContactNumber" class="text-danger"></span>
+    </div>
+</div>
+
+<div class="form__field">
+    <div>
+        <label for="login__education" class="d-flex align-items-center">
+            <i class="bi bi-book opacity-50 me-2"></i>
+            <span class="hidden">Education</span>
+        </label>
+    </div>
+    <div class="input-container">
+                    <select asp-for="Education" id="login__education" name="Education" class="form__input login__input" style="background-color: #444c55; color: white; opacity:60%; border: none; padding:18px">
+            <option value="" disabled selected>Select Education</option>
+            <option value="SEE">SEE</option>
+            <option value="High School">High School</option>
+            <option value="Bachelors">Bachelors</option>
+        </select>
+        <span asp-validation-for="Education" class="text-danger"></span>
+    </div>
+</div>
 
             <div class="form__field">
-                <label for="login__fullname">
-                    <i class="bi bi-person opacity-50"></i>
-                    <span class="hidden">Full Name</span>
-                </label>
-                <input autocomplete="fullname" id="login__fullname" type="text" name="fullname" class="form__input"
-                       placeholder="Full Name" required>
-            </div>
-
-            <div class="form__field">
-                <label for="login__email">
-                    <i class="bi bi-envelope opacity-50"></i>
-                    <span class="hidden">Email</span>
-                </label>
-                <input autocomplete="email" id="login__email" type="text" name="email" class="form__input"
-                       placeholder="Email" required>
-            </div>
-
-            <div class="form__field">
-                <label for="login__contactnumber">
-                    <i class="bi bi-telephone opacity-50"></i>
-                    <span class="hidden">Contact Number</span>
-                </label>
-                <input autocomplete="contactnumber" id="login__contactnumber" type="text" name="contactnumber"
-                       class="form__input" placeholder="Contact Number" required>
-            </div>
-
-            <div class="form__field">
-                <label for="login__education">
-                    <i class="bi bi-book opacity-50"></i>
-                    <span class="hidden">Education</span>
-                </label>
-                <select id="login__education" name="education" class="form__input px-3" required style="background-color: #444c55; color: white;opacity:60%;border: none;">
-                    <option value="" disabled selected>Select Education</option>
-                    <option value="SLC">Secondary</option>
-                    <option value="+2">High School</option>
-                    <option value="bachelor">Bachelors</option>
-                </select>
-            </div>
-
-            <div class="form__field">
-                <label for="login__age">
-                    <i class="bi bi-person-bounding-box opacity-50"></i>
-                    <span class="hidden">Age</span>
-                </label>
-                <input autocomplete="age" id="login__age" type="text" name="age" class="form__input"
-                       placeholder="Age" required>
-            </div>
-
-            <div class="form__field" height: 40px;">
-                <label for="login__citizenshipphoto" class= "d-flex align-items-center px-3 p-1">
-                    <i class="bi bi-image opacity-50 me-2"></i>
-                    <span class="me-2">Citizenship Upload :</span>
-                </label>
-                <input autocomplete="citizenshipphoto" id="login__citizenshipphoto" type="file"
-                       name="citizenshipphoto" class="form__input" accept="image/*" required>
+                <div>
+                    <label for="login__age" class="d-flex align-items-center">
+                        <i class="bi bi-person-bounding-box opacity-50 me-2"></i>
+                        <span class="hidden">Age</span>
+                    </label>
+                </div>
+                <div class="input-container">
+                    <input asp-for="Age" autocomplete="age" id="login__age" type="number" name="Age" class="form__input login__input" placeholder="Age" min="0">
+                    <span asp-validation-for="Age" class="text-danger"></span>
+                </div>
             </div>
 
 
 
-            <div class="form__field">
-                <input type="submit" value="Sign Up">
-            </div>
+<div class="form__field">
+    <div>
+        <label for="login__citizenshipphoto" class="d-flex align-items-center px-3 p-1">
+            <i class="bi bi-image opacity-50 me-2"></i>
+            <span class="me-2">Citizenship:</span>
+        </label>
+    </div>
+    <div class="input-container">
+                    <input asp-for="Photo" autocomplete="citizenshipphoto" id="login__citizenshipphoto" type="file" name="Photo" accept="image/*">
+                    <span asp-validation-for="Photo" class="text-danger"></span>
+    </div>
+</div>
+
+<div class="form__field">
+    <input type="submit" value="Sign Up">
+</div>
 
         </form>
 
@@ -81,6 +111,7 @@
             Do you have an account? <a href="Login">Log In Now</a>
             <i class="bi bi-arrow-right opacity-50"></i>
         </p>
+
 
     </div>
 
