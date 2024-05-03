@@ -2,6 +2,7 @@
 using ABKS_project.ViewModels;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.IO;
 
@@ -38,6 +39,25 @@ namespace ABKS_project.Controllers
         {
             if (ModelState.IsValid)
             {
+                var existingUser = context.Users.FirstOrDefault(u => u.Email == usr.Email);
+             
+                if (existingUser != null)
+                {
+                    if ((bool)existingUser.IsVerified)
+                    {
+                       
+                        TempData["Register_Check"] = "User is Registered and Verified.";
+                        return View();
+                    }
+                    else
+                    {
+                      
+                        TempData["Register_Check"] = "User is Registered and Yet to be Verified.";
+                        return View();
+                    }
+                   
+                }
+
                 string fileName = "";
                 if (usr.Photo != null)
                 {
@@ -58,12 +78,17 @@ namespace ABKS_project.Controllers
                     };
                     context.Users.Add(user);
                     context.SaveChanges();
-                    TempData["Register_Success"] = "Registered successfully.";
+
+                    TempData["Register_Success"] = "You are registered.";
                     return RedirectToAction("Index");
                 }
             }
             return View(usr);
         }
+
+
+
+
 
 
         public IActionResult Product()

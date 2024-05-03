@@ -1,4 +1,4 @@
-﻿* {
+﻿/** {
     padding: 0;
     margin: 0;
     box-sizing: border-box;
@@ -12,16 +12,16 @@ body {
 .card-img-top {
     border-radius: 30px;
     padding: 10px;
-    height: 200px; /* Adjust the height */
-    width: 100%; /* Make the image width 100% */
-    object-fit: cover; /* Ensure the image covers the whole space */
-}
+    height: 200px;*/ /* Adjust the height */
+    /*width: 100%;*/ /* Make the image width 100% */
+    /*object-fit: cover;*/ /* Ensure the image covers the whole space */
+/*}
 
 .card {
     border-radius: 20px;
-    width: 250px; /* Adjust the width */
-    margin-bottom: 10px; /* Adjust the gap between cards */
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    width: 250px;*/ /* Adjust the width */
+    /*margin-bottom: 10px;*/ /* Adjust the gap between cards */
+    /*box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     text-align: center;
 }
 
@@ -31,10 +31,10 @@ body {
 
 .btn-primary {
     border-radius: 25px;
-    width: 100px; /* Adjust the button width */
-    font-size: 14px; /* Adjust the font size */
-    padding: 8px 16px; /* Adjust the padding */
-}
+    width: 100px;*/ /* Adjust the button width */
+    /*font-size: 14px;*/ /* Adjust the font size */
+    /*padding: 8px 16px;*/ /* Adjust the padding */
+/*}
 
     .btn-primary:hover {
         background-color: black;
@@ -43,18 +43,18 @@ body {
 
 h3, h5 {
     color: rgb(0, 91, 228);
-    font-size: 18px; /* Adjust the font size */
-}
+    font-size: 18px;*/ /* Adjust the font size */
+/*}
 
 p.card-text {
-    font-size: 14px; /* Adjust the font size */
-    margin-bottom: 10px; /* Adjust the margin */
-}
+    font-size: 14px;*/ /* Adjust the font size */
+    /*margin-bottom: 10px;*/ /* Adjust the margin */
+/*}
 
 @media (min-width: 768px) {
     .row.row-cols-md-3 .col {
-        width: 25%; /* Each column takes up one-third of the row's width */
-    }
+        width: 25%;*/ /* Each column takes up one-third of the row's width */
+    /*}
 }
 * {
     margin: 0;
@@ -308,7 +308,7 @@ a {
 .footer-copyright-link {
     color: #fff;
     text-decoration: none;
-}
+}*/
 
 
 
@@ -317,8 +317,8 @@ a {
 
 
 /* Media Query For different screens */
-@media (min-width:320px) and (max-width:479px) { /* smartphones, portrait iPhone, portrait 480x320 phones (Android) */
-    .footer-content {
+/*@media (min-width:320px) and (max-width:479px) {*/ /* smartphones, portrait iPhone, portrait 480x320 phones (Android) */
+    /*.footer-content {
         margin-left: auto;
         margin-right: auto;
         max-width: 1230px;
@@ -327,8 +327,8 @@ a {
     }
 }
 
-@media (min-width:480px) and (max-width:599px) { /* smartphones, Android phones, landscape iPhone */
-    .footer-content {
+@media (min-width:480px) and (max-width:599px) {*/ /* smartphones, Android phones, landscape iPhone */
+    /*.footer-content {
         margin-left: auto;
         margin-right: auto;
         max-width: 1230px;
@@ -337,8 +337,8 @@ a {
     }
 }
 
-@media (min-width:600px) and (max-width: 800px) { /* portrait tablets, portrait iPad, e-readers (Nook/Kindle), landscape 800x480 phones (Android) */
-    .footer-content {
+@media (min-width:600px) and (max-width: 800px) {*/ /* portrait tablets, portrait iPad, e-readers (Nook/Kindle), landscape 800x480 phones (Android) */
+    /*.footer-content {
         margin-left: auto;
         margin-right: auto;
         max-width: 1230px;
@@ -347,17 +347,17 @@ a {
     }
 }
 
-@media (min-width:801px) { /* tablet, landscape iPad, lo-res laptops ands desktops */
+@media (min-width:801px) {*/ /* tablet, landscape iPad, lo-res laptops ands desktops */
 
-}
+/*}
 
-@media (min-width:1025px) { /* big landscape tablets, laptops, and desktops */
+@media (min-width:1025px) {*/ /* big landscape tablets, laptops, and desktops */
 
-}
+/*}
 
-@media (min-width:1281px) { /* hi-res laptops and desktops */
+@media (min-width:1281px) {*/ /* hi-res laptops and desktops */
 
-}
+/*}
 
 
 
@@ -380,8 +380,8 @@ a {
     }
 }
 
-@media (min-width: 568px) {
+@media (min-width: 568px) {*/
     /* .footer-content-column {
       width: 49.99%;
   } */
-}
+/*}*/
