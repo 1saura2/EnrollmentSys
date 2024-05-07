@@ -1,38 +1,5 @@
 ﻿@model IEnumerable<ABKS_project.Models.User>;
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image Preview on Hover</title>
-    <style>
-        .modal-backdrop {
-            backdrop-filter: blur(1px);
-            background-color: rgba(0, 0, 0, 0.5);
-        }
-
-        .image-preview {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 9999;
-            background-color: white;
-            padding: 10px;
-            border: 1px solid #ccc;
-        }
-
-            .image-preview img {
-                max-width: 600px;
-                max-height: 600px;
-                display: block;
-                margin: 0 auto;
-            }
-    </style>
-</head>
-<body>
 
     <h2>Users</h2>
 
@@ -106,5 +73,3 @@
 
     </script>
 
-</body>
-</html>
