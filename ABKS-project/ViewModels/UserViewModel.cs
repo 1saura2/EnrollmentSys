@@ -15,6 +15,8 @@ namespace ABKS_project.ViewModels
         [Required(ErrorMessage = "Citizenship Photo is required")]
         public IFormFile Photo { get; set; }
 
+
+        [RegularExpression("^\\d{10}$", ErrorMessage = "Please provide valid phone number")]
         [Required(ErrorMessage = "Contact Number is required")]
         [Phone(ErrorMessage = "Invalid phone number")]
         public string ContactNumber { get; set; }
@@ -24,6 +26,6 @@ namespace ABKS_project.ViewModels
 
         [Required(ErrorMessage = "Age is required")]
         [Range(16, 21, ErrorMessage = "Age must be between 16 and 21")]
-        public int Age { get; set; }
+        public int? Age { get; set; }
     }
 }

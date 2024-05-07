@@ -1,45 +1,65 @@
-﻿
-    <body style=" background-color: var(--bodyBackgroundColor);
-        color: var(--bodyColor);
-        font-family: var(--bodyFontFamily), var(--bodyFontFamilyFallback);
-        font-size: var(--bodyFontSize);
-        font-weight: var(--bodyFontWeight);
-        line-height: var(--bodyLineHeight);
-        margin: 0;
-        min-block-size: 100vh;">
+﻿@model ABKS_project.Models.MetaData.ValidCredential
 
-        <div class="grid">
-      
-          <form action="https://httpbin.org/post" method="POST" class="form login">
+
+
+
+<body style="background-color: var(--bodyBackgroundColor);
+    color: var(--bodyColor);
+    font-family: var(--bodyFontFamily), var(--bodyFontFamilyFallback);
+    font-size: var(--bodyFontSize);
+    font-weight: var(--bodyFontWeight);
+    line-height: var(--bodyLineHeight);
+    margin: 0;
+    min-block-size: 100vh;">
+
+    <div class="grid">
+        @if (TempData["Login_Check"] != null)
+        {
+
+            <p style="color:red;">@TempData["Login_Check"]</p>
+
+        }
+
+        <form asp-action="Login" asp-controller="Home" method="post" class="form login">
 
             <div class="form__field">
-                <label for="login__email">
-                    <i class="bi bi-envelope opacity-50"></i>
-                    <span class="hidden">Email</span>
-                </label>
-                <input autocomplete="email" id="login__email" type="text" name="Email" class="form__input"
-                       placeholder="Email" required>
+                <div>
+                    <label for="login__email" class="d-flex align-items-center">
+                        <i class="bi bi-envelope opacity-50 me-2"></i>
+                        <span class="hidden">Email</span>
+                    </label>
+                </div>
+                <div class="input-container">
+                    <input asp-for="Email" autocomplete="email" id="login__email" type="text" name="Email" class="form__input login__input"
+                           placeholder="Email">
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
             </div>
-      
-            <div class="form__field">
-              <label for="login__password">
-                    <i class="bi bi-lock opacity-50"></i>
-                  <span class="hidden">Password</span></label>
-              <input id="login__password" type="password" name="Password" class="form__input" placeholder="Password" required>
-            </div>
-      
-            <div class="form__field">
-              <input type="submit" value="Sign In">
-            </div>
-      
-          </form>
-      
-          <p class="text--center">Not a member? <a href="Register">Sign up now</a> <svg class="icon">
-              <use xlink:href="#icon-arrow-right"></use>
-            </svg></p>
-      
-        </div>
-      
 
-      
-      </body>
+            <div class="form__field">
+                <div>
+                    <label for="login__password" class="d-flex align-items-center">
+                        <i class="bi bi-lock opacity-50 me-2"></i>
+                        <span class="hidden">Password</span>
+                    </label>
+                </div>
+                <div class="input-container">
+                    <input asp-for="Password" id="login__password" type="password" name="Password" class="form__input login__input" placeholder="Password">
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form__field">
+                <input type="submit" value="Sign In">
+            </div>
+
+        </form>
+
+        <p class="text--center">
+            Not a member? <a href="Register">Sign up now</a>
+            <i class="bi bi-arrow-right opacity-50"></i>
+        </p>
+
+    </div>
+
+</body>

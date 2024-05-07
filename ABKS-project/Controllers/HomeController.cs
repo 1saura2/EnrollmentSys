@@ -1,22 +1,28 @@
 ﻿using ABKS_project.Models;
+using ABKS_project.Models.MetaData;
 using ABKS_project.ViewModels;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.IO;
+using System.Linq;
+using System.Security.Claims;
 
 namespace ABKS_project.Controllers
 {
     public class HomeController : Controller
     {
         private readonly abksContext context;
-        private readonly IWebHostEnvironment env;
+        private readonly IWebHostEnvironment _env;
 
         public HomeController(abksContext context, IWebHostEnvironment env)
         {
             this.context = context;
-            this.env = env;
+            _env = env;
         }
 
         public IActionResult Index()
@@ -29,6 +35,54 @@ namespace ABKS_project.Controllers
             return View();
         }
 
+        [HttpPost]
+        public IActionResult Login(ValidCredential user)
+        {
+            var myuser = context.Credentials.FirstOrDefault(x => x.Email == user.Email);
+
+            if (myuser != null && BCrypt.Net.BCrypt.Verify(user.Password, myuser.Password))
+            {
+                var userType = context.Roles.FirstOrDefault(u => u.RoleId == myuser.RoleId)?.RoleName;
+                if (userType != null)
+                {
+                    // Set authentication cookie
+                    var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, user.Email),
+                new Claim(ClaimTypes.Role, userType)
+            };
+                    var claimsIdentity = new ClaimsIdentity(
+                        claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                    var authProperties = new AuthenticationProperties
+                    {
+                        IsPersistent = true // persist cookie after browser is closed
+                    };
+                    HttpContext.SignInAsync(
+                        CookieAuthenticationDefaults.AuthenticationScheme,
+                        new ClaimsPrincipal(claimsIdentity),
+                        authProperties);
+
+                    // Redirect based on user role
+                    if (userType == "Admin")
+                    {
+                        return RedirectToAction("Index", "Home", new { area = "Admin" });
+                    }
+                    else
+                    {
+                        return RedirectToAction("Index", "Home", new { area = "User" });
+                    }
+                }
+            }
+            else
+            {
+                TempData["Login_Check"] = "Login User Not Found!";
+            }
+            return View();
+        }
+
+
+
+
         public IActionResult Register()
         {
             return View();
@@ -40,31 +94,31 @@ namespace ABKS_project.Controllers
             if (ModelState.IsValid)
             {
                 var existingUser = context.Users.FirstOrDefault(u => u.Email == usr.Email);
-             
+
                 if (existingUser != null)
                 {
                     if ((bool)existingUser.IsVerified)
                     {
-                       
-                        TempData["Register_Check"] = "User is Registered and Verified.";
+                        TempData["Register_Check"] = "User Already Registered and Verified.";
                         return View();
                     }
                     else
                     {
-                      
-                        TempData["Register_Check"] = "User is Registered and Yet to be Verified.";
+                        TempData["Register_Check"] = "User Already Registered and Yet to be Verified.";
                         return View();
                     }
-                   
                 }
 
                 string fileName = "";
                 if (usr.Photo != null)
                 {
-                    string folder = Path.Combine(env.WebRootPath, "Images");
+                    string folder = Path.Combine(_env.WebRootPath, "Images");
                     fileName = Guid.NewGuid().ToString() + "_" + usr.Photo.FileName;
                     string filePath = Path.Combine(folder, fileName);
-                    usr.Photo.CopyTo(new FileStream(filePath, FileMode.Create));
+                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    {
+                        usr.Photo.CopyTo(fileStream);
+                    }
 
                     User user = new User()
                     {
@@ -74,7 +128,8 @@ namespace ABKS_project.Controllers
                         ContactNumber = usr.ContactNumber,
                         Education = usr.Education,
                         CitizenshipPhoto = fileName,
-                        IsVerified = false
+                        IsVerified = false,
+                        IsActive = false
                     };
                     context.Users.Add(user);
                     context.SaveChanges();
@@ -86,9 +141,27 @@ namespace ABKS_project.Controllers
             return View(usr);
         }
 
+        /*        private IActionResult RedirectToDashboard(string userType)
+                {
+                    switch (userType)
+                    {
+                        case "Admin":
+                            return RedirectToAction("Index", "Home", new { area = "Admin" });
+                        case "User":
+                            return RedirectToAction("Index", "Home", new { area = "User" });
+                        default:
+                            return RedirectToAction("Index", "Home");
+                    }
+                }*/
 
+        public IActionResult Logout()
+        {
+            HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 
+            HttpContext.Session.Clear();
 
+            return RedirectToAction("Login");
+        }
 
 
         public IActionResult Product()

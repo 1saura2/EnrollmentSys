@@ -4,17 +4,23 @@ using System.Net.Mail;
 using System.Net;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ABKS_project.Areas.Admin.Controllers
 {
+    [Authorize(Policy = "AdminOnly")]
     [Area("Admin")]
     public class HomeController : Controller
     {
         abksContext context;
-        public HomeController(abksContext context)
+        private readonly IWebHostEnvironment _env;
+        public HomeController(abksContext context, IWebHostEnvironment env)
         {
                 this.context = context;
+            _env = env;
         }
+
+       
         public IActionResult Index()
         {
             return View();
@@ -26,9 +32,17 @@ namespace ABKS_project.Areas.Admin.Controllers
             return View(users);
           
         }     
-        public IActionResult ListVerified()
+        public IActionResult ListActive()
         {
-            var users = context.Users.Where(u => u.IsVerified == true).ToList();
+            var users = context.Users.Where(u => u.IsActive == true).ToList();
+            return View(users);
+          
+        }     
+        
+        
+        public IActionResult ListInActive()
+        {
+            var users = context.Users.Where(u => u.IsActive == false).ToList();
             return View(users);
           
         }
@@ -38,31 +52,40 @@ namespace ABKS_project.Areas.Admin.Controllers
         public IActionResult AcceptUser(int userId)
         {
             var user = context.Users.FirstOrDefault(u => u.UserId == userId);
-
             var userEmail = user.Email;
 
             user.IsVerified = true;
+            user.IsActive = true;
             context.Users.Update(user);
             context.SaveChanges();
 
             string password = "123";
-            string hashedPassword = HashPassword(password); 
+            string hashedPassword = HashPassword(password);
 
             var newCredential = new Credential
             {
                 Email = userEmail,
                 Password = hashedPassword,
-                RoleId = 2
+                RoleId = 2 
             };
             context.Credentials.Add(newCredential);
             context.SaveChanges();
 
-           
             SendWelcomeEmail(userEmail, password);
 
-           
-            return RedirectToAction("ListUnverified", "Home"); 
+            int registrationTypeId = 1; 
+
+            var userRegistrationType = new UserRegistrationType
+            {
+                UserId = userId,
+                RegistrationTypeId = registrationTypeId
+            };
+            context.UserRegistrationTypes.Add(userRegistrationType);
+            context.SaveChanges();
+
+            return RedirectToAction("ListUnverified", "Home");
         }
+
 
         private void SendWelcomeEmail(string email, string password)
         {
@@ -145,6 +168,9 @@ namespace ABKS_project.Areas.Admin.Controllers
         {
             var user = context.Users.Find(userId);
             var userEmail = user.Email;
+
+            string fileName = user.CitizenshipPhoto;
+
             context.Users.Remove(user);
 
             var credential = context.Credentials.FirstOrDefault(c => c.Email == userEmail);
@@ -155,8 +181,19 @@ namespace ABKS_project.Areas.Admin.Controllers
 
             context.SaveChanges();
 
-            return RedirectToAction(nameof(ListVerified));
+            if (!string.IsNullOrEmpty(fileName))
+            {
+                string imagePath = Path.Combine(_env.WebRootPath, "Images", fileName);
+
+                if (System.IO.File.Exists(imagePath))
+                {
+                    System.IO.File.Delete(imagePath);
+                }
+            }
+
+            return RedirectToAction(nameof(ListActive));
         }
+
 
 
     }
