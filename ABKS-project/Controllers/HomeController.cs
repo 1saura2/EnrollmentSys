@@ -32,6 +32,10 @@ namespace ABKS_project.Controllers
 
         public IActionResult Login()
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("RedirectToDashboard");
+            }
             return View();
         }
 
@@ -45,10 +49,9 @@ namespace ABKS_project.Controllers
                 var userType = context.Roles.FirstOrDefault(u => u.RoleId == myuser.RoleId)?.RoleName;
                 if (userType != null)
                 {
-                    // Set authentication cookie
+                   
                     var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Name, user.Email),
                 new Claim(ClaimTypes.Role, userType)
             };
                     var claimsIdentity = new ClaimsIdentity(
@@ -62,15 +65,13 @@ namespace ABKS_project.Controllers
                         new ClaimsPrincipal(claimsIdentity),
                         authProperties);
 
-                    // Redirect based on user role
-                    if (userType == "Admin")
+                    var userId = context.Users.FirstOrDefault(u => u.Email == user.Email)?.UserId;
+                    if (userId != null)
                     {
-                        return RedirectToAction("Index", "Home", new { area = "Admin" });
+                        HttpContext.Session.SetInt32("UserId", userId.Value);
                     }
-                    else
-                    {
-                        return RedirectToAction("Index", "Home", new { area = "User" });
-                    }
+
+                    return RedirectToAction("RedirectToDashboard");
                 }
             }
             else
@@ -82,9 +83,27 @@ namespace ABKS_project.Controllers
 
 
 
+        public IActionResult RedirectToDashboard()
+        {
+            if (User.IsInRole("Admin"))
+            {
+                return RedirectToAction("Index", "Home", new { area = "Admin" });
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home", new { area = "User" });
+            }
+        }
+
+
+
 
         public IActionResult Register()
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("RedirectToDashboard");
+            }
             return View();
         }
 
@@ -140,19 +159,6 @@ namespace ABKS_project.Controllers
             }
             return View(usr);
         }
-
-        /*        private IActionResult RedirectToDashboard(string userType)
-                {
-                    switch (userType)
-                    {
-                        case "Admin":
-                            return RedirectToAction("Index", "Home", new { area = "Admin" });
-                        case "User":
-                            return RedirectToAction("Index", "Home", new { area = "User" });
-                        default:
-                            return RedirectToAction("Index", "Home");
-                    }
-                }*/
 
         public IActionResult Logout()
         {

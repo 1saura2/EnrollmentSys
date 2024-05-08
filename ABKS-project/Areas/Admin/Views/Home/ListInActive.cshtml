@@ -32,8 +32,33 @@
                         </div>
                     </td>
                     <td class="d-flex gap-2">
-                        <button type="button" class="btn btn-sm btn-primary btn-management" data-bs-toggle="modal" data-bs-target="#editModal_@user.UserId">Edit</button>
+                        <!-- Re-enroll Button -->
+                        <button type="button" class="btn btn-sm btn-warning btn-management" data-bs-toggle="modal" data-bs-target="#reEnrollModal_@user.UserId">Re-enroll</button>
+                        <!-- Delete Button -->
                         <button type="button" class="btn btn-sm btn-danger btn-management" data-bs-toggle="modal" data-bs-target="#deleteModal_@user.UserId">Delete</button>
+                        <!-- Re-enroll Confirmation Modal -->
+                        <div class="modal fade" id="reEnrollModal_@user.UserId" tabindex="-1" aria-labelledby="reEnrollModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="reEnrollModalLabel">Re-enroll User</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p><b>Re-enroll User: </b><i>@user.Email</i><b>?</b></p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                        <form asp-area="Admin" asp-action="ReEnrollUser" asp-controller="Home" method="post">
+                                            <input type="hidden" name="userId" value="@user.UserId" />
+                                            <button type="submit" class="btn btn-warning">Re-enroll</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- End Re-enroll Confirmation Modal -->
+                        <!-- Delete Confirmation Modal -->
                         <div class="modal fade" id="deleteModal_@user.UserId" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content">
@@ -54,6 +79,7 @@
                                 </div>
                             </div>
                         </div>
+                        <!-- End Delete Confirmation Modal -->
                     </td>
                 </tr>
             }
