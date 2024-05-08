@@ -131,14 +131,14 @@ namespace ABKS_project.Areas.Admin.Controllers
             {
                 var userEmail = user.Email;
 
-                context.Users.Remove(user);
-                context.SaveChanges();
+                DeleteUser(user.UserId);
 
                 SendRejectionEmail(userEmail);
             }
 
             return RedirectToAction("ListUnverified", "Home");
         }
+
 
         private void SendRejectionEmail(string email)
         {
@@ -193,6 +193,35 @@ namespace ABKS_project.Areas.Admin.Controllers
 
             return RedirectToAction(nameof(ListActive));
         }
+
+
+        public IActionResult StartNewSession()
+        {
+            var activeUsers = context.Users.Where(u => (bool)u.IsActive).ToList();
+            foreach (var user in activeUsers)
+            {
+                user.IsActive = false;
+                context.Users.Update(user);
+            }
+            context.SaveChanges();
+
+            return RedirectToAction("ListActive", "Home");
+        }
+
+        [HttpPost]
+        public IActionResult ReEnrollUser(int userId)
+        {
+            var user = context.Users.FirstOrDefault(u => u.UserId == userId);
+
+            if (user != null)
+            {
+                user.IsActive = true; 
+                context.SaveChanges();
+            }
+
+            return RedirectToAction("ListUnverified", "Home");
+        }
+
 
 
 
