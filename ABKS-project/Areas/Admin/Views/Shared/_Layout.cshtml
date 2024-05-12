@@ -34,7 +34,7 @@
                     </a>
                 </li>
 
-                <li class="sidebar-item">
+             @*    <li class="sidebar-item">
                     <a href="#" class="sidebar-link collapsed has-dropdown dropdown-toggle" data-bs-toggle="collapse"
                        data-bs-target="#auth" aria-expanded="false" aria-controls="auth">
                         <i class="bi bi-shield-lock"></i>
@@ -48,7 +48,8 @@
                             <a href="#" class="sidebar-link">Register</a>
                         </li>
                     </ul>
-                </li>
+                </li> *@
+
                 <li class="sidebar-item">
                     <a href="#" class="sidebar-link collapsed has-dropdown dropdown-toggle" data-bs-toggle="collapse"
                        data-bs-target="#user-management" aria-expanded="false" aria-controls="user-management">
@@ -74,6 +75,38 @@
                                     <a asp-area="Admin" asp-controller="Home" asp-action="ListInActive" class="sidebar-link">Inactive Users</a>
                                 </li>
                             </ul>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="sidebar-item">
+                    <a href="#" class="sidebar-link collapsed has-dropdown dropdown-toggle" data-bs-toggle="collapse"
+                       data-bs-target="#auth" aria-expanded="false" aria-controls="auth">
+                        <i class="bi bi-shield-lock"></i>
+                        <span>Student Evaluation</span>
+                    </a>
+                    <ul id="auth" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                        <li class="sidebar-item">
+                            <a href="#" class="sidebar-link">Entry</a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="#" class="sidebar-link">View</a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="sidebar-item">
+                    <a href="#" class="sidebar-link collapsed has-dropdown dropdown-toggle" data-bs-toggle="collapse"
+                       data-bs-target="#product" aria-expanded="false" aria-controls="product">
+                        <i class="bi bi-shield-lock"></i>
+                        <span>Product Management</span>
+                    </a>
+                    <ul id="product" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                        <li class="sidebar-item">
+                            <a href="#" class="sidebar-link">Product Details</a>
+                        </li> 
+                        <li class="sidebar-item">
+                            <a href="#" class="sidebar-link">Order Details</a>
                         </li>
                     </ul>
                 </li>
