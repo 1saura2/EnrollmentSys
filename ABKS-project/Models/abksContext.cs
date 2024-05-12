@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using ABKS_project.Models.EcommerceContent;
+using Humanizer.Localisation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
@@ -23,12 +24,14 @@ namespace ABKS_project.Models
         public virtual DbSet<Role> Roles { get; set; } = null!;
         public virtual DbSet<User> Users { get; set; } = null!;
         public virtual DbSet<UserRegistrationType> UserRegistrationTypes { get; set; } = null!;
-        public DbSet<Product> Products { get; set; }
-        public DbSet<ShoppingCart> ShoppingCarts { get; set; }
-        public DbSet<CartDetail> CartDetails { get; set; }
-        public DbSet<Order> Orders { get; set; }
-        public DbSet<OrderDetail> OrderDetails { get; set; }
-        public DbSet<OrderStatus> orderStatuses { get; set; }
+        public virtual DbSet<ProductCategory> productCategories { get; set; }= null!;
+        public virtual DbSet<ProductCategory> ProductCategories { get; set; }=null!;
+        public virtual DbSet<Product> Products { get; set; } = null!;
+        public virtual DbSet<ShoppingCart> ShoppingCarts { get; set; } = null!;
+        public virtual DbSet<CartDetail> CartDetails { get; set; } = null!;
+        public virtual DbSet<Order> Orders { get; set; } = null!;
+        public virtual DbSet<OrderDetail> OrderDetails { get; set; } = null!;
+        public virtual DbSet<OrderStatus> orderStatuses { get; set; } = null!;              
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)

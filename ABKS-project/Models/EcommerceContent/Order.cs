@@ -15,7 +15,7 @@ namespace ABKS_project.Models.EcommerceContent
         public bool IsDeleted { get; set; } = false;
         [Required]
         [MaxLength(30)]
-        public string? Name { get; set; }
+        public string? OrderName { get; set; }
 
         [Required]
         [EmailAddress]
