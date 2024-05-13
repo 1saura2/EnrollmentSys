@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using ABKS_project.Models.EcommerceContent;
-using Humanizer.Localisation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
@@ -18,28 +16,41 @@ namespace ABKS_project.Models
         {
         }
 
-        public virtual DbSet<Credential> Credentials { get; set; } = null!;
-        public virtual DbSet<Evaluation> Evaluations { get; set; } = null!;
-        public virtual DbSet<RegistrationType> RegistrationTypes { get; set; } = null!;
-        public virtual DbSet<Role> Roles { get; set; } = null!;
-        public virtual DbSet<User> Users { get; set; } = null!;
-        public virtual DbSet<UserRegistrationType> UserRegistrationTypes { get; set; } = null!;
-        public virtual DbSet<ProductCategory> productCategories { get; set; }= null!;
-        public virtual DbSet<ProductCategory> ProductCategories { get; set; }=null!;
-        public virtual DbSet<Product> Products { get; set; } = null!;
-        public virtual DbSet<ShoppingCart> ShoppingCarts { get; set; } = null!;
         public virtual DbSet<CartDetail> CartDetails { get; set; } = null!;
+        public virtual DbSet<Credential> Credentials { get; set; } = null!;
+        public virtual DbSet<ErrorViewModel> ErrorViewModels { get; set; } = null!;
+        public virtual DbSet<Evaluation> Evaluations { get; set; } = null!;
         public virtual DbSet<Order> Orders { get; set; } = null!;
         public virtual DbSet<OrderDetail> OrderDetails { get; set; } = null!;
-        public virtual DbSet<OrderStatus> orderStatuses { get; set; } = null!;              
+        public virtual DbSet<OrderStatus> OrderStatuses { get; set; } = null!;
+        public virtual DbSet<Product> Products { get; set; } = null!;
+        public virtual DbSet<ProductCategory> ProductCategories { get; set; } = null!;
+        public virtual DbSet<RegistrationType> RegistrationTypes { get; set; } = null!;
+        public virtual DbSet<Role> Roles { get; set; } = null!;
+        public virtual DbSet<ShoppingCart> ShoppingCarts { get; set; } = null!;
+        public virtual DbSet<Stock> Stocks { get; set; } = null!;
+        public virtual DbSet<User> Users { get; set; } = null!;
+        public virtual DbSet<UserRegistrationType> UserRegistrationTypes { get; set; } = null!;
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
-            { }
+            {
+            }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<CartDetail>(entity =>
+            {
+                entity.HasKey(e => e.CartId)
+                    .HasName("PK__CartDeta__51BCD7B7A5742805");
+
+                entity.ToTable("CartDetail");
+
+                entity.Property(e => e.UnitPrice).HasColumnType("decimal(18, 2)");
+            });
+
             modelBuilder.Entity<Credential>(entity =>
             {
                 entity.Property(e => e.Email).HasMaxLength(100);
@@ -53,6 +64,16 @@ namespace ABKS_project.Models
                     .HasForeignKey(d => d.RoleId)
                     .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("FK__Credentia__RoleI__2EDAF651");
+            });
+
+            modelBuilder.Entity<ErrorViewModel>(entity =>
+            {
+                entity.HasKey(e => e.RequestId)
+                    .HasName("PK__ErrorVie__33A8517A031AF941");
+
+                entity.ToTable("ErrorViewModel");
+
+                entity.Property(e => e.RequestId).ValueGeneratedNever();
             });
 
             modelBuilder.Entity<Evaluation>(entity =>
@@ -74,6 +95,64 @@ namespace ABKS_project.Models
                     .HasConstraintName("FK__Evaluatio__UserR__37703C52");
             });
 
+            modelBuilder.Entity<Order>(entity =>
+            {
+                entity.ToTable("Order");
+
+                entity.Property(e => e.CreateDate).HasColumnType("datetime");
+
+                entity.Property(e => e.OrderEmail).HasMaxLength(255);
+
+                entity.Property(e => e.OrderMobNumber).HasMaxLength(20);
+
+                entity.Property(e => e.OrderName).HasMaxLength(255);
+
+                entity.Property(e => e.OrderPaymentMethod).HasMaxLength(100);
+            });
+
+            modelBuilder.Entity<OrderDetail>(entity =>
+            {
+                entity.ToTable("OrderDetail");
+
+                entity.Property(e => e.ProductName).HasMaxLength(255);
+
+                entity.Property(e => e.UnitPrice).HasColumnType("decimal(18, 2)");
+            });
+
+            modelBuilder.Entity<OrderStatus>(entity =>
+            {
+                entity.HasKey(e => e.StatusId)
+                    .HasName("PK__OrderSta__C8EE2063520AAF60");
+
+                entity.ToTable("OrderStatus");
+
+                entity.Property(e => e.StatusId).ValueGeneratedNever();
+
+                entity.Property(e => e.StatusName).HasMaxLength(100);
+            });
+
+            modelBuilder.Entity<Product>(entity =>
+            {
+                entity.ToTable("Product");
+
+                entity.Property(e => e.ProductImage).HasMaxLength(255);
+
+                entity.Property(e => e.ProductName).HasMaxLength(255);
+
+                entity.Property(e => e.ProductPrice).HasColumnType("decimal(18, 2)");
+            });
+
+            modelBuilder.Entity<ProductCategory>(entity =>
+            {
+                entity.ToTable("ProductCategory");
+
+                entity.Property(e => e.ProductCategoryId)
+                    .ValueGeneratedNever()
+                    .HasColumnName("ProductCategoryID");
+
+                entity.Property(e => e.CategoryName).HasMaxLength(100);
+            });
+
             modelBuilder.Entity<RegistrationType>(entity =>
             {
                 entity.Property(e => e.TypeName).HasMaxLength(50);
@@ -82,6 +161,18 @@ namespace ABKS_project.Models
             modelBuilder.Entity<Role>(entity =>
             {
                 entity.Property(e => e.RoleName).HasMaxLength(50);
+            });
+
+            modelBuilder.Entity<ShoppingCart>(entity =>
+            {
+                entity.ToTable("ShoppingCart");
+            });
+
+            modelBuilder.Entity<Stock>(entity =>
+            {
+                entity.ToTable("Stock");
+
+                entity.Property(e => e.StockId).ValueGeneratedNever();
             });
 
             modelBuilder.Entity<User>(entity =>

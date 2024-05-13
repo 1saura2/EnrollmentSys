@@ -1,9 +1,12 @@
+﻿using System;
+using System.Collections.Generic;
+
 namespace ABKS_project.Models
 {
-    public class ErrorViewModel
+    public partial class ErrorViewModel
     {
-        public string? RequestId { get; set; }
-
+        public String? RequestId { get; set; }
+        /* public int? ShowRequestId { get; set; }*/
         public bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
     }
 }
