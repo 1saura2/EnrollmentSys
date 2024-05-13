@@ -1,7 +1,12 @@
 ﻿@model ABKS_project.Models.MetaData.ValidCredential
 
 
-
+@if (TempData["Register_Success"] != null)
+{
+    <div class="alert alert-info" role="alert">
+        @TempData["Register_Success"]
+    </div>
+}
 
 <body style="background-color: var(--bodyBackgroundColor);
     color: var(--bodyColor);
@@ -19,6 +24,8 @@
             <p style="color:red;">@TempData["Login_Check"]</p>
 
         }
+
+       
 
         <form asp-action="Login" asp-controller="Home" method="post" class="form login">
 
