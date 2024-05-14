@@ -10,7 +10,10 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
 using System.Security.Claims;
+using Newtonsoft.Json;
 
 namespace ABKS_project.Controllers
 {
@@ -49,11 +52,10 @@ namespace ABKS_project.Controllers
                 var userType = context.Roles.FirstOrDefault(u => u.RoleId == myuser.RoleId)?.RoleName;
                 if (userType != null)
                 {
-                   
-                    var claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.Role, userType)
-            };
+                    var claims = new[]
+                    {
+                        new Claim(ClaimTypes.Role, userType)
+                    };
                     var claimsIdentity = new ClaimsIdentity(
                         claims, CookieAuthenticationDefaults.AuthenticationScheme);
                     var authProperties = new AuthenticationProperties
@@ -81,8 +83,6 @@ namespace ABKS_project.Controllers
             return View();
         }
 
-
-
         public IActionResult RedirectToDashboard()
         {
             if (User.IsInRole("Admin"))
@@ -94,9 +94,6 @@ namespace ABKS_project.Controllers
                 return RedirectToAction("Index", "Home", new { area = "User" });
             }
         }
-
-
-
 
         public IActionResult Register()
         {
@@ -116,49 +113,124 @@ namespace ABKS_project.Controllers
 
                 if (existingUser != null)
                 {
-                    if ((bool)existingUser.IsVerified)
+                    if ((bool)!existingUser.IsVerified)
                     {
-                        TempData["Register_Check"] = "User Already Registered and Verified.";
-                        return View();
+                       
+                        TempData["Email_Confirmation_Message"] = "User Already Register and not Verified yet";
+                        return RedirectToAction("Login");
                     }
                     else
                     {
-                        TempData["Register_Check"] = "User Already Registered and Yet to be Verified.";
-                        return View();
+                        TempData["Register_Check"] = "User Already Registered and Verified.";
+                        return RedirectToAction("Register");
                     }
                 }
 
                 string fileName = "";
-                if (usr.Photo != null)
+
+                string folder = Path.Combine(_env.WebRootPath, "Images");
+                fileName = Guid.NewGuid().ToString() + "_" + usr.Photo.FileName;
+                string filePath = Path.Combine(folder, fileName);
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
                 {
-                    string folder = Path.Combine(_env.WebRootPath, "Images");
-                    fileName = Guid.NewGuid().ToString() + "_" + usr.Photo.FileName;
-                    string filePath = Path.Combine(folder, fileName);
-                    using (var fileStream = new FileStream(filePath, FileMode.Create))
-                    {
-                        usr.Photo.CopyTo(fileStream);
-                    }
-
-                    User user = new User()
-                    {
-                        FullName = usr.FullName,
-                        Email = usr.Email,
-                        Age = usr.Age,
-                        ContactNumber = usr.ContactNumber,
-                        Education = usr.Education,
-                        CitizenshipPhoto = fileName,
-                        IsVerified = false,
-                        IsActive = false
-                    };
-                    context.Users.Add(user);
-                    context.SaveChanges();
-
-                    TempData["Register_Success"] = "You are registered.";
-                    return RedirectToAction("Index");
+                    usr.Photo.CopyTo(fileStream);
                 }
+
+                var userViewModelForTempData = new UserViewModelForTempData
+                {
+                    FullName = usr.FullName,
+                    Email = usr.Email,
+                    Age = usr.Age,
+                    ContactNumber = usr.ContactNumber,
+                    Education = usr.Education,
+                    CitizenshipPhoto = fileName
+                };
+
+                string serializedUser = JsonConvert.SerializeObject(userViewModelForTempData);
+
+                string encodedUser = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(serializedUser));
+
+                SendVerificationEmail(usr.Email, encodedUser);
+
+                TempData["Email_Confirmation_Message"] = "Please check your email for registration confirmation.";
+
+                return RedirectToAction("Register");
             }
             return View(usr);
         }
+
+
+        public IActionResult ConfirmEmail(string encodedUser)
+        {
+            if (!string.IsNullOrEmpty(encodedUser))
+            {
+                string serializedUser = System.Text.Encoding.UTF8.GetString(Convert.FromBase64String(encodedUser));
+
+                var userViewModelForTempData = JsonConvert.DeserializeObject<UserViewModelForTempData>(serializedUser);
+
+                if (userViewModelForTempData != null && !string.IsNullOrEmpty(userViewModelForTempData.Email))
+                {
+                    var existingUser = context.Users.FirstOrDefault(u => u.Email == userViewModelForTempData.Email);
+
+                    if (existingUser == null)
+                    {
+                        var newUser = new User
+                        {
+                            FullName = userViewModelForTempData.FullName,
+                            Email = userViewModelForTempData.Email,
+                            Age = userViewModelForTempData.Age,
+                            ContactNumber = userViewModelForTempData.ContactNumber,
+                            Education = userViewModelForTempData.Education,
+                            CitizenshipPhoto = userViewModelForTempData.CitizenshipPhoto,
+                            IsVerified = false,
+                            IsActive = false
+                        };
+
+                        context.Users.Add(newUser);
+                        context.SaveChanges();
+
+                        TempData["Register_Success"] = "You are registered.";
+                        return RedirectToAction("Login"); 
+                    }
+                    else
+                    {
+                        TempData["Confirmation_Message"] = "User Already Exists.";
+                        return RedirectToAction("Register"); 
+                    }
+                }
+            }
+
+            TempData["Confirmation_Message"] = "Invalid verification link.";
+            return RedirectToAction("Register"); 
+        }
+
+
+
+        private void SendVerificationEmail(string userEmail, string encodedUser)
+        {
+            string smtpServer = "smtp.gmail.com";
+            int port = 587;
+            string senderEmail = "atul.baral8421@gmail.com";
+            string senderPassword = "nemm arey koqy bmvm\r\n";
+
+            using (SmtpClient client = new SmtpClient(smtpServer, port))
+            {
+                client.UseDefaultCredentials = false;
+                client.Credentials = new NetworkCredential(senderEmail, senderPassword);
+                client.EnableSsl = true;
+
+                MailMessage mailMessage = new MailMessage();
+                mailMessage.From = new MailAddress(senderEmail, "ABKS TEAM");
+                mailMessage.To.Add(userEmail);
+                mailMessage.Subject = "Registration Confirmation";
+                mailMessage.Body = $"Please confirm your registration by clicking this <a href=\"{Url.Action("ConfirmEmail", "Home", new { encodedUser }, Request.Scheme)}\">link</a>.";
+
+                mailMessage.IsBodyHtml = true;
+
+                client.Send(mailMessage);
+            }
+        }
+
 
         public IActionResult Logout()
         {
@@ -168,7 +240,6 @@ namespace ABKS_project.Controllers
 
             return RedirectToAction("Login");
         }
-
 
         public IActionResult Product()
         {

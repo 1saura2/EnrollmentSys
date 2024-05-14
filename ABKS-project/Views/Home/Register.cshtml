@@ -7,6 +7,22 @@
     </div>
 }
 
+@if (TempData["Confirmation_Message"] != null)
+{
+    <div class="alert alert-info" role="alert">
+        @TempData["Confirmation_Message"]
+    </div>
+}
+
+<style>
+    .modal-backdrop {
+        backdrop-filter: blur(1px);
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+
+</style>
+
+
 <body style="background-color: var(--bodyBackgroundColor);
     color: var(--bodyColor);
     font-family: var(--bodyFontFamily), var(--bodyFontFamilyFallback);
@@ -122,4 +138,29 @@
 
     </div>
 
+    @* Popup for Email Confirmation Message *@
+    @if (TempData["Email_Confirmation_Message"] != null)
+    {
+        <div class="modal fade show" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true" style="display: block;">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="confirmationModalLabel">Email Confirmation</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        @TempData["Email_Confirmation_Message"]
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+
+
+
 </body>
+
