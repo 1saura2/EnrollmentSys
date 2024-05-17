@@ -5,22 +5,25 @@ using System.Net;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
+using System.IO;
+using BCrypt.Net;
 
 namespace ABKS_project.Areas.Admin.Controllers
 {
-    [Authorize(Policy = "AdminOnly")]
+   /* [Authorize(Policy = "AdminOnly")]*/
     [Area("Admin")]
     public class HomeController : Controller
     {
-        abksContext context;
+        private readonly abksContext _context;
         private readonly IWebHostEnvironment _env;
+
         public HomeController(abksContext context, IWebHostEnvironment env)
         {
-                this.context = context;
+            _context = context;
             _env = env;
         }
 
-       
         public IActionResult Index()
         {
             return View();
@@ -28,64 +31,50 @@ namespace ABKS_project.Areas.Admin.Controllers
 
         public IActionResult ListUnverified()
         {
-            var users = context.Users.Where(u => u.IsVerified == false).ToList();
+            var users = _context.Users.Where(u => u.IsVerified == false).ToList();
             return View(users);
-          
-        }     
-        public IActionResult ListActive()
-        {
-            var users = context.Users.Where(u => u.IsActive == true).ToList();
-            return View(users);
-          
-        }     
-        
-        
-        public IActionResult ListInActive()
-        {
-            var users = context.Users.Where(u => u.IsActive == false).ToList();
-            return View(users);
-          
         }
 
+        public IActionResult ListActive()
+        {
+            var users = _context.Users.Where(u => u.IsActive == true).ToList();
+            return View(users);
+        }
+
+        public IActionResult ListInActive()
+        {
+            var users = _context.Users.Where(u => u.IsActive == false).ToList();
+            return View(users);
+        }
 
         [HttpPost]
-        public IActionResult AcceptUser(int userId)
+        public IActionResult AcceptUser(Guid userId)
         {
-            var user = context.Users.FirstOrDefault(u => u.UserId == userId);
-            var userEmail = user.Email;
+            var user = _context.Users.Include(u => u.Credentials).FirstOrDefault(u => u.UserId == userId);
 
-            user.IsVerified = true;
-            user.IsActive = true;
-            context.Users.Update(user);
-            context.SaveChanges();
-
-            string password = "123";
-            string hashedPassword = HashPassword(password);
-
-            var newCredential = new Credential
+            if (user != null)
             {
-                Email = userEmail,
-                Password = hashedPassword,
-                RoleId = 2 
-            };
-            context.Credentials.Add(newCredential);
-            context.SaveChanges();
+                user.IsVerified = true;
+                user.IsActive = true;
 
-            SendWelcomeEmail(userEmail, password);
+                _context.SaveChanges();
+                var password = "123";
 
-            int registrationTypeId = 1; 
+                var newUserCredential = new Credential
+                {
+                    UserId = user.UserId,
+                    Password = BCrypt.Net.BCrypt.HashPassword(password), // Default password
+                    RoleId = 2 // Assuming 2 is the User role ID
+                };
 
-            var userRegistrationType = new UserRegistrationType
-            {
-                UserId = userId,
-                RegistrationTypeId = registrationTypeId
-            };
-            context.UserRegistrationTypes.Add(userRegistrationType);
-            context.SaveChanges();
+                _context.Credentials.Add(newUserCredential);
+                _context.SaveChanges();
+
+                SendWelcomeEmail(user.Email, password); // Send welcome email with default password
+            }
 
             return RedirectToAction("ListUnverified", "Home");
         }
-
 
         private void SendWelcomeEmail(string email, string password)
         {
@@ -106,39 +95,23 @@ namespace ABKS_project.Areas.Admin.Controllers
                 mailMessage.Subject = "Welcome to the platform!";
                 mailMessage.Body = $"Dear user,\n\nYour account has been accepted. Here are your login credentials:\nEmail: {email}\nPassword: {password}\n\nYou can now log in to your account using these credentials.\n\nBest regards,\nThe Platform Team";
 
-          
                 client.Send(mailMessage);
             }
         }
 
-
-
-    private string HashPassword(string password)
-    {
-  
-        string hashedPassword = BCrypt.Net.BCrypt.HashPassword(password);
-
-        return hashedPassword;
-    }
-
-
         [HttpPost]
-        public IActionResult RejectUser(int userId)
+        public IActionResult RejectUser(Guid userId)
         {
-            var user = context.Users.FirstOrDefault(u => u.UserId == userId);
+            var user = _context.Users.FirstOrDefault(u => u.UserId == userId);
 
             if (user != null)
             {
-                var userEmail = user.Email;
-
-                DeleteUser(user.UserId);
-
-                SendRejectionEmail(userEmail);
+                SendRejectionEmail(user.Email); // Send rejection email
+                DeleteUser(user.UserId); // Delete user
             }
 
             return RedirectToAction("ListUnverified", "Home");
         }
-
 
         private void SendRejectionEmail(string email)
         {
@@ -154,7 +127,7 @@ namespace ABKS_project.Areas.Admin.Controllers
                 client.EnableSsl = true;
 
                 MailMessage mailMessage = new MailMessage();
-                mailMessage.From = new MailAddress(senderEmail,"ABKS TEAM");
+                mailMessage.From = new MailAddress(senderEmail, "ABKS TEAM");
                 mailMessage.To.Add(email);
                 mailMessage.Subject = "Regarding Your Form Submission";
                 mailMessage.Body = $"Dear user,\n\nWe regret to inform you that your form submission has been rejected. If you believe there was an error, please fill the form again with correct information or contact support for assistance.\n\nBest regards,\nThe Platform Team";
@@ -164,30 +137,30 @@ namespace ABKS_project.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public IActionResult DeleteUser(int userId)
+        public IActionResult DeleteUser(Guid userId)
         {
-            var user = context.Users.Find(userId);
-            var userEmail = user.Email;
+            var user = _context.Users.Find(userId);
 
-            string fileName = user.CitizenshipPhoto;
 
-            context.Users.Remove(user);
+            string fileName = user.Citizenship;
 
-            var credential = context.Credentials.FirstOrDefault(c => c.Email == userEmail);
+            _context.Users.Remove(user);
+
+            var credential = _context.Credentials.FirstOrDefault(c => c.UserId == userId);
             if (credential != null)
             {
-                context.Credentials.Remove(credential);
+                _context.Credentials.Remove(credential);
             }
 
-            context.SaveChanges();
+            _context.SaveChanges();
 
             if (!string.IsNullOrEmpty(fileName))
             {
-                string imagePath = Path.Combine(_env.WebRootPath, "Images", fileName);
+                string pdfPath = Path.Combine(_env.WebRootPath, "Documents/Citizenships", fileName);
 
-                if (System.IO.File.Exists(imagePath))
+                if (System.IO.File.Exists(pdfPath))
                 {
-                    System.IO.File.Delete(imagePath);
+                    System.IO.File.Delete(pdfPath);
                 }
             }
 
@@ -197,33 +170,30 @@ namespace ABKS_project.Areas.Admin.Controllers
 
         public IActionResult StartNewSession()
         {
-            var activeUsers = context.Users.Where(u => (bool)u.IsActive).ToList();
+            var activeUsers = _context.Users.Where(u => u.IsActive == true).ToList();
+
             foreach (var user in activeUsers)
             {
                 user.IsActive = false;
-                context.Users.Update(user);
             }
-            context.SaveChanges();
 
-            return RedirectToAction("ListActive", "Home");
+            _context.SaveChanges();
+
+            return RedirectToAction(nameof(ListActive));
         }
 
         [HttpPost]
-        public IActionResult ReEnrollUser(int userId)
+        public IActionResult ReEnrollUser(Guid userId)
         {
-            var user = context.Users.FirstOrDefault(u => u.UserId == userId);
+            var user = _context.Users.FirstOrDefault(u => u.UserId == userId);
 
             if (user != null)
             {
-                user.IsActive = true; 
-                context.SaveChanges();
+                user.IsActive = true;
+                _context.SaveChanges();
             }
 
-            return RedirectToAction("ListUnverified", "Home");
+            return RedirectToAction(nameof(ListUnverified));
         }
-
-
-
-
     }
 }

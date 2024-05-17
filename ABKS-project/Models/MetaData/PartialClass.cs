@@ -6,7 +6,7 @@ namespace ABKS_project.Models.MetaData
 {
    
     [ModelMetadataType(typeof(CredentialMetaData))]
-    public partial class ValidCredential : Credential 
+    public partial class ValidCredential : Credential
     {
       
     }  

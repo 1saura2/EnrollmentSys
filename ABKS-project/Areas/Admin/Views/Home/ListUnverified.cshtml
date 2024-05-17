@@ -1,17 +1,49 @@
-﻿@model IEnumerable<ABKS_project.Models.User>;
+﻿<style>
+    .modal-backdrop {
+        backdrop-filter: blur(1px);
+        background-color: rgba(0, 0, 0, 0.5);
+    }
 
+    .pdf-preview {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 9999;
+        background-color: white;
+        padding: 10px;
+        border: 0.5px solid #ccc;
+    }
+
+        .pdf-preview iframe {
+            width: 800px; 
+            height: 600px;
+            border: none;
+            position: relative;
+            margin-top: 20px; 
+        }
+
+    .close-btn {
+        position: absolute;
+        top: 0px; 
+        right: 5px;
+        cursor: pointer;
+        font-size: 20px; 
+        color: red; 
+    }
+</style>
 
 <h2>UnVerified Users</h2>
 
 <table class="management-table table mt-3">
     <thead>
         <tr>
-            <th>ID</th>
             <th>Name</th>
             <th>Email</th>
             <th>Education</th>
             <th>Age</th>
-            <th>Citizenship Photo</th>
+            <th>Citizenship PDF</th>
             <th>Action</th>
         </tr>
     </thead>
@@ -19,16 +51,16 @@
         @foreach (var user in Model)
         {
             <tr>
-                <td>@user.UserId</td>
-                <td>@user.FullName</td>
+                <td>@user.FirstName @user.LastName</td>
                 <td>@user.Email</td>
                 <td>@user.Education</td>
                 <td>@user.Age</td>
                 <td>
-                    <div class="image-container">
-                        <img src="~/Images/@user.CitizenshipPhoto" alt="Citizenship Photo" width="100" height="100" class="citizenship-photo">
-                        <div class="image-preview">
-                            <img src="~/Images/@user.CitizenshipPhoto" alt="Citizenship Photo">
+                    <div class="pdf-container">
+                        <a href="#" class="pdf-link" data-pdf-url="/Documents/Citizenships/@user.Citizenship">View PDF</a>
+                        <div class="pdf-preview">
+                            <iframe src=""></iframe>
+                            <button type="button" class="btn-close close-btn" aria-label="Close"></button> <!-- Bootstrap 5 close icon -->
                         </div>
                     </div>
                 </td>
@@ -82,19 +114,23 @@
         }
     </tbody>
 </table>
-
-
-
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-        $('.citizenship-photo').hover(function () {
-            var preview = $(this).siblings('.image-preview');
+        $('.pdf-link').click(function (e) {
+            e.preventDefault();
+            var pdfUrl = $(this).data('pdf-url');
+            var preview = $(this).siblings('.pdf-preview');
+            preview.find('iframe').attr('src', pdfUrl);
             preview.show();
-        }, function () {
-            $(this).siblings('.image-preview').hide();
+        });
+
+        $('.close-btn').click(function () {
+            $(this).closest('.pdf-preview').hide();
+        });
+
+        // Prevent closing PDF preview when clicking on the iframe
+        $('.pdf-preview iframe').click(function (e) {
+            e.stopPropagation();
         });
     });
-
 </script>
-
-

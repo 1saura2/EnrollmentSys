@@ -6,7 +6,7 @@ namespace ABKS_project.Models
     public partial class Order
     {
         public int OrderId { get; set; }
-        public int UserId { get; set; }
+        public Guid UserId { get; set; }
         public DateTime CreateDate { get; set; }
         public int OrderStatusId { get; set; }
         public bool? IsDeleted { get; set; }
