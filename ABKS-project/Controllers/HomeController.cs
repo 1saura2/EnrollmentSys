@@ -91,7 +91,7 @@ namespace ABKS_project.Controllers
         {
             if (User.IsInRole("Admin"))
             {
-                return RedirectToAction("Index", "Home", new { area = "Admin" });
+                return RedirectToAction("Index", "User", new { area = "Admin" });
             }
             else
             {

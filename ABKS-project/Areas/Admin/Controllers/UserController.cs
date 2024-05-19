@@ -13,12 +13,12 @@ namespace ABKS_project.Areas.Admin.Controllers
 {
    /* [Authorize(Policy = "AdminOnly")]*/
     [Area("Admin")]
-    public class HomeController : Controller
+    public class UserController : Controller
     {
         private readonly abksContext _context;
         private readonly IWebHostEnvironment _env;
 
-        public HomeController(abksContext context, IWebHostEnvironment env)
+        public UserController(abksContext context, IWebHostEnvironment env)
         {
             _context = context;
             _env = env;
@@ -29,23 +29,49 @@ namespace ABKS_project.Areas.Admin.Controllers
             return View();
         }
 
-        public IActionResult ListUnverified()
+        private async Task<List<User>> GetFilteredUsers(bool isVerified, bool isActive, string roleName, int pageNumber, int pageSize, string? search = null)
         {
-            var users = _context.Users.Where(u => u.IsVerified == false).ToList();
+            var usersQuery = _context.Users
+                .Where(u => u.IsVerified == isVerified && u.IsActive == isActive && !u.Credentials.Any(c => c.Role.RoleName == roleName));
+
+            if (!string.IsNullOrEmpty(search))
+            {
+                usersQuery = usersQuery.Where(u => u.FirstName.Contains(search) || u.LastName.Contains(search) || u.Email.Contains(search));
+            }
+
+            var totalCount = await usersQuery.CountAsync();
+
+            var users = await usersQuery
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            ViewBag.PageNumber = pageNumber;
+            ViewBag.PageSize = pageSize;
+            ViewBag.TotalCount = totalCount;
+            ViewBag.CurrentFilter = search;
+
+            return users;
+        }
+
+        public async Task<IActionResult> ListUnverified(int pageNumber = 1, int pageSize = 8, string? search = null)
+        {
+            var users = await GetFilteredUsers(isVerified: false, isActive: false, roleName: "User", pageNumber, pageSize, search);
             return View(users);
         }
 
-        public IActionResult ListActive()
+        public async Task<IActionResult> ListActive(int pageNumber = 1, int pageSize = 8, string? search = null)
         {
-            var users = _context.Users.Where(u => u.IsActive == true).ToList();
+            var users = await GetFilteredUsers(isVerified: true, isActive: true, roleName: "User", pageNumber, pageSize, search);
             return View(users);
         }
 
-        public IActionResult ListInActive()
+        public async Task<IActionResult> ListInactive(int pageNumber = 1, int pageSize = 8, string? search = null)
         {
-            var users = _context.Users.Where(u => u.IsActive == false).ToList();
+            var users = await GetFilteredUsers(isVerified: true, isActive: false, roleName: "User", pageNumber, pageSize, search);
             return View(users);
         }
+
 
         [HttpPost]
         public IActionResult AcceptUser(Guid userId)
@@ -63,17 +89,17 @@ namespace ABKS_project.Areas.Admin.Controllers
                 var newUserCredential = new Credential
                 {
                     UserId = user.UserId,
-                    Password = BCrypt.Net.BCrypt.HashPassword(password), // Default password
-                    RoleId = 2 // Assuming 2 is the User role ID
+                    Password = BCrypt.Net.BCrypt.HashPassword(password),
+                    RoleId = 2 
                 };
 
                 _context.Credentials.Add(newUserCredential);
                 _context.SaveChanges();
 
-                SendWelcomeEmail(user.Email, password); // Send welcome email with default password
+                SendWelcomeEmail(user.Email, password);
             }
 
-            return RedirectToAction("ListUnverified", "Home");
+            return RedirectToAction("ListUnverified", "User");
         }
 
         private void SendWelcomeEmail(string email, string password)
@@ -106,11 +132,11 @@ namespace ABKS_project.Areas.Admin.Controllers
 
             if (user != null)
             {
-                SendRejectionEmail(user.Email); // Send rejection email
-                DeleteUser(user.UserId); // Delete user
+                SendRejectionEmail(user.Email); 
+                DeleteUser(user.UserId); 
             }
 
-            return RedirectToAction("ListUnverified", "Home");
+            return RedirectToAction("ListUnverified", "User");
         }
 
         private void SendRejectionEmail(string email)

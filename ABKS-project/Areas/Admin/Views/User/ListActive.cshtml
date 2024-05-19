@@ -1,4 +1,6 @@
-﻿<style>
+﻿@model IEnumerable<ABKS_project.Models.User>
+
+<style>
     .modal-backdrop {
         backdrop-filter: blur(1px);
         background-color: rgba(0, 0, 0, 0.5);
@@ -59,37 +61,13 @@
                         <a href="#" class="pdf-link" data-pdf-url="/Documents/Citizenships/@user.Citizenship">View PDF</a>
                         <div class="pdf-preview">
                             <iframe src=""></iframe>
-                            <button type="button" class="btn-close close-btn" aria-label="Close"></button> 
+                            <button type="button" class="btn-close close-btn" aria-label="Close"></button> <!-- Bootstrap 5 close icon -->
                         </div>
                     </div>
                 </td>
                 <td class="d-flex gap-2">
-                    <!-- Re-enroll Button -->
-                    <button type="button" class="btn btn-sm btn-warning btn-management" data-bs-toggle="modal" data-bs-target="#reEnrollModal_@user.UserId">Re-enroll</button>
-                    <!-- Delete Button -->
+                    <button type="button" class="btn btn-sm btn-primary btn-management" data-bs-toggle="modal" data-bs-target="#editModal_@user.UserId">Edit</button>
                     <button type="button" class="btn btn-sm btn-danger btn-management" data-bs-toggle="modal" data-bs-target="#deleteModal_@user.UserId">Delete</button>
-                    <!-- Re-enroll Confirmation Modal -->
-                    <div class="modal fade" id="reEnrollModal_@user.UserId" tabindex="-1" aria-labelledby="reEnrollModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="reEnrollModalLabel">Re-enroll User</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <p><b>Re-enroll User: </b><i>@user.Email</i><b>?</b></p>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                    <form asp-area="Admin" asp-action="ReEnrollUser" asp-controller="Home" method="post">
-                                        <input type="hidden" name="userId" value="@user.UserId" />
-                                        <button type="submit" class="btn btn-warning">Re-enroll</button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- End Re-enroll Confirmation Modal -->
                     <!-- Delete Confirmation Modal -->
                     <div class="modal fade" id="deleteModal_@user.UserId" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
@@ -103,7 +81,7 @@
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                    <form asp-area="Admin" asp-action="DeleteUser" asp-controller="Home" method="post">
+                                    <form asp-area="Admin" asp-action="DeleteUser" asp-controller="User" method="post">
                                         <input type="hidden" name="userId" value="@user.UserId" />
                                         <button type="submit" class="btn btn-danger">Delete</button>
                                     </form>
@@ -111,12 +89,36 @@
                             </div>
                         </div>
                     </div>
-                    <!-- End Delete Confirmation Modal -->
                 </td>
+
             </tr>
         }
     </tbody>
 </table>
+
+<!-- Confirmation Modal for Start New Session -->
+<div class="modal fade" id="confirmStartSessionModal" tabindex="-1" role="dialog" aria-labelledby="confirmStartSessionModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmStartSessionModalLabel">Start New Session</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to start a new session? All active users will be set to inactive.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <form id="startNewSessionForm" method="post" asp-action="StartNewSession" asp-controller="User">
+                    <button type="submit" class="btn btn-warning">Start New Session</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         $('.pdf-link').click(function (e) {
@@ -137,12 +139,6 @@
         });
     });
 </script>
-
-
-
-
-
-
 
 
 
@@ -179,6 +175,15 @@
         }
 </style>
 
+<!-- Start New Session Button -->
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <button type="button" class="btn btn-sm btn-warning mt-3" data-bs-toggle="modal" data-bs-target="#confirmStartSessionModal">Start New Session</button>
+        </div>
+    </div>
+</div>
+
 <h2>Users</h2>
 
 <table class="management-table table mt-3">
@@ -211,32 +216,8 @@
                     </div>
                 </td>
                 <td class="d-flex gap-2">
-                    <!-- Re-enroll Button -->
-                    <button type="button" class="btn btn-sm btn-warning btn-management" data-bs-toggle="modal" data-bs-target="#reEnrollModal_@user.UserId">Re-enroll</button>
-                    <!-- Delete Button -->
+                    <button type="button" class="btn btn-sm btn-primary btn-management" data-bs-toggle="modal" data-bs-target="#editModal_@user.UserId">Edit</button>
                     <button type="button" class="btn btn-sm btn-danger btn-management" data-bs-toggle="modal" data-bs-target="#deleteModal_@user.UserId">Delete</button>
-                    <!-- Re-enroll Confirmation Modal -->
-                    <div class="modal fade" id="reEnrollModal_@user.UserId" tabindex="-1" aria-labelledby="reEnrollModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="reEnrollModalLabel">Re-enroll User</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <p><b>Re-enroll User: </b><i>@user.Email</i><b>?</b></p>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                    <form asp-area="Admin" asp-action="ReEnrollUser" asp-controller="Home" method="post">
-                                        <input type="hidden" name="userId" value="@user.UserId" />
-                                        <button type="submit" class="btn btn-warning">Re-enroll</button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- End Re-enroll Confirmation Modal -->
                     <!-- Delete Confirmation Modal -->
                     <div class="modal fade" id="deleteModal_@user.UserId" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
@@ -258,12 +239,34 @@
                             </div>
                         </div>
                     </div>
-                    <!-- End Delete Confirmation Modal -->
                 </td>
             </tr>
         }
     </tbody>
 </table>
+
+<!-- Confirmation Modal for Start New Session -->
+<div class="modal fade" id="confirmStartSessionModal" tabindex="-1" role="dialog" aria-labelledby="confirmStartSessionModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmStartSessionModalLabel">Start New Session</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to start a new session? All active users will be set to inactive.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <form id="startNewSessionForm" method="post" asp-action="StartNewSession" asp-controller="Home">
+                    <button type="submit" class="btn btn-warning">Start New Session</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {
@@ -278,4 +281,5 @@
             $(this).hide();
         });
     });
-</script> *@
+</script>
+ *@

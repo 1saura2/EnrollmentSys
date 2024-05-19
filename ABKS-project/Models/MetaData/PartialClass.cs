@@ -10,7 +10,7 @@ namespace ABKS_project.Models.MetaData
     {
       
     }  
-    
+/*    
     [ModelMetadataType(typeof(CartDetailMetaData))]
     public partial class ValidCartDetail : CartDetail
     {
@@ -59,5 +59,5 @@ namespace ABKS_project.Models.MetaData
     public partial class ValidStock : Stock
     {
 
-    }
+    }*/
 }
