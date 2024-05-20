@@ -17,6 +17,7 @@ namespace ABKS_project.Areas.Product.Models
         }
 
         public virtual DbSet<CartDetail> CartDetails { get; set; } = null!;
+
         public virtual DbSet<CheckoutModel> CheckoutModels { get; set; } = null!;
         public virtual DbSet<Order> Orders { get; set; } = null!;
         public virtual DbSet<OrderDetail> OrderDetails { get; set; } = null!;
@@ -33,13 +34,20 @@ namespace ABKS_project.Areas.Product.Models
         public virtual DbSet<StockDto> StockDtos { get; set; } = null!;
         public virtual DbSet<UpdateOrderStatusModel> UpdateOrderStatusModels { get; set; } = null!;
 
+      
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
+
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
                 optionsBuilder.UseSqlServer("Data Source=103.182.175.232,1433;Initial Catalog=abks-project;Integrated Security=False;Persist Security Info=False;User ID=intern;Password=intern@123;Connect Timeout=60");
             }
+
+            { 
+            }
+
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -53,6 +61,7 @@ namespace ABKS_project.Areas.Product.Models
 
                 entity.Property(e => e.UnitPrice).HasColumnType("decimal(18, 2)");
             });
+
 
             modelBuilder.Entity<CheckoutModel>(entity =>
             {
@@ -70,6 +79,7 @@ namespace ABKS_project.Areas.Product.Models
 
                 entity.Property(e => e.PaymentMethod).HasMaxLength(100);
             });
+
 
             modelBuilder.Entity<Order>(entity =>
             {
@@ -95,6 +105,7 @@ namespace ABKS_project.Areas.Product.Models
                 entity.Property(e => e.UnitPrice).HasColumnType("decimal(18, 2)");
             });
 
+
             modelBuilder.Entity<OrderDetailModelDto>(entity =>
             {
                 entity.HasKey(e => e.Obmdid)
@@ -104,6 +115,7 @@ namespace ABKS_project.Areas.Product.Models
 
                 entity.Property(e => e.Obmdid).HasColumnName("OBMDId");
             });
+
 
             modelBuilder.Entity<OrderStatus>(entity =>
             {
@@ -139,6 +151,7 @@ namespace ABKS_project.Areas.Product.Models
                 entity.Property(e => e.CategoryName).HasMaxLength(100);
             });
 
+
             modelBuilder.Entity<ProductCategoryDto>(entity =>
             {
                 entity.HasKey(e => e.ProductCategoryId)
@@ -173,6 +186,7 @@ namespace ABKS_project.Areas.Product.Models
                 entity.Property(e => e.ProductPrice).HasColumnType("decimal(18, 2)");
             });
 
+
             modelBuilder.Entity<ShoppingCart>(entity =>
             {
                 entity.ToTable("ShoppingCart");
@@ -184,6 +198,7 @@ namespace ABKS_project.Areas.Product.Models
 
                 entity.Property(e => e.StockId).ValueGeneratedNever();
             });
+
 
             modelBuilder.Entity<StockDisplayModelDto>(entity =>
             {
@@ -210,6 +225,7 @@ namespace ABKS_project.Areas.Product.Models
 
                 entity.ToTable("UpdateOrderStatusModel");
             });
+
 
             OnModelCreatingPartial(modelBuilder);
         }

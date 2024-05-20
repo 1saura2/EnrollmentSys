@@ -6,11 +6,11 @@ namespace ABKS_project.Models.MetaData
 {
    
     [ModelMetadataType(typeof(CredentialMetaData))]
-    public partial class ValidCredential : Credential 
+    public partial class ValidCredential : Credential
     {
       
     }  
-    
+/*    
     [ModelMetadataType(typeof(CartDetailMetaData))]
     public partial class ValidCartDetail : CartDetail
     {
@@ -59,5 +59,5 @@ namespace ABKS_project.Models.MetaData
     public partial class ValidStock : Stock
     {
 
-    }
+    }*/
 }

@@ -1,0 +1,283 @@
+﻿@model IEnumerable<ABKS_project.Models.User>
+
+<style>
+    .modal-backdrop {
+        backdrop-filter: blur(1px);
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    .pdf-preview {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 9999;
+        background-color: white;
+        padding: 10px;
+        border: 0.5px solid #ccc;
+    }
+
+        .pdf-preview iframe {
+            width: 800px;
+            height: 600px;
+            border: none;
+            position: relative;
+            margin-top: 20px;
+        }
+
+    .close-btn {
+        position: absolute;
+        top: 0px;
+        right: 5px;
+        cursor: pointer;
+        font-size: 20px;
+    }
+</style>
+
+<h2>UnVerified Users</h2>
+
+<table class="management-table table mt-3">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Education</th>
+            <th>Age</th>
+            <th>Citizenship PDF</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody id="managementContent">
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>@user.FirstName @user.LastName</td>
+                <td>@user.Email</td>
+                <td>@user.Education</td>
+                <td>@user.Age</td>
+                <td>
+                    <div class="pdf-container">
+                        <a href="#" class="pdf-link" data-pdf-url="/Documents/Citizenships/@user.Citizenship">View PDF</a>
+                        <div class="pdf-preview">
+                            <iframe src=""></iframe>
+                            <button type="button" class="btn-close close-btn" aria-label="Close"></button> 
+                        </div>
+                    </div>
+                </td>
+                <td class="d-flex gap-2">
+                    <!-- Re-enroll Button -->
+                    <button type="button" class="btn btn-sm btn-warning btn-management" data-bs-toggle="modal" data-bs-target="#reEnrollModal_@user.UserId">Re-enroll</button>
+                    <!-- Delete Button -->
+                    <button type="button" class="btn btn-sm btn-danger btn-management" data-bs-toggle="modal" data-bs-target="#deleteModal_@user.UserId">Delete</button>
+                    <!-- Re-enroll Confirmation Modal -->
+                    <div class="modal fade" id="reEnrollModal_@user.UserId" tabindex="-1" aria-labelledby="reEnrollModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="reEnrollModalLabel">Re-enroll User</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <p><b>Re-enroll User: </b><i>@user.Email</i><b>?</b></p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                    <form asp-area="Admin" asp-action="ReEnrollUser" asp-controller="User" method="post">
+                                        <input type="hidden" name="userId" value="@user.UserId" />
+                                        <button type="submit" class="btn btn-warning">Re-enroll</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End Re-enroll Confirmation Modal -->
+                    <!-- Delete Confirmation Modal -->
+                    <div class="modal fade" id="deleteModal_@user.UserId" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="deleteModalLabel">Delete User</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <p><b>Delete User: </b><i>@user.Email</i><b>?</b></p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                    <form asp-area="Admin" asp-action="DeleteUser" asp-controller="User" method="post">
+                                        <input type="hidden" name="userId" value="@user.UserId" />
+                                        <button type="submit" class="btn btn-danger">Delete</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End Delete Confirmation Modal -->
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        $('.pdf-link').click(function (e) {
+            e.preventDefault();
+            var pdfUrl = $(this).data('pdf-url');
+            var preview = $(this).siblings('.pdf-preview');
+            preview.find('iframe').attr('src', pdfUrl);
+            preview.show();
+        });
+
+        $('.close-btn').click(function () {
+            $(this).closest('.pdf-preview').hide();
+        });
+
+        // Prevent closing PDF preview when clicking on the iframe
+        $('.pdf-preview iframe').click(function (e) {
+            e.stopPropagation();
+        });
+    });
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@* @model IEnumerable<ABKS_project.Models.User>
+
+<style>
+    .modal-backdrop {
+        backdrop-filter: blur(1px);
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    .pdf-preview {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 9999;
+        background-color: white;
+        padding: 10px;
+        border: 1px solid #ccc;
+    }
+
+        .pdf-preview iframe {
+            width: 100%;
+            height: 600px;
+            border: none;
+        }
+</style>
+
+<h2>Users</h2>
+
+<table class="management-table table mt-3">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Education</th>
+            <th>Age</th>
+            <th>Citizenship PDF</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody id="managementContent">
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>@user.UserId</td>
+                <td>@user.FirstName @user.LastName</td>
+                <td>@user.Email</td>
+                <td>@user.Education</td>
+                <td>@user.Age</td>
+                <td>
+                    <div class="pdf-container">
+                        <a href="javascript:void(0);" class="pdf-link" data-pdf-url="~/Documents/@user.Citizenship">View PDF</a>
+                        <div class="pdf-preview">
+                            <iframe src=""></iframe>
+                        </div>
+                    </div>
+                </td>
+                <td class="d-flex gap-2">
+                    <!-- Re-enroll Button -->
+                    <button type="button" class="btn btn-sm btn-warning btn-management" data-bs-toggle="modal" data-bs-target="#reEnrollModal_@user.UserId">Re-enroll</button>
+                    <!-- Delete Button -->
+                    <button type="button" class="btn btn-sm btn-danger btn-management" data-bs-toggle="modal" data-bs-target="#deleteModal_@user.UserId">Delete</button>
+                    <!-- Re-enroll Confirmation Modal -->
+                    <div class="modal fade" id="reEnrollModal_@user.UserId" tabindex="-1" aria-labelledby="reEnrollModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="reEnrollModalLabel">Re-enroll User</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <p><b>Re-enroll User: </b><i>@user.Email</i><b>?</b></p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                    <form asp-area="Admin" asp-action="ReEnrollUser" asp-controller="User" method="post">
+                                        <input type="hidden" name="userId" value="@user.UserId" />
+                                        <button type="submit" class="btn btn-warning">Re-enroll</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End Re-enroll Confirmation Modal -->
+                    <!-- Delete Confirmation Modal -->
+                    <div class="modal fade" id="deleteModal_@user.UserId" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="deleteModalLabel">Delete User</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <p><b>Delete User: </b><i>@user.Email</i><b>?</b></p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                    <form asp-area="Admin" asp-action="DeleteUser" asp-controller="User" method="post">
+                                        <input type="hidden" name="userId" value="@user.UserId" />
+                                        <button type="submit" class="btn btn-danger">Delete</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End Delete Confirmation Modal -->
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        $('.pdf-link').on('click', function () {
+            var pdfUrl = $(this).data('pdf-url');
+            var preview = $(this).siblings('.pdf-preview');
+            preview.find('iframe').attr('src', pdfUrl);
+            preview.show();
+        });
+
+        $('.pdf-preview').on('click', function () {
+            $(this).hide();
+        });
+    });
+</script> *@

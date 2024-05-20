@@ -2,6 +2,8 @@ using ABKS_project.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.Extensions.Configuration;
+using ABKS_project.Areas.Product.Models;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,17 +16,20 @@ builder.Services.AddControllersWithViews();
 
 var provider = builder.Services.BuildServiceProvider();
 var config = provider.GetRequiredService<IConfiguration>();
+
+
 builder.Services.AddDbContext<abksContext>(item => item.UseSqlServer(config.GetConnectionString("abks_db")));
 
-// Add authentication configuration
+
+builder.Services.AddDbContext<productContext>(item => item.UseSqlServer(config.GetConnectionString("abks_db")));
+
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
-        options.LoginPath = "/Home/Login"; // Set the login page path for default area
-        options.AccessDeniedPath = "/Home/AccessDenied"; // Set the access denied page path
+        options.LoginPath = "/Home/Login";
+        options.AccessDeniedPath = "/Home/AccessDenied";
     });
 
-// Add authorization policies
 builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("AdminOnly", policy =>
