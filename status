@@ -1,0 +1,189 @@
+[33mcommit 278450e0bf0bf22d893df8e59a087f900ebad326[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: saurav shakya <69755787+1saura2@users.noreply.github.com>
+Date:   Tue May 14 18:29:20 2024 +0545
+
+    img
+
+[33mcommit 54c5d8d9e997e2fc73adf9400b8e66414d7b6e15[m
+Merge: 50ed3f6 62cc6cf
+Author: saurav shakya <69755787+1saura2@users.noreply.github.com>
+Date:   Tue May 14 16:43:02 2024 +0545
+
+    Merge branch 'master' of https://github.com/sthakeshar/ABKS-Project
+
+[33mcommit 50ed3f6b0349d180bb79d3b0325a493102395364[m
+Author: saurav shakya <69755787+1saura2@users.noreply.github.com>
+Date:   Tue May 14 16:42:49 2024 +0545
+
+    spelling correction
+
+[33mcommit 62cc6cf9616a66fb6e6cd77f29d142a30a37b6cd[m
+Author: Atul Baral <atul.baral8421@gmail.com>
+Date:   Mon May 13 20:48:23 2024 +0545
+
+    register confirmation
+
+[33mcommit 455dbe2f95645ec07b835b9754c2684d00f97f0e[m
+Author: saurav shakya <69755787+1saura2@users.noreply.github.com>
+Date:   Mon May 13 09:28:41 2024 +0545
+
+    Scafolded of previous manual made files:(for EcommerceContents)
+
+[33mcommit 9750deb8f84a3d41aa372a411ca49ef2ce792a7c[m
+Merge: a5c498f 4f45478
+Author: saurav shakya <69755787+1saura2@users.noreply.github.com>
+Date:   Sun May 12 21:32:06 2024 +0545
+
+    Merge branch 'master' of https://github.com/sthakeshar/ABKS-Project
+
+[33mcommit a5c498f94c805b915d383708a4abe79069b077e4[m
+Author: saurav shakya <69755787+1saura2@users.noreply.github.com>
+Date:   Sun May 12 21:31:17 2024 +0545
+
+    Added DOTs Product Category and stock added
+
+[33mcommit 4f454787c39a19a06a18c7b11a64551ea105712b[m
+Author: Bhishma Poudel <bhishmapoudel408@gmail.com>
+Date:   Sun May 12 10:12:45 2024 +0545
+
+    add main index page and little bit correction in the main layout
+
+[33mcommit bb82b1a47897cf1d69866e9ce831239ae4a5747b[m
+Author: saurav shakya <69755787+1saura2@users.noreply.github.com>
+Date:   Sat May 11 15:42:43 2024 +0545
+
+    Added on Models with abksContext.cs
+
+[33mcommit 550df511b6845751ec66281c920635d300ef307e[m
+Merge: 207a5a4 9feca10
+Author: Bhishma Poudel <bhishmapoudel408@gmail.com>
+Date:   Wed May 8 10:04:19 2024 +0545
+
+    changes on product
+
+[33mcommit 9feca105a72d9aeaa3afb79e9e36b998b31ad3d6[m
+Author: Atul Baral <atul.baral8421@gmail.com>
+Date:   Wed May 8 06:46:23 2024 +0545
+
+    active and inactive
+
+[33mcommit 207a5a491500dd380fbb7ffe0f8c09b75ba6d642[m
+Author: Bhishma Poudel <bhishmapoudel408@gmail.com>
+Date:   Tue May 7 18:26:33 2024 +0545
+
+    correction in layout and list pages
+
+[33mcommit 7ec9f522cd86657336c1affab1aa67ba96ec11be[m
+Author: Atul Baral <atul.baral8421@gmail.com>
+Date:   Tue May 7 10:07:05 2024 +0545
+
+    dashboard change and login implement
+
+[33mcommit ba103bc1bbcc5fa710ecf32258033826d437c6d7[m
+Author: Atul Baral <atul.baral8421@gmail.com>
+Date:   Fri May 3 10:00:41 2024 +0545
+
+    user accept and reject implementation
+
+[33mcommit 2f8da1ce167e776ec636fc69ecd9b1ca1ab08b6d[m
+Author: Atul Baral <atul.baral8421@gmail.com>
+Date:   Thu May 2 07:26:15 2024 +0545
+
+    register for unverified users
+
+[33mcommit 8361c697908ee89cf00c77415d5e6de2409e2b4d[m
+Author: sthakeshar <shresthakeshar291@gmail.com>
+Date:   Tue Apr 30 20:49:45 2024 +0545
+
+    limited product fetch from api
+
+[33mcommit 2fed5d55eefbc18011d903128e9d860f44474873[m
+Author: Atul Baral <atul.baral8421@gmail.com>
+Date:   Tue Apr 30 20:22:48 2024 +0545
+
+    admin area add
+
+[33mcommit d9ecbf4a4789ae2bed47bd6e65b729b7d87e617d[m
+Author: Bhishma Poudel <bhishmapoudel408@gmail.com>
+Date:   Tue Apr 30 13:27:25 2024 +0545
+
+    correction on register form
+
+[33mcommit 73da30fb7f985be12e94bf55433cfd9ad71a3747[m
+Author: sthakeshar <shresthakeshar291@gmail.com>
+Date:   Mon Apr 29 21:20:38 2024 +0545
+
+    api fetch for products
+
+[33mcommit fefc3ef6dbd328adb35b6687d893fddc3ece3251[m
+Author: saurav shakya <69755787+1saura2@users.noreply.github.com>
+Date:   Mon Apr 29 19:40:22 2024 +0545
+
+    banner added and other minor changes
+
+[33mcommit 409b06972519e01bc911d0c7a288ce5aee620b66[m
+Author: saurav shakya <69755787+1saura2@users.noreply.github.com>
+Date:   Sun Apr 28 22:48:35 2024 +0545
+
+    Decent banner added
+
+[33mcommit 986b4a67f8ed555eed0a71c0a78de3c5fcb1f145[m
+Author: saurav shakya <69755787+1saura2@users.noreply.github.com>
+Date:   Sun Apr 28 18:19:15 2024 +0545
+
+    Device compactable solved
+
+[33mcommit 8e20601f12ede27fb3f3599ce394413ca1d395a2[m
+Author: saurav shakya <69755787+1saura2@users.noreply.github.com>
+Date:   Sun Apr 28 17:58:54 2024 +0545
+
+    navbar peroblem solved and adding card
+
+[33mcommit e4262c12f533c83c7596c6ad9c22d72a9f320ee0[m
+Merge: fb9ca14 0fb1940
+Author: saurav shakya <69755787+1saura2@users.noreply.github.com>
+Date:   Sat Apr 27 22:13:50 2024 +0545
+
+    Merge branch 'master' of https://github.com/sthakeshar/ABKS-Project
+
+[33mcommit fb9ca14aa233170fe8f3258673f0030ee3c23779[m
+Author: saurav shakya <69755787+1saura2@users.noreply.github.com>
+Date:   Sat Apr 27 22:12:03 2024 +0545
+
+    minor changes
+
+[33mcommit 0fb1940705b5545f5a2adb8fb2cabedfd7c8bb50[m
+Author: Bhishma Poudel <bhishmapoudel408@gmail.com>
+Date:   Fri Apr 26 22:37:39 2024 +0545
+
+    correction on loign and register page in css part
+
+[33mcommit 30084631ffa4e7bc11a83ea59e7ac9be90e0d83d[m
+Author: saurav shakya <69755787+1saura2@users.noreply.github.com>
+Date:   Fri Apr 26 21:40:09 2024 +0545
+
+    shopping cart images added
+
+[33mcommit e1bbf6ea2ce96007b69bb24f07e76a904ce213ad[m
+Author: saurav shakya <69755787+1saura2@users.noreply.github.com>
+Date:   Fri Apr 26 20:03:51 2024 +0545
+
+    shopping cart
+
+[33mcommit 534a7d7802299bce620d7d1957ab350f8e8f5b85[m
+Author: Bhishma Poudel <bhishmapoudel408@gmail.com>
+Date:   Thu Apr 25 17:51:55 2024 +0545
+
+    design a log in page and register page for the user
+
+[33mcommit e3a4c63f8e13b7dc65160ae32d395ae20790e5cf[m
+Author: sthakeshar <shresthakeshar291@gmail.com>
+Date:   Wed Apr 24 13:04:31 2024 +0545
+
+    Add project files.
+
+[33mcommit 3056ac35b6b216e4aad6ff0e81bcb4617caf4541[m
+Author: sthakeshar <shresthakeshar291@gmail.com>
+Date:   Wed Apr 24 13:04:29 2024 +0545
+
+    Add .gitattributes, .gitignore, and README.md.
