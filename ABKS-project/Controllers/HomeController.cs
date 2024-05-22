@@ -101,12 +101,19 @@ namespace ABKS_project.Controllers
 
         public IActionResult Register()
         {
-            if (User.Identity.IsAuthenticated)
+            var lastBatch = _context.Batches.OrderByDescending(b => b.BatchId).FirstOrDefault();
+            if (lastBatch != null && lastBatch.IsActive==false)
             {
-                return RedirectToAction("RedirectToDashboard");
+                return View();
             }
-            return View();
+            else
+            {
+                TempData["Batch_Check"] = "Registration is not available at the moment. Please wait for new session to start.";
+                return View();
+            }
+
         }
+
 
 
         [HttpPost]

@@ -18,13 +18,9 @@ namespace ABKS_project.Models
 
         public virtual DbSet<Attendance> Attendances { get; set; } = null!;
         public virtual DbSet<Batch> Batches { get; set; } = null!;
-
         public virtual DbSet<Credential> Credentials { get; set; } = null!;
-        public virtual DbSet<ErrorViewModel> ErrorViewModels { get; set; } = null!;
         public virtual DbSet<Evaluation> Evaluations { get; set; } = null!;
-
         public virtual DbSet<Role> Roles { get; set; } = null!;
-
         public virtual DbSet<User> Users { get; set; } = null!;
         public virtual DbSet<UserBatch> UserBatches { get; set; } = null!;
 
@@ -58,7 +54,6 @@ namespace ABKS_project.Models
                 entity.Property(e => e.StartDate).HasColumnType("date");
             });
 
-
             modelBuilder.Entity<Credential>(entity =>
             {
                 entity.Property(e => e.Password).HasMaxLength(100);
@@ -75,16 +70,6 @@ namespace ABKS_project.Models
                     .WithMany(p => p.Credentials)
                     .HasForeignKey(d => d.UserId)
                     .HasConstraintName("FK_Credentials_Users");
-            });
-
-            modelBuilder.Entity<ErrorViewModel>(entity =>
-            {
-                entity.HasKey(e => e.RequestId)
-                    .HasName("PK__ErrorVie__33A8517A031AF941");
-
-                entity.ToTable("ErrorViewModel");
-
-                entity.Property(e => e.RequestId).ValueGeneratedNever();
             });
 
             modelBuilder.Entity<Evaluation>(entity =>
@@ -104,14 +89,10 @@ namespace ABKS_project.Models
                     .HasConstraintName("FK_Evaluations_UserBatch");
             });
 
-
-
             modelBuilder.Entity<Role>(entity =>
             {
                 entity.Property(e => e.RoleName).HasMaxLength(50);
             });
-
-
 
             modelBuilder.Entity<User>(entity =>
             {

@@ -74,6 +74,7 @@
 
 
 
+
 <h2 class="text-center"> <i class="bi bi-people"></i> Unverified Users</h2>
 <div class="d-flex justify-content-end mb-0 align-items-center">
     <form method="get" asp-controller="User" asp-action="ListUnverified" class="d-flex">
@@ -81,9 +82,6 @@
         <button class="btn btn-outline-success" type="submit">Search</button>
     </form>
 </div>
-
-
-
 
 <div class="table-responsive">
     <table class="table table-striped table-hover mt-3">
@@ -103,74 +101,84 @@
                 int pageNumber = ViewBag.PageNumber as int? ?? 1;
                 int pageSize = ViewBag.PageSize as int? ?? 8;
                 int index = (pageNumber - 1) * pageSize;
-            }
-            @foreach (var user in Model)
-            {
-                index++;
-                <tr>
-                    <td>@index</td>
-                    <td>@user.FirstName @user.LastName</td>
-                    <td>@user.Email</td>
-                    <td>@user.Education</td>
-                    <td>@user.Age</td>
-                    <td>
-                        <div class="pdf-container">
-                            <a href="#" class="pdf-link" data-pdf-url="/Documents/Citizenships/@user.Citizenship"><i class="bi bi-file-earmark-pdf"></i> View PDF</a>
-                            <div class="pdf-preview">
-                                <iframe src="" class="pdf-iframe"></iframe>
-                                <button type="button" class="btn-close close-btn" aria-label="Close"></button>
-                            </div>
-                        </div>
-                    </td>
-                    <td class="text-center align-middle">
-                        <button type="button" class="btn btn-sm btn-success btn-management" data-bs-toggle="modal" data-bs-target="#acceptModal_@user.UserId"><i class="bi bi-check-lg"></i> Accept</button>
-                        <!-- Accept Modal -->
-                        <div class="modal fade" id="acceptModal_@user.UserId" tabindex="-1" aria-labelledby="acceptModalLabel" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header bg-success text-white">
-                                        <h5 class="modal-title"> Accept User</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <p><b>Accept User: </b><i>@user.Email</i><b>?</b></p>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                        <form id="acceptForm_@user.UserId" asp-area="Admin" asp-controller="Home" asp-action="AcceptUser" method="post">
-                                            <input type="hidden" name="userId" value="@user.UserId" />
-                                            <button type="submit" class="btn btn-success"> Accept</button>
-                                        </form>
+
+                if (!Model.Any())
+                {
+                    <tr>
+                        <td colspan="7" class="text-center">No users found.</td>
+                    </tr>
+                }
+                else
+                {
+                    foreach (var user in Model)
+                    {
+                        index++;
+                        <tr>
+                            <td>@index</td>
+                            <td>@user.FirstName @user.LastName</td>
+                            <td>@user.Email</td>
+                            <td>@user.Education</td>
+                            <td>@user.Age</td>
+                            <td>
+                                <div class="pdf-container">
+                                    <a href="#" class="pdf-link" data-pdf-url="/Documents/Citizenships/@user.Citizenship"><i class="bi bi-file-earmark-pdf"></i> View PDF</a>
+                                    <div class="pdf-preview">
+                                        <iframe src="" class="pdf-iframe"></iframe>
+                                        <button type="button" class="btn-close close-btn" aria-label="Close"></button>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                        <button type="button" class="btn btn-sm btn-danger btn-management" data-bs-toggle="modal" data-bs-target="#rejectModal_@user.UserId"><i class="bi bi-x-lg"></i> Reject</button>
-                        <!-- Reject Modal -->
-                        <div class="modal fade" id="rejectModal_@user.UserId" tabindex="-1" aria-labelledby="rejectModalLabel" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header bg-danger text-white">
-                                        <h5 class="modal-title"> Reject User</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <p>
-                                            <b>Reject User: </b><i>@user.Email</i><b>?</b>
-                                        </p>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                        <form asp-area="Admin" asp-controller="Home" asp-action="RejectUser" method="post">
-                                            <input type="hidden" name="userId" value="@user.UserId" />
-                                            <button type="submit" class="btn btn-danger"> Reject</button>
-                                        </form>
+                            </td>
+                            <td class="text-center align-middle">
+                                <button type="button" class="btn btn-sm btn-success btn-management" data-bs-toggle="modal" data-bs-target="#acceptModal_@user.UserId"><i class="bi bi-check-lg"></i> </button>
+                                <!-- Accept Modal -->
+                                <div class="modal fade" id="acceptModal_@user.UserId" tabindex="-1" aria-labelledby="acceptModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header bg-success text-white">
+                                                <h5 class="modal-title"> Accept User</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <p><b>Accept User: </b><i>@user.Email</i><b>?</b></p>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                <form id="acceptForm_@user.UserId" asp-area="Admin" asp-controller="Home" asp-action="AcceptUser" method="post">
+                                                    <input type="hidden" name="userId" value="@user.UserId" />
+                                                    <button type="submit" class="btn btn-success"> Accept</button>
+                                                </form>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
+                                <button type="button" class="btn btn-sm btn-danger btn-management" data-bs-toggle="modal" data-bs-target="#rejectModal_@user.UserId"><i class="bi bi-x-lg"></i> </button>
+                                <!-- Reject Modal -->
+                                <div class="modal fade" id="rejectModal_@user.UserId" tabindex="-1" aria-labelledby="rejectModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header bg-danger text-white">
+                                                <h5 class="modal-title"> Reject User</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <p>
+                                                    <b>Reject User: </b><i>@user.Email</i><b>?</b>
+                                                </p>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                <form asp-area="Admin" asp-controller="Home" asp-action="RejectUser" method="post">
+                                                    <input type="hidden" name="userId" value="@user.UserId" />
+                                                    <button type="submit" class="btn btn-danger"> Reject</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                }
             }
         </tbody>
     </table>
@@ -208,9 +216,6 @@
         </li>
     </ul>
 </nav>
-
-
-
 
 
 

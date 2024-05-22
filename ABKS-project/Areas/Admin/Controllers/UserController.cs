@@ -42,6 +42,7 @@ namespace ABKS_project.Areas.Admin.Controllers
             var totalCount = await usersQuery.CountAsync();
 
             var users = await usersQuery
+                .OrderBy(u => u.FirstName)
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();
@@ -56,19 +57,31 @@ namespace ABKS_project.Areas.Admin.Controllers
 
         public async Task<IActionResult> ListUnverified(int pageNumber = 1, int pageSize = 8, string? search = null)
         {
-            var users = await GetFilteredUsers(isVerified: false, isActive: false, roleName: "User", pageNumber, pageSize, search);
+            var users = await GetFilteredUsers(isVerified: false, isActive: false, roleName: "Admin", pageNumber, pageSize, search);
             return View(users);
         }
 
         public async Task<IActionResult> ListActive(int pageNumber = 1, int pageSize = 8, string? search = null)
         {
-            var users = await GetFilteredUsers(isVerified: true, isActive: true, roleName: "User", pageNumber, pageSize, search);
+            var users = await GetFilteredUsers(isVerified: true, isActive: true, roleName: "Admin", pageNumber, pageSize, search);
+
+            var lastBatch = _context.Batches.OrderByDescending(b => b.BatchId).FirstOrDefault();
+            bool hasActiveBatch = false;
+
+            if (lastBatch != null && lastBatch.IsActive == true)
+            {
+                hasActiveBatch = true;
+            }
+
+            ViewBag.HasActiveBatch = hasActiveBatch;
+
+
             return View(users);
         }
 
         public async Task<IActionResult> ListInactive(int pageNumber = 1, int pageSize = 8, string? search = null)
         {
-            var users = await GetFilteredUsers(isVerified: true, isActive: false, roleName: "User", pageNumber, pageSize, search);
+            var users = await GetFilteredUsers(isVerified: true, isActive: false, roleName: "Admin", pageNumber, pageSize, search);
             return View(users);
         }
 

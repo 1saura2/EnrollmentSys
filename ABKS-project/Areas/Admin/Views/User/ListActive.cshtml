@@ -1,10 +1,47 @@
 ﻿@model IEnumerable<ABKS_project.Models.User>
 
 <style>
-    .modal-backdrop {
-        backdrop-filter: blur(1px);
-        background-color: rgba(0, 0, 0, 0.5);
+    h2 {
+        font-weight: 600;
+        font-size: 1.5rem;
+        color: #0e2238;
     }
+
+    .table-responsive {
+        padding: 0px;
+    }
+
+    .table {
+        border-collapse: collapse;
+        width: 100%;
+        background-color: #fff;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+        .table thead th {
+            background-color: #0e2238;
+            color: #fff;
+            font-weight: 600;
+            text-align: center;
+            vertical-align: middle;
+            padding: 12px;
+        }
+
+        .table tbody tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+
+        .table tbody tr:hover {
+            background-color: #e9ecef;
+        }
+
+        .table tbody td {
+            text-align: center;
+            vertical-align: middle;
+            padding: 12px;
+        }
 
     .pdf-preview {
         display: none;
@@ -35,89 +72,221 @@
     }
 </style>
 
-<h2>UnVerified Users</h2>
-
-<table class="management-table table mt-3">
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Education</th>
-            <th>Age</th>
-            <th>Citizenship PDF</th>
-            <th>Action</th>
-        </tr>
-    </thead>
-    <tbody id="managementContent">
-        @foreach (var user in Model)
-        {
-            <tr>
-                <td>@user.FirstName @user.LastName</td>
-                <td>@user.Email</td>
-                <td>@user.Education</td>
-                <td>@user.Age</td>
-                <td>
-                    <div class="pdf-container">
-                        <a href="#" class="pdf-link" data-pdf-url="/Documents/Citizenships/@user.Citizenship">View PDF</a>
-                        <div class="pdf-preview">
-                            <iframe src=""></iframe>
-                            <button type="button" class="btn-close close-btn" aria-label="Close"></button> <!-- Bootstrap 5 close icon -->
-                        </div>
-                    </div>
-                </td>
-                <td class="d-flex gap-2">
-                    <button type="button" class="btn btn-sm btn-primary btn-management" data-bs-toggle="modal" data-bs-target="#editModal_@user.UserId">Edit</button>
-                    <button type="button" class="btn btn-sm btn-danger btn-management" data-bs-toggle="modal" data-bs-target="#deleteModal_@user.UserId">Delete</button>
-                    <!-- Delete Confirmation Modal -->
-                    <div class="modal fade" id="deleteModal_@user.UserId" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="deleteModalLabel">Delete User</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <p><b>Delete User: </b><i>@user.Email</i><b>?</b></p>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                    <form asp-area="Admin" asp-action="DeleteUser" asp-controller="User" method="post">
-                                        <input type="hidden" name="userId" value="@user.UserId" />
-                                        <button type="submit" class="btn btn-danger">Delete</button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </td>
-
-            </tr>
-        }
-    </tbody>
-</table>
-
-<!-- Confirmation Modal for Start New Session -->
-<div class="modal fade" id="confirmStartSessionModal" tabindex="-1" role="dialog" aria-labelledby="confirmStartSessionModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="confirmStartSessionModalLabel">Start New Session</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                Are you sure you want to start a new session? All active users will be set to inactive.
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                <form id="startNewSessionForm" method="post" asp-action="StartNewSession" asp-controller="User">
-                    <button type="submit" class="btn btn-warning">Start New Session</button>
-                </form>
-            </div>
-        </div>
-    </div>
+<h2 class="text-center"><i class="bi bi-people"></i> Active Users</h2>
+<div class="d-flex justify-content-between mb-0 align-items-center">
+    @if ((bool)ViewBag.HasActiveBatch)
+    {
+        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#closeBatchModal">
+            <i class="bi bi-x-circle"></i> Close Batch
+        </button>
+    }
+    else
+    {
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#startNewBatchModal">
+            <i class="bi bi-plus-circle"></i> Start New Batch
+        </button>
+    }
+    <form method="get" asp-controller="User" asp-action="ListActive" class="d-flex">
+        <input class="form-control form-control-sm me-2" type="search" name="search" placeholder="Search" aria-label="Search" value="@ViewBag.CurrentFilter" style="width: 150px;">
+        <button class="btn btn-outline-success" type="submit">Search</button>
+    </form>
 </div>
+
+<div class="table-responsive">
+    <table class="table table-striped table-hover mt-3">
+        <thead class="bg-primary text-white">
+            <tr>
+                <th>#</th>
+                <th><i class="bi bi-person"></i> Name</th>
+                <th><i class="bi bi-envelope"></i> Email</th>
+                <th><i class="bi bi-book"></i> Education</th>
+                <th><i class="bi bi-calendar"></i> Age</th>
+                <th><i class="bi bi-file-pdf"></i> Citizenship PDF</th>
+                <th><i class="bi bi-gear"></i> Action</th>
+            </tr>
+        </thead>
+        <tbody id="managementContent">
+            @{
+                int pageNumber = ViewBag.PageNumber as int? ?? 1;
+                int pageSize = ViewBag.PageSize as int? ?? 8;
+                int index = (pageNumber - 1) * pageSize;
+
+                if (!Model.Any())
+                {
+                    <tr>
+                        <td colspan="7" class="text-center">No users found.</td>
+                    </tr>
+                }
+                else
+                {
+                    foreach (var user in Model)
+                    {
+                        index++;
+                        <tr>
+                            <td>@index</td>
+                            <td>@user.FirstName @user.LastName</td>
+                            <td>@user.Email</td>
+                            <td>@user.Education</td>
+                            <td>@user.Age</td>
+                            <td>
+                                <div class="pdf-container">
+                                    <a href="#" class="pdf-link" data-pdf-url="/Documents/Citizenships/@user.Citizenship"><i class="bi bi-file-earmark-pdf"></i> View PDF</a>
+                                    <div class="pdf-preview">
+                                        <iframe src="" class="pdf-iframe"></iframe>
+                                        <button type="button" class="btn-close close-btn" aria-label="Close"></button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="text-center align-middle">
+
+                                <!-- Reset Password button -->
+                                <button type="button" class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#resetPasswordModal_@user.UserId">
+                                    <i class="bi bi-key"></i> </button>
+
+                                <!-- Edit button -->
+                                <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#editModal_@user.UserId">
+                                    <i class="bi bi-pencil"></i></button>
+
+                                <!-- Delete button -->
+                                <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal_@user.UserId">
+                                    <i class="bi bi-trash"></i></button>
+
+                                <!-- Reset Password Modal -->
+                                <div class="modal fade" id="resetPasswordModal_@user.UserId" tabindex="-1" aria-labelledby="resetPasswordModalLabel_@user.UserId" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header bg-warning text-white">
+                                                <h5 class="modal-title" id="resetPasswordModalLabel_@user.UserId">Reset Password</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form asp-area="Admin" asp-controller="Home" asp-action="ResetPassword" method="post">
+                                                    <input type="hidden" name="userId" value="@user.UserId" />
+                                                    <div class="mb-3">
+                                                        <label for="newPassword" class="form-label">New Password</label>
+                                                        <input type="password" class="form-control" id="newPassword" name="newPassword">
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="confirmPassword" class="form-label">Confirm Password</label>
+                                                        <input type="password" class="form-control" id="confirmPassword" name="confirmPassword">
+                                                    </div>
+                                                </form>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                <button type="submit" class="btn btn-warning">Reset Password</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Start New Batch Modal -->
+                                <div class="modal fade" id="startNewBatchModal" tabindex="-1" aria-labelledby="startNewBatchModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header bg-primary text-white">
+                                                <h5 class="modal-title" id="startNewBatchModalLabel">Start New Batch</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form asp-area="Admin" asp-controller="Home" asp-action="StartNewBatch" method="post">
+                                                  
+                                                    <div class="mb-3">
+                                                        <label for="batchName" class="form-label">Batch Name</label>
+                                                        <input type="text" class="form-control" id="batchName" name="batchName">
+                                                    </div>
+
+                                                   
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                        <button type="submit" class="btn btn-primary">Start Batch</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Close Batch Confirmation Modal -->
+                                <div class="modal fade" id="closeBatchModal" tabindex="-1" aria-labelledby="closeBatchModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="closeBatchModalLabel">Close Active Batch</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                Are you sure you want to close the active batch?
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                <form method="post" asp-action="CloseActiveBatch" asp-controller="User">
+                                                    <button type="submit" class="btn btn-danger">Close Batch</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Delete Modal -->
+                                <div class="modal fade" id="deleteModal_@user.UserId" tabindex="-1" aria-labelledby="deleteModalLabel_@user.UserId" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header bg-danger text-white">
+                                                <h5 class="modal-title" id="deleteModalLabel_@user.UserId">Delete User</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <p><b>Delete User:</b> <i>@user.Email</i>?</p>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                <form asp-area="Admin" asp-controller="Home" asp-action="DeleteUser" method="post">
+                                                    <input type="hidden" name="userId" value="@user.UserId" />
+                                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                }
+            }
+        </tbody>
+    </table>
+</div>
+
+<nav aria-label="Page navigation">
+    <ul class="pagination justify-content-end">
+        <li class="page-item @((ViewBag.PageNumber == 1) ? "disabled" : "")">
+            <a class="page-link" href="@Url.Action("ListActive", "User", new { pageNumber = 1, pageSize = ViewBag.PageSize })" aria-label="First">
+                <span aria-hidden="true"><i class="bi bi-chevron-double-left"></i></span>
+            </a>
+        </li>
+        <li class="page-item @((ViewBag.PageNumber == 1) ? "disabled" : "")">
+            <a class="page-link" href="@Url.Action("ListActive", "User", new { pageNumber = ViewBag.PageNumber - 1, pageSize = ViewBag.PageSize })" aria-label="Previous">
+                <span aria-hidden="true"><i class="bi bi-chevron-left"></i></span>
+            </a>
+        </li>
+        @for (int i = Math.Max(1, ViewBag.PageNumber - 1); i <= Math.Min(ViewBag.PageNumber + 1, (int)Math.Ceiling((double)ViewBag.TotalCount / ViewBag.PageSize)); i++)
+        {
+            <li class="page-item @(i == ViewBag.PageNumber ? "active" : "")"><a class="page-link" href="@Url.Action("ListActive", "User", new { pageNumber = i, pageSize = ViewBag.PageSize })">@i</a></li>
+        }
+        <li class="page-item @((ViewBag.PageNumber == (int)Math.Ceiling((double)ViewBag.TotalCount / ViewBag.PageSize)) ? "disabled" : "")">
+            <a class="page-link" href="@Url.Action("ListActive", "User", new { pageNumber = ViewBag.PageNumber + 1, pageSize = ViewBag.PageSize })" aria-label="Next">
+                <span aria-hidden="true"><i class="bi bi-chevron-right"></i></span>
+            </a>
+        </li>
+        <li class="page-item @((ViewBag.PageNumber == (int)Math.Ceiling((double)ViewBag.TotalCount / ViewBag.PageSize)) ? "disabled" : "")">
+            <a class="page-link" href="@Url.Action("ListActive", "User", new { pageNumber = (int)Math.Ceiling((double)ViewBag.TotalCount / ViewBag.PageSize), pageSize = ViewBag.PageSize })" aria-label="Last">
+                <span aria-hidden="true"><i class="bi bi-chevron-double-right"></i></span>
+            </a>
+        </li>
+    </ul>
+</nav>
+
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {
@@ -125,7 +294,7 @@
             e.preventDefault();
             var pdfUrl = $(this).data('pdf-url');
             var preview = $(this).siblings('.pdf-preview');
-            preview.find('iframe').attr('src', pdfUrl);
+            preview.find('.pdf-iframe').attr('src', pdfUrl);
             preview.show();
         });
 
@@ -139,147 +308,3 @@
         });
     });
 </script>
-
-
-
-
-
-
-
-
-
-@* @model IEnumerable<ABKS_project.Models.User>
-
-<style>
-    .modal-backdrop {
-        backdrop-filter: blur(1px);
-        background-color: rgba(0, 0, 0, 0.5);
-    }
-
-    .pdf-preview {
-        display: none;
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        z-index: 9999;
-        background-color: white;
-        padding: 10px;
-        border: 1px solid #ccc;
-    }
-
-        .pdf-preview iframe {
-            width: 100%;
-            height: 600px;
-            border: none;
-        }
-</style>
-
-<!-- Start New Session Button -->
-<div class="container">
-    <div class="row">
-        <div class="col-md-4">
-            <button type="button" class="btn btn-sm btn-warning mt-3" data-bs-toggle="modal" data-bs-target="#confirmStartSessionModal">Start New Session</button>
-        </div>
-    </div>
-</div>
-
-<h2>Users</h2>
-
-<table class="management-table table mt-3">
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Education</th>
-            <th>Age</th>
-            <th>Citizenship PDF</th>
-            <th>Action</th>
-        </tr>
-    </thead>
-    <tbody id="managementContent">
-        @foreach (var user in Model)
-        {
-            <tr>
-                <td>@user.UserId</td>
-                <td>@user.FirstName @user.LastName</td>
-                <td>@user.Email</td>
-                <td>@user.Education</td>
-                <td>@user.Age</td>
-                <td>
-                    <div class="pdf-container">
-                        <a href="javascript:void(0);" class="pdf-link" data-pdf-url="~/Documents/@user.Citizenship">View PDF</a>
-                        <div class="pdf-preview">
-                            <iframe src=""></iframe>
-                        </div>
-                    </div>
-                </td>
-                <td class="d-flex gap-2">
-                    <button type="button" class="btn btn-sm btn-primary btn-management" data-bs-toggle="modal" data-bs-target="#editModal_@user.UserId">Edit</button>
-                    <button type="button" class="btn btn-sm btn-danger btn-management" data-bs-toggle="modal" data-bs-target="#deleteModal_@user.UserId">Delete</button>
-                    <!-- Delete Confirmation Modal -->
-                    <div class="modal fade" id="deleteModal_@user.UserId" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="deleteModalLabel">Delete User</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <p><b>Delete User: </b><i>@user.Email</i><b>?</b></p>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                    <form asp-area="Admin" asp-action="DeleteUser" asp-controller="Home" method="post">
-                                        <input type="hidden" name="userId" value="@user.UserId" />
-                                        <button type="submit" class="btn btn-danger">Delete</button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
-
-<!-- Confirmation Modal for Start New Session -->
-<div class="modal fade" id="confirmStartSessionModal" tabindex="-1" role="dialog" aria-labelledby="confirmStartSessionModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="confirmStartSessionModalLabel">Start New Session</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                Are you sure you want to start a new session? All active users will be set to inactive.
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                <form id="startNewSessionForm" method="post" asp-action="StartNewSession" asp-controller="Home">
-                    <button type="submit" class="btn btn-warning">Start New Session</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        $('.pdf-link').on('click', function () {
-            var pdfUrl = $(this).data('pdf-url');
-            var preview = $(this).siblings('.pdf-preview');
-            preview.find('iframe').attr('src', pdfUrl);
-            preview.show();
-        });
-
-        $('.pdf-preview').on('click', function () {
-            $(this).hide();
-        });
-    });
-</script>
- *@

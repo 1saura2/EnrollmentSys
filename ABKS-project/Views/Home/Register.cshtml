@@ -36,8 +36,10 @@
 
 <body style="background-color: var(--bodyBackgroundColor); color: var(--bodyColor); font-family: var(--bodyFontFamily), var(--bodyFontFamilyFallback); font-size: var(--bodyFontSize); font-weight: var(--bodyFontWeight); line-height: var(--bodyLineHeight); margin: 0; min-block-size: 100vh;">
     <div class="grid">
-        <form asp-action="Register" method="post" class="form login" enctype="multipart/form-data" id="registerForm">
-            <div class="form__field">
+        @if (TempData["Batch_Check"] == null)
+        {
+            <form asp-action="Register" method="post" class="form login" enctype="multipart/form-data" id="registerForm">
+                <div class="form__field">
                 <div>
                     <label for="login__firstname" class="d-flex align-items-center">
                         <i class="bi bi-person opacity-50 me-2"></i>
@@ -140,8 +142,21 @@
             <div class="form__field">
                 <input type="submit" value="Sign Up">
             </div>
-        </form>
-
+            </form>
+        }
+        else
+        {
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <div class="alert" role="alert">
+                        <h1>Registration Not Available</h1>
+                        <p>@TempData["Register_Check"]</p>
+                        <p>Please try again later.</p>
+                    </div>
+                </div>
+            </div>
+            
+        }
         <p class="text--center">
             Do you have an account? <a href="Login">Log In Now</a>
             <i class="bi bi-arrow-right opacity-50"></i>
