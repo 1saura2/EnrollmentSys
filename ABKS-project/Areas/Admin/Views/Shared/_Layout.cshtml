@@ -216,7 +216,7 @@
                     </ul>
                 </li>
 
-                <li class="sidebar-item">
+               @*  <li class="sidebar-item">
                     <a href="#" class="sidebar-link collapsed has-dropdown dropdown-toggle" data-bs-toggle="collapse"
                        data-bs-target="#product" aria-expanded="false" aria-controls="product">
                         <i class="bi bi-shield-lock"></i>
@@ -230,8 +230,22 @@
                             <a href="#" class="sidebar-link">Order Details</a>
                         </li>
                     </ul>
-                </li>
+                </li>*@
 
+                <li class="sidebar-item">
+                    <a href="#" class="sidebar-link collapsed has-dropdown dropdown-toggle" data-bs-toggle="collapse"
+                       data-bs-target="#product-management" aria-expanded="false" aria-controls="product-management">
+                        <i class="bi bi-person"></i>
+                        <span>Product Management</span>
+
+                    </a>
+                    <ul id="product-management" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                        <li class="sidebar-item">
+                            <a asp-area="Admin" asp-controller="AdminOperations" asp-action="_OrderDetailModel" class="sidebar-link">Order Detail</a>
+                        </li>
+                       
+                    </ul>
+                </li>
 
 
 

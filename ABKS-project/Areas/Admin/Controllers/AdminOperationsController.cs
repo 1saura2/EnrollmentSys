@@ -2,7 +2,7 @@
 
 namespace ABKS_project.Areas.Admin.Controllers
 {
-    public class AdminProductOperations : Controller
+    public class AdminOperationsController : Controller
     {
         public IActionResult Index()
         {
