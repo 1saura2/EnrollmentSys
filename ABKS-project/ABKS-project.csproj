@@ -27,7 +27,6 @@
     <Folder Include="Areas\Admin\Models\" />
     <Folder Include="Areas\Product\Data\" />
     <Folder Include="Areas\Product\Models\Metadata\" />
-    <Folder Include="Areas\Product\Models\DTOs\" />
     <Folder Include="Areas\Product\Views\Shared\" />
     <Folder Include="Areas\User\Controllers\" />
     <Folder Include="Areas\User\Data\" />
