@@ -40,7 +40,7 @@ namespace ABKS_project.Areas.Product.Models
             modelBuilder.Entity<CartDetail>(entity =>
             {
                 entity.HasKey(e => e.CartId)
-                    .HasName("PK__CartDeta__51BCD7B7A5742805");
+                    .HasName("PK__CartDeta__51BCD7B74CC87935");
 
                 entity.ToTable("CartDetail");
 
@@ -63,13 +63,13 @@ namespace ABKS_project.Areas.Product.Models
 
                 entity.Property(e => e.CreateDate).HasColumnType("datetime");
 
-                entity.Property(e => e.OrderEmail).HasMaxLength(255);
+                entity.Property(e => e.Email).HasMaxLength(255);
 
-                entity.Property(e => e.OrderMobNumber).HasMaxLength(20);
+                entity.Property(e => e.MobileNumber).HasMaxLength(20);
 
-                entity.Property(e => e.OrderName).HasMaxLength(255);
+                entity.Property(e => e.Name).HasMaxLength(255);
 
-                entity.Property(e => e.OrderPaymentMethod).HasMaxLength(100);
+                entity.Property(e => e.PaymentMethod).HasMaxLength(100);
             });
 
             modelBuilder.Entity<OrderDetail>(entity =>
@@ -84,7 +84,7 @@ namespace ABKS_project.Areas.Product.Models
             modelBuilder.Entity<OrderStatus>(entity =>
             {
                 entity.HasKey(e => e.StatusId)
-                    .HasName("PK__OrderSta__C8EE2063520AAF60");
+                    .HasName("PK__OrderSta__C8EE206364852841");
 
                 entity.ToTable("OrderStatus");
 
@@ -97,6 +97,12 @@ namespace ABKS_project.Areas.Product.Models
             {
                 entity.ToTable("Product");
 
+                entity.Property(e => e.Category).HasMaxLength(255);
+
+                entity.Property(e => e.CategoryName).HasMaxLength(255);
+
+                entity.Property(e => e.ProductDescription).IsUnicode(false);
+
                 entity.Property(e => e.ProductImage).HasMaxLength(255);
 
                 entity.Property(e => e.ProductName).HasMaxLength(255);
@@ -108,11 +114,7 @@ namespace ABKS_project.Areas.Product.Models
             {
                 entity.ToTable("ProductCategory");
 
-                entity.Property(e => e.ProductCategoryId)
-                    .ValueGeneratedNever()
-                    .HasColumnName("ProductCategoryID");
-
-                entity.Property(e => e.CategoryName).HasMaxLength(100);
+                entity.Property(e => e.CategoryName).HasMaxLength(255);
             });
 
             modelBuilder.Entity<ShoppingCart>(entity =>
@@ -123,8 +125,6 @@ namespace ABKS_project.Areas.Product.Models
             modelBuilder.Entity<Stock>(entity =>
             {
                 entity.ToTable("Stock");
-
-                entity.Property(e => e.StockId).ValueGeneratedNever();
             });
 
             OnModelCreatingPartial(modelBuilder);

@@ -42,13 +42,13 @@ namespace ABKS_project.Areas.Product.Models.DTOs
 
                 entity.ToTable("CheckoutModel");
 
-                entity.Property(e => e.ContactNumber).HasMaxLength(20);
-
                 entity.Property(e => e.Email).HasMaxLength(255);
 
                 entity.Property(e => e.FirstName).HasMaxLength(255);
 
                 entity.Property(e => e.LastName).HasMaxLength(255);
+
+                entity.Property(e => e.MobileNumber).HasMaxLength(20);
 
                 entity.Property(e => e.PaymentMethod).HasMaxLength(100);
             });
@@ -56,7 +56,7 @@ namespace ABKS_project.Areas.Product.Models.DTOs
             modelBuilder.Entity<OrderDetailModelDto>(entity =>
             {
                 entity.HasKey(e => e.Obmdid)
-                    .HasName("PK__OrderDet__4972CC45BC68088E");
+                    .HasName("PK__OrderDet__4972CC45E029B1FD");
 
                 entity.ToTable("OrderDetailModelDTO");
 
@@ -66,7 +66,7 @@ namespace ABKS_project.Areas.Product.Models.DTOs
             modelBuilder.Entity<ProductCategoryDto>(entity =>
             {
                 entity.HasKey(e => e.ProductCategoryId)
-                    .HasName("PK__ProductC__3224ECCE6799E607");
+                    .HasName("PK__ProductC__3224ECCE447FBE5E");
 
                 entity.ToTable("ProductCategoryDTO");
 
@@ -100,7 +100,7 @@ namespace ABKS_project.Areas.Product.Models.DTOs
             modelBuilder.Entity<StockDisplayModelDto>(entity =>
             {
                 entity.HasKey(e => e.StockDtoid)
-                    .HasName("PK__StockDis__F31831C8EB2972FA");
+                    .HasName("PK__StockDis__F31831C8A9EDBF62");
 
                 entity.ToTable("StockDisplayModelDTO");
 

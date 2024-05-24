@@ -6,5 +6,6 @@ namespace ABKS_project.Areas.Product.Models.DTOs
     public partial class OrderDetailModelDto
     {
         public int Obmdid { get; set; }
+        public IEnumerable<OrderDetail> OrderDetail { get; set; }
     }
 }

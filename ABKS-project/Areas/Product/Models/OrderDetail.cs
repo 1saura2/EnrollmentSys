@@ -11,5 +11,6 @@ namespace ABKS_project.Areas.Product.Models
         public decimal UnitPrice { get; set; }
         public string? ProductName { get; set; }
         public int OrderId { get; set; }
+        public Product Product { get; set; }
     }
 }
