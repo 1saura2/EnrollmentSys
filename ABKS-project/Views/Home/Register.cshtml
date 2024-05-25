@@ -36,112 +36,113 @@
 
 <body style="background-color: var(--bodyBackgroundColor); color: var(--bodyColor); font-family: var(--bodyFontFamily), var(--bodyFontFamilyFallback); font-size: var(--bodyFontSize); font-weight: var(--bodyFontWeight); line-height: var(--bodyLineHeight); margin: 0; min-block-size: 100vh;">
     <div class="grid">
-        @if (TempData["Batch_Check"] == null)
+        <h1 class="page-title">Register Here !!!</h1>
+        @if (TempData["Batch_Check"] != null)
         {
             <form asp-action="Register" method="post" class="form login" enctype="multipart/form-data" id="registerForm">
                 <div class="form__field">
-                <div>
-                    <label for="login__firstname" class="d-flex align-items-center">
-                        <i class="bi bi-person opacity-50 me-2"></i>
-                        <span class="hidden">First Name</span>
-                    </label>
+                    <div>
+                        <label for="login__firstname" class="d-flex align-items-center">
+                            <i class="bi bi-person opacity-50 me-2"></i>
+                            <span class="hidden">First Name</span>
+                        </label>
+                    </div>
+                    <div class="input-container">
+                        <input asp-for="FirstName" autocomplete="given-name" id="login__firstname" type="text" name="FirstName" class="form__input login__input" placeholder="First Name">
+                        <span asp-validation-for="FirstName" class="text-danger"></span>
+                    </div>
                 </div>
-                <div class="input-container">
-                    <input asp-for="FirstName" autocomplete="given-name" id="login__firstname" type="text" name="FirstName" class="form__input login__input" placeholder="First Name">
-                    <span asp-validation-for="FirstName" class="text-danger"></span>
-                </div>
-            </div>
 
-            <div class="form__field">
-                <div>
-                    <label for="login__lastname" class="d-flex align-items-center">
-                        <i class="bi bi-person opacity-50 me-2"></i>
-                        <span class="hidden">Last Name</span>
-                    </label>
+                <div class="form__field">
+                    <div>
+                        <label for="login__lastname" class="d-flex align-items-center">
+                            <i class="bi bi-person opacity-50 me-2"></i>
+                            <span class="hidden">Last Name</span>
+                        </label>
+                    </div>
+                    <div class="input-container">
+                        <input asp-for="LastName" autocomplete="family-name" id="login__lastname" type="text" name="LastName" class="form__input login__input" placeholder="Last Name">
+                        <span asp-validation-for="LastName" class="text-danger"></span>
+                    </div>
                 </div>
-                <div class="input-container">
-                    <input asp-for="LastName" autocomplete="family-name" id="login__lastname" type="text" name="LastName" class="form__input login__input" placeholder="Last Name">
-                    <span asp-validation-for="LastName" class="text-danger"></span>
-                </div>
-            </div>
 
-            <div class="form__field">
-                <div>
-                    <label for="login__email" class="d-flex align-items-center">
-                        <i class="bi bi-envelope opacity-50 me-2"></i>
-                        <span class="hidden">Email</span>
-                    </label>
+                <div class="form__field">
+                    <div>
+                        <label for="login__email" class="d-flex align-items-center">
+                            <i class="bi bi-envelope opacity-50 me-2"></i>
+                            <span class="hidden">Email</span>
+                        </label>
+                    </div>
+                    <div class="input-container">
+                        <input asp-for="Email" autocomplete="email" id="login__email" type="text" name="Email" class="form__input login__input" placeholder="Email">
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
                 </div>
-                <div class="input-container">
-                    <input asp-for="Email" autocomplete="email" id="login__email" type="text" name="Email" class="form__input login__input" placeholder="Email">
-                    <span asp-validation-for="Email" class="text-danger"></span>
-                </div>
-            </div>
 
-            <div class="form__field">
-                <div>
-                    <label for="login__contactnumber" class="d-flex align-items-center">
-                        <i class="bi bi-telephone opacity-50 me-2"></i>
-                        <span class="hidden">Contact Number</span>
-                    </label>
+                <div class="form__field">
+                    <div>
+                        <label for="login__contactnumber" class="d-flex align-items-center">
+                            <i class="bi bi-telephone opacity-50 me-2"></i>
+                            <span class="hidden">Contact Number</span>
+                        </label>
+                    </div>
+                    <div class="input-container">
+                        <input asp-for="ContactNumber" autocomplete="tel" id="login__contactnumber" type="text" name="ContactNumber" class="form__input login__input" placeholder="Contact Number">
+                        <span asp-validation-for="ContactNumber" class="text-danger"></span>
+                    </div>
                 </div>
-                <div class="input-container">
-                    <input asp-for="ContactNumber" autocomplete="tel" id="login__contactnumber" type="text" name="ContactNumber" class="form__input login__input" placeholder="Contact Number">
-                    <span asp-validation-for="ContactNumber" class="text-danger"></span>
-                </div>
-            </div>
 
-            <div class="form__field">
-                <div>
-                    <label for="login__education" class="d-flex align-items-center">
-                        <i class="bi bi-book opacity-50 me-2"></i>
-                        <span class="hidden">Education</span>
-                    </label>
+                <div class="form__field">
+                    <div>
+                        <label for="login__education" class="d-flex align-items-center">
+                            <i class="bi bi-book opacity-50 me-2"></i>
+                            <span class="hidden">Education</span>
+                        </label>
+                    </div>
+                    <div class="input-container">
+                        <select asp-for="Education" id="login__education" name="Education" class="form__input login__input" style="background-color: #444c55; color: white; opacity:60%; border: none; padding:16px">
+                            <option value="" disabled selected>Select Education</option>
+                            <option value="SEE">SEE</option>
+                            <option value="High School">High School</option>
+                            <option value="Bachelors">Bachelors</option>
+                        </select>
+                        <span asp-validation-for="Education" class="text-danger"></span>
+                    </div>
                 </div>
-                <div class="input-container">
-                    <select asp-for="Education" id="login__education" name="Education" class="form__input login__input" style="background-color: #444c55; color: white; opacity:60%; border: none; padding:16px">
-                        <option value="" disabled selected>Select Education</option>
-                        <option value="SEE">SEE</option>
-                        <option value="High School">High School</option>
-                        <option value="Bachelors">Bachelors</option>
-                    </select>
-                    <span asp-validation-for="Education" class="text-danger"></span>
-                </div>
-            </div>
 
-            <div class="form__field">
-                <div>
-                    <label for="login__age" class="d-flex align-items-center">
-                        <i class="bi bi-person-bounding-box opacity-50 me-2"></i>
-                        <span class="hidden">Age</span>
-                    </label>
+                <div class="form__field">
+                    <div>
+                        <label for="login__age" class="d-flex align-items-center">
+                            <i class="bi bi-person-bounding-box opacity-50 me-2"></i>
+                            <span class="hidden">Age</span>
+                        </label>
+                    </div>
+                    <div class="input-container">
+                        <input asp-for="Age" autocomplete="age" id="login__age" type="number" name="Age" class="form__input login__input" placeholder="Age" min="0">
+                        <span asp-validation-for="Age" class="text-danger"></span>
+                    </div>
                 </div>
-                <div class="input-container">
-                    <input asp-for="Age" autocomplete="age" id="login__age" type="number" name="Age" class="form__input login__input" placeholder="Age" min="0">
-                    <span asp-validation-for="Age" class="text-danger"></span>
-                </div>
-            </div>
 
-            <div class="form__field">
-                <div>
-                    <label for="login__CitizenshipPdf" class="d-flex align-items-center px-3 p-1">
-                        <i class="bi bi-image opacity-50 me-2"></i>
-                        <span class="me-2">Citizenship:</span>
-                    </label>
+                <div class="form__field">
+                    <div>
+                        <label for="login__CitizenshipPdf" class="d-flex align-items-center px-3 p-1">
+                            <i class="bi bi-image opacity-50 me-2"></i>
+                            <span class="me-2">Citizenship:</span>
+                        </label>
+                    </div>
+                    <div class="input-container">
+                        <input asp-for="CitizenshipPdf" autocomplete="CitizenshipPdf" id="login__CitizenshipPdf" type="file" name="CitizenshipPdf" accept="application/pdf">
+                        <span asp-validation-for="CitizenshipPdf" class="text-danger"></span>
+                    </div>
                 </div>
-                <div class="input-container">
-                    <input asp-for="CitizenshipPdf" autocomplete="CitizenshipPdf" id="login__CitizenshipPdf" type="file" name="CitizenshipPdf" accept="application/pdf">
-                    <span asp-validation-for="CitizenshipPdf" class="text-danger"></span>
-                </div>
-            </div>
-            <div class="form__field note">Please provide PDF only of size less than 1MB.</div>
-
-
+                <div class="form__field note">Please provide PDF only of size less than 1MB.</div>
 
 
-            <div class="form__field">
-                <input type="submit" value="Sign Up">
-            </div>
+
+
+                <div class="form__field">
+                    <input type="submit" value="Sign Up">
+                </div>
             </form>
         }
         else
@@ -155,7 +156,7 @@
                     </div>
                 </div>
             </div>
-            
+
         }
         <p class="text--center">
             Do you have an account? <a href="Login">Log In Now</a>
@@ -183,4 +184,22 @@
             </div>
         </div>
     }
+
+
+    <style>
+        .page-title {
+            text-align: center;
+            font-size: 2em;
+            margin-top: 40px;
+            color: var(--titleColor, white); /* fallback color in case CSS variable is not defined */
+        }
+
+        .grid {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 35px;
+        }
+    </style>
 </body>
