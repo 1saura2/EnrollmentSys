@@ -1,0 +1,48 @@
+﻿@model IEnumerable<ABKS_project.Areas.Product.Models.ShoppingCart>
+
+@{
+    ViewData["Title"] = "ShoppingCartFetch";
+}
+
+<h1>ShoppingCartFetch</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ShoppingCartId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UserId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsDeleted)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.ShoppingCartId)
+                </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsDeleted)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.ShoppingCartId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.ShoppingCartId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.ShoppingCartId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

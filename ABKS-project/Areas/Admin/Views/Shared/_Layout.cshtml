@@ -187,6 +187,7 @@
                                 Verified Users
 
                             </a>
+
                             <ul id="verified-users" class="sidebar-dropdown list-unstyled collapse">
                                 <li class="sidebar-item">
                                     <a asp-area="Admin" asp-controller="User" asp-action="ListActive" class="sidebar-link">Active Users</a>
@@ -216,20 +217,20 @@
                     </ul>
                 </li>
 
-               @*  <li class="sidebar-item">
-                    <a href="#" class="sidebar-link collapsed has-dropdown dropdown-toggle" data-bs-toggle="collapse"
-                       data-bs-target="#product" aria-expanded="false" aria-controls="product">
-                        <i class="bi bi-shield-lock"></i>
-                        <span>Product Management</span>
-                    </a>
-                    <ul id="product" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
-                        <li class="sidebar-item">
-                            <a href="#" class="sidebar-link">Product Details</a>
-                        </li>
-                        <li class="sidebar-item">
-                            <a href="#" class="sidebar-link">Order Details</a>
-                        </li>
-                    </ul>
+                @*  <li class="sidebar-item">
+                <a href="#" class="sidebar-link collapsed has-dropdown dropdown-toggle" data-bs-toggle="collapse"
+                data-bs-target="#product" aria-expanded="false" aria-controls="product">
+                <i class="bi bi-shield-lock"></i>
+                <span>Product Management</span>
+                </a>
+                <ul id="product" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                <li class="sidebar-item">
+                <a href="#" class="sidebar-link">Product Details</a>
+                </li>
+                <li class="sidebar-item">
+                <a href="#" class="sidebar-link">Order Details</a>
+                </li>
+                </ul>
                 </li>*@
 
                 <li class="sidebar-item">
@@ -244,13 +245,43 @@
                             <a asp-area="Admin" asp-controller="Product" asp-action="ProductFetch" class="sidebar-link">Product Detail</a>
                         </li>
                     </ul>
-                </li>
 
-                <ul id="product-management" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
-                    <li class="sidebar-item">
-                        <a asp-area="Admin" asp-controller="Order" asp-action="OrderFetch" class="sidebar-link">Order Detail</a>
-                    </li>
-                </ul>
+
+                    <ul id="product-management" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                        <li class="sidebar-item">
+                            <a asp-area="Admin" asp-controller="Order" asp-action="OrderFetch" class="sidebar-link">Orders</a>
+                        </li>
+                    </ul>
+
+                    <ul id="product-management" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                        <li class="sidebar-item">
+                            <a asp-area="Admin" asp-controller="OrderDetail" asp-action="OrderDetailFetch" class="sidebar-link">Order Detail</a>
+                        </li>
+                    </ul>
+                    
+                    <ul id="product-management" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                        <li class="sidebar-item">
+                            <a asp-area="Admin" asp-controller="OrderStatus" asp-action="OrderStatusFetch" class="sidebar-link">Order Status</a>
+                        </li>
+                    </ul>
+                     <ul id="product-management" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                        <li class="sidebar-item">
+                            <a asp-area="Admin" asp-controller="ProductCategory" asp-action="ProductCategoryFetch" class="sidebar-link">Product Category</a>
+                        </li>
+                    </ul>
+
+                    <ul id="product-management" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                        <li class="sidebar-item">
+                            <a asp-area="Admin" asp-controller="ShoppingCart" asp-action="ShoppingCartFetch" class="sidebar-link">ShoppingCart Details</a>
+                        </li>
+                    </ul>
+
+                    <ul id="product-management" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                        <li class="sidebar-item">
+                            <a asp-area="Admin" asp-controller="Stock" asp-action="StockFetch" class="sidebar-link">Stock Details</a>
+                        </li>
+                    </ul>
+
                 </li>
 
 
