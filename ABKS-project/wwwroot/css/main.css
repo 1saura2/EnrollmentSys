@@ -11,28 +11,28 @@
 # Learn more about CSS variables at https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties
 --------------------------------------------------------------*/
 /* Fonts */
-:root {
+/*:root {
   --font-default: "Open Sans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   --font-primary: "Montserrat", sans-serif;
   --font-secondary: "Poppins", sans-serif;
-}
+}*/
 
 /* Colors */
-:root {
+/*:root {
   --color-default: #222222;
   --color-primary: #008374;
   --color-secondary: #f85a40;
-}
+}*/
 
 /* Smooth scroll behavior */
-:root {
+/*:root {
   scroll-behavior: smooth;
-}
+}*/
 
 /*--------------------------------------------------------------
 # General
 --------------------------------------------------------------*/
-body {
+/*body {
   font-family: var(--font-default);
   color: var(--color-default);
 }
@@ -54,12 +54,12 @@ h4,
 h5,
 h6 {
   font-family: var(--font-primary);
-}
+}*/
 
 /*--------------------------------------------------------------
 # Sections & Section Header
 --------------------------------------------------------------*/
-section {
+/*section {
   padding: 60px 0;
   overflow: hidden;
   scroll-margin-top: 70px;
@@ -99,12 +99,12 @@ section {
 .section-header p {
   margin-bottom: 0;
   color: #6f6f6f;
-}
+}*/
 
 /*--------------------------------------------------------------
 # Breadcrumbs
 --------------------------------------------------------------*/
-.breadcrumbs .page-header {
+/*.breadcrumbs .page-header {
   padding: 60px 0 60px 0;
   min-height: 20vh;
   position: relative;
@@ -156,12 +156,12 @@ section {
   padding-right: 10px;
   color: var(--color-secondary);
   content: "/";
-}
+}*/
 
 /*--------------------------------------------------------------
 # Scroll top button
 --------------------------------------------------------------*/
-.scroll-top {
+/*.scroll-top {
   position: fixed;
   visibility: hidden;
   opacity: 0;
@@ -190,12 +190,12 @@ section {
   visibility: visible;
   opacity: 1;
   bottom: 15px;
-}
+}*/
 
 /*--------------------------------------------------------------
 # Preloader
 --------------------------------------------------------------*/
-#preloader {
+/*#preloader {
   position: fixed;
   inset: 0;
   z-index: 999999;
@@ -225,21 +225,21 @@ section {
   100% {
     transform: rotate(360deg);
   }
-}
+}*/
 
 /*--------------------------------------------------------------
 # Disable aos animation delay on mobile devices
 --------------------------------------------------------------*/
-@media screen and (max-width: 768px) {
+/*@media screen and (max-width: 768px) {
   [data-aos-delay] {
     transition-delay: 0 !important;
   }
-}
+}*/
 
 /*--------------------------------------------------------------
 # Header
 --------------------------------------------------------------*/
-.topbar {
+/*.topbar {
   background: #00796b;
   height: 40px;
   font-size: 14px;
@@ -325,12 +325,12 @@ section {
 
 .sticked-header-offset {
   margin-top: 70px;
-}
+}*/
 
 /*--------------------------------------------------------------
 # Desktop Navigation
 --------------------------------------------------------------*/
-@media (min-width: 1280px) {
+/*@media (min-width: 1280px) {
   .navbar {
     padding: 0;
   }
@@ -475,12 +475,12 @@ section {
   .mobile-nav-hide {
     display: none;
   }
-}
+}*/
 
 /*--------------------------------------------------------------
 # Mobile Navigation
 --------------------------------------------------------------*/
-@media (max-width: 1279px) {
+/*@media (max-width: 1279px) {
   .navbar {
     position: fixed;
     top: 0;
@@ -599,12 +599,12 @@ section {
     background: rgba(0, 106, 93, 0.8);
     z-index: 9996;
   }
-}
+}*/
 
 /*--------------------------------------------------------------
 # About Us Section
 --------------------------------------------------------------*/
-.about h3 {
+/*.about h3 {
   font-weight: 700;
   font-size: 28px;
   margin-bottom: 20px;
@@ -732,12 +732,12 @@ section {
     transform: scale(1, 1);
     opacity: 0;
   }
-}
+}*/
 
 /*--------------------------------------------------------------
 # Clients Section
 --------------------------------------------------------------*/
-.clients {
+/*.clients {
   padding: 40px 0;
 }
 
@@ -768,12 +768,12 @@ section {
 
 .clients .swiper-pagination .swiper-pagination-bullet-active {
   background-color: var(--color-primary);
-}
+}*/
 
 /*--------------------------------------------------------------
 # Stats Counter Section
 --------------------------------------------------------------*/
-.stats-counter {
+/*.stats-counter {
   padding: 40px 0;
 }
 
@@ -805,12 +805,12 @@ section {
   margin: 0;
   font-family: var(--font-primary);
   font-size: 14px;
-}
+}*/
 
 /*--------------------------------------------------------------
 # Call To Action Section
 --------------------------------------------------------------*/
-.call-to-action .container {
+/*.call-to-action .container {
   background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("../img/cta-bg.jpg") center center;
   background-size: cover;
   padding: 100px 60px;
@@ -925,12 +925,12 @@ section {
     transform: scale(1, 1);
     opacity: 0;
   }
-}
+}*/
 
 /*--------------------------------------------------------------
 # Our Services Section
 --------------------------------------------------------------*/
-.services {
+/*.services {
   padding: 60px 0;
 }
 
@@ -999,12 +999,12 @@ section {
 
 .services .service-item:hover h3 {
   border-color: var(--color-primary);
-}
+}*/
 
 /*--------------------------------------------------------------
 # Testimonials Section
 --------------------------------------------------------------*/
-.testimonials .testimonial-wrap {
+/*.testimonials .testimonial-wrap {
   padding-left: 10px;
 }
 
@@ -1102,12 +1102,12 @@ section {
     position: static;
     left: auto;
   }
-}
+}*/
 
 /*--------------------------------------------------------------
 # Portfolio Section
 --------------------------------------------------------------*/
-.portfolio .portfolio-flters {
+/*.portfolio .portfolio-flters {
   padding: 0 0 20px 0;
   margin: 0 auto;
   list-style: none;
@@ -1190,12 +1190,12 @@ section {
 
 .portfolio .portfolio-wrap:hover img {
   transform: scale(1.1);
-}
+}*/
 
 /*--------------------------------------------------------------
 # Portfolio Details Section
 --------------------------------------------------------------*/
-.portfolio-details .portfolio-details-slider img {
+/*.portfolio-details .portfolio-details-slider img {
   width: 100%;
 }
 
@@ -1358,12 +1358,12 @@ section {
   font-style: italic;
   margin: 0 0 15px 0 0 0;
   padding: 0;
-}
+}*/
 
 /*--------------------------------------------------------------
 # Our Team Section
 --------------------------------------------------------------*/
-.team .member {
+/*.team .member {
   text-align: center;
   background: #fff;
   border-radius: 10px;
@@ -1430,12 +1430,12 @@ section {
 .team .member .social i {
   font-size: 18px;
   margin: 0 2px;
-}
+}*/
 
 /*--------------------------------------------------------------
 # Pricing Section
 --------------------------------------------------------------*/
-.pricing .pricing-item {
+/*.pricing .pricing-item {
   padding: 60px 40px;
   box-shadow: 0 3px 20px -2px rgba(108, 117, 125, 0.15);
   background: #fff;
@@ -1572,12 +1572,12 @@ section {
   .pricing .featured {
     transform: scale(1.15);
   }
-}
+}*/
 
 /*--------------------------------------------------------------
 # Frequently Asked Questions Section
 --------------------------------------------------------------*/
-.faq .content h3 {
+/*.faq .content h3 {
   font-weight: 400;
   font-size: 34px;
 }
@@ -1646,12 +1646,12 @@ section {
   border-radius: 10px;
   background: #fff;
   box-shadow: none;
-}
+}*/
 
 /*--------------------------------------------------------------
 # Recent Blog Posts Section
 --------------------------------------------------------------*/
-.recent-posts article {
+/*.recent-posts article {
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
   background-color: #fff;
   padding: 30px;
@@ -1703,12 +1703,12 @@ section {
   font-size: 14px;
   color: #3c3c3c;
   margin-bottom: 0;
-}
+}*/
 
 /*--------------------------------------------------------------
 # Contact Section
 --------------------------------------------------------------*/
-.contact .info-container {
+/*.contact .info-container {
   background-color: var(--color-primary);
   height: 100%;
   padding: 20px;
@@ -1860,12 +1860,12 @@ section {
   100% {
     transform: rotate(360deg);
   }
-}
+}*/
 
 /*--------------------------------------------------------------
 # Hero Section
 --------------------------------------------------------------*/
-.hero {
+/*.hero {
   width: 100%;
   position: relative;
   background: var(--color-primary);
@@ -1999,12 +1999,12 @@ section {
 .hero .icon-box:hover .title a,
 .hero .icon-box:hover .icon {
   color: #fff;
-}
+}*/
 
 /*--------------------------------------------------------------
 # Blog
 --------------------------------------------------------------*/
-.blog .blog-pagination {
+/*.blog .blog-pagination {
   margin-top: 30px;
   color: #555555;
 }
@@ -2039,12 +2039,12 @@ section {
 .blog .blog-pagination li.active a,
 .blog .blog-pagination li:hover a {
   color: var(--color-white);
-}
+}*/
 
 /*--------------------------------------------------------------
 # Blog Posts List
 --------------------------------------------------------------*/
-.blog .posts-list article {
+/*.blog .posts-list article {
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
   padding: 30px;
   height: 100%;
@@ -2095,12 +2095,12 @@ section {
   font-size: 14px;
   color: #3c3c3c;
   margin-bottom: 0;
-}
+}*/
 
 /*--------------------------------------------------------------
 # Blog Details
 --------------------------------------------------------------*/
-.blog .blog-details {
+/*.blog .blog-details {
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
   padding: 30px;
   border-radius: 10px;
@@ -2280,12 +2280,12 @@ section {
   font-style: italic;
   color: rgba(108, 117, 125, 0.8);
   margin-bottom: 0;
-}
+}*/
 
 /*--------------------------------------------------------------
 # Blog Sidebar
 --------------------------------------------------------------*/
-.blog .sidebar {
+/*.blog .sidebar {
   padding: 30px;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
@@ -2437,12 +2437,12 @@ section {
   padding-left: 5px;
   color: rgba(85, 85, 85, 0.8);
   font-size: 14px;
-}
+}*/
 
 /*--------------------------------------------------------------
 # Blog Comments
 --------------------------------------------------------------*/
-.blog .comments {
+/*.blog .comments {
   margin-top: 30px;
 }
 
@@ -2549,12 +2549,12 @@ section {
 
 .blog .comments .reply-form .btn-primary:hover {
   background-color: rgba(248, 90, 64, 0.8);
-}
+}*/
 
 /*--------------------------------------------------------------
 # Footer
 --------------------------------------------------------------*/
-.footer {
+/*.footer {
   font-size: 14px;
   background-color: var(--color-primary);
   padding: 50px 0;
@@ -2664,4 +2664,4 @@ section {
 
 .footer .credits a {
   color: #fff;
-}
+}*/
