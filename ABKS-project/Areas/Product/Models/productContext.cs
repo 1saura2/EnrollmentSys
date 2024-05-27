@@ -16,115 +16,110 @@ namespace ABKS_project.Areas.Product.Models
         {
         }
 
-        public virtual DbSet<CartDetail> CartDetails { get; set; } = null!;
-        public virtual DbSet<ErrorViewModel> ErrorViewModels { get; set; } = null!;
         public virtual DbSet<Order> Orders { get; set; } = null!;
         public virtual DbSet<OrderDetail> OrderDetails { get; set; } = null!;
         public virtual DbSet<OrderStatus> OrderStatuses { get; set; } = null!;
         public virtual DbSet<Product> Products { get; set; } = null!;
         public virtual DbSet<ProductCategory> ProductCategories { get; set; } = null!;
         public virtual DbSet<ShoppingCart> ShoppingCarts { get; set; } = null!;
-        public virtual DbSet<Stock> Stocks { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
-            {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Data Source=103.182.175.232,1433;Initial Catalog=abks-project;Integrated Security=False;Persist Security Info=False;User ID=intern;Password=intern@123;Connect Timeout=60");
-            }
+            { }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<CartDetail>(entity =>
-            {
-                entity.HasKey(e => e.CartId)
-                    .HasName("PK__CartDeta__51BCD7B74CC87935");
-
-                entity.ToTable("CartDetail");
-
-                entity.Property(e => e.UnitPrice).HasColumnType("decimal(18, 2)");
-            });
-
-            modelBuilder.Entity<ErrorViewModel>(entity =>
-            {
-                entity.HasKey(e => e.RequestId)
-                    .HasName("PK__ErrorVie__33A8517A031AF941");
-
-                entity.ToTable("ErrorViewModel");
-
-                entity.Property(e => e.RequestId).ValueGeneratedNever();
-            });
-
             modelBuilder.Entity<Order>(entity =>
             {
-                entity.ToTable("Order");
+                entity.Property(e => e.Address)
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
 
-                entity.Property(e => e.CreateDate).HasColumnType("datetime");
+                entity.Property(e => e.CreateDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
 
-                entity.Property(e => e.Email).HasMaxLength(255);
+                entity.Property(e => e.IsDeleted).HasDefaultValueSql("((0))");
 
-                entity.Property(e => e.MobileNumber).HasMaxLength(20);
+                entity.Property(e => e.IsPaid).HasDefaultValueSql("((0))");
 
-                entity.Property(e => e.Name).HasMaxLength(255);
+                entity.Property(e => e.PaymentMethod)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
 
-                entity.Property(e => e.PaymentMethod).HasMaxLength(100);
+                entity.HasOne(d => d.OrderStatus)
+                    .WithMany(p => p.Orders)
+                    .HasForeignKey(d => d.OrderStatusId)
+                    .HasConstraintName("FK__Orders__OrderSta__477199F1");
             });
 
             modelBuilder.Entity<OrderDetail>(entity =>
             {
-                entity.ToTable("OrderDetail");
+                entity.Property(e => e.UnitPrice).HasColumnType("decimal(10, 2)");
 
-                entity.Property(e => e.ProductName).HasMaxLength(255);
+                entity.HasOne(d => d.Order)
+                    .WithMany(p => p.OrderDetails)
+                    .HasForeignKey(d => d.OrderId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__OrderDeta__Order__4A4E069C");
 
-                entity.Property(e => e.UnitPrice).HasColumnType("decimal(18, 2)");
+                entity.HasOne(d => d.Product)
+                    .WithMany(p => p.OrderDetails)
+                    .HasForeignKey(d => d.ProductId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__OrderDeta__Produ__4B422AD5");
             });
 
             modelBuilder.Entity<OrderStatus>(entity =>
             {
                 entity.HasKey(e => e.StatusId)
-                    .HasName("PK__OrderSta__C8EE206364852841");
+                    .HasName("PK__OrderSta__C8EE206352DCF4F3");
 
                 entity.ToTable("OrderStatus");
 
-                entity.Property(e => e.StatusId).ValueGeneratedNever();
-
-                entity.Property(e => e.StatusName).HasMaxLength(100);
+                entity.Property(e => e.StatusName)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
             });
 
             modelBuilder.Entity<Product>(entity =>
             {
-                entity.ToTable("Product");
+                entity.Property(e => e.ProductDescription).HasColumnType("text");
 
-                entity.Property(e => e.Category).HasMaxLength(255);
+                entity.Property(e => e.ProductImg)
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
 
-                entity.Property(e => e.CategoryName).HasMaxLength(255);
+                entity.Property(e => e.ProductName)
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
 
-                entity.Property(e => e.ProductDescription).IsUnicode(false);
+                entity.Property(e => e.ProductPrice).HasColumnType("decimal(10, 2)");
 
-                entity.Property(e => e.ProductImage).HasMaxLength(255);
-
-                entity.Property(e => e.ProductName).HasMaxLength(255);
-
-                entity.Property(e => e.ProductPrice).HasColumnType("decimal(18, 2)");
+                entity.HasOne(d => d.ProductCategory)
+                    .WithMany(p => p.Products)
+                    .HasForeignKey(d => d.ProductCategoryId)
+                    .HasConstraintName("FK__Product__Product__3EDC53F0");
             });
 
             modelBuilder.Entity<ProductCategory>(entity =>
             {
-                entity.ToTable("ProductCategory");
-
-                entity.Property(e => e.CategoryName).HasMaxLength(255);
+                entity.Property(e => e.CategoryName)
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
             });
 
             modelBuilder.Entity<ShoppingCart>(entity =>
             {
-                entity.ToTable("ShoppingCart");
-            });
+                entity.Property(e => e.UnitPrice).HasColumnType("decimal(10, 2)");
 
-            modelBuilder.Entity<Stock>(entity =>
-            {
-                entity.ToTable("Stock");
+                entity.HasOne(d => d.Product)
+                    .WithMany(p => p.ShoppingCarts)
+                    .HasForeignKey(d => d.ProductId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__ShoppingC__Produ__4F12BBB9");
             });
 
             OnModelCreatingPartial(modelBuilder);

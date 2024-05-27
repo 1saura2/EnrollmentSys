@@ -2,7 +2,7 @@ using ABKS_project.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.Extensions.Configuration;
-using ABKS_project.Areas.Product.Models;
+/*using ABKS_project.Areas.Product.Models;*/
 
 
 
@@ -20,8 +20,8 @@ var config = provider.GetRequiredService<IConfiguration>();
 
 
 builder.Services.AddDbContext<abksContext>(item => item.UseSqlServer(config.GetConnectionString("abks_db")));
-builder.Services.AddDbContext<productContext>(item => item.UseSqlServer(config.GetConnectionString("abks_db")));
-
+/*builder.Services.AddDbContext<productContext>(item => item.UseSqlServer(config.GetConnectionString("abks_db")));
+*/
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
