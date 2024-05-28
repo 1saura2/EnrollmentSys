@@ -29,6 +29,8 @@ namespace ABKS_project.Areas.Admin.Controllers
             var Order=_context.Orders.ToList();
             return View(Order);
         }
+
+
           public IActionResult OrderDetail()
         {
             return View();
@@ -38,12 +40,15 @@ namespace ABKS_project.Areas.Admin.Controllers
             return View();
         } 
           public IActionResult Products()
-        {
-            return View();
+        { 
+            var Product=_context.Products.ToList();
+            return View(Product);
         }
+
           public IActionResult ProductCategories()
         {
-            return View();
+            var Product_category = _context.ProductCategories.ToList();
+            return View(Product_category);
         } 
         public IActionResult ShoppingCarts()
         {
