@@ -33,6 +33,10 @@ namespace ABKS_project.Controllers
         {
             return View();
         }
+        public IActionResult AboutUs()
+        {
+            return View();
+        }
         public IActionResult Contact()
         {
             return View();
