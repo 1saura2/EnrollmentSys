@@ -10,6 +10,7 @@ using System.IO;
 using BCrypt.Net;
 using ABKS_project.Areas.Product.Models;
 
+
 namespace ABKS_project.Areas.Admin.Controllers
 {
     [Area("Admin")]
@@ -20,17 +21,34 @@ namespace ABKS_project.Areas.Admin.Controllers
         public ProductController(productContext context)
         {
             _context = context;
+
         }
-        public IActionResult Index()
+
+        public IActionResult Orders()
+        {
+            var Order=_context.Orders.ToList();
+            return View(Order);
+        }
+          public IActionResult OrderDetail()
         {
             return View();
         } 
-        public IActionResult ProductFetch()
+          public IActionResult OrderStatus()
         {
-            var product=_context.Products.ToList();
-            return View(product);
+            return View();
+        } 
+          public IActionResult Products()
+        {
+            return View();
         }
-        
+          public IActionResult ProductCategories()
+        {
+            return View();
+        } 
+        public IActionResult ShoppingCarts()
+        {
+            return View();
+        }
 
     }
 }
