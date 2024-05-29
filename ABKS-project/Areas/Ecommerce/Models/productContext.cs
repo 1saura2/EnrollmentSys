@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace ABKS_project.Areas.Product.Models
+namespace ABKS_project.Areas.Ecommerce.Models
 {
     public partial class productContext : DbContext
     {
@@ -16,24 +16,37 @@ namespace ABKS_project.Areas.Product.Models
         {
         }
 
+        public virtual DbSet<CartDetail> CartDetails { get; set; } = null!;
         public virtual DbSet<Order> Orders { get; set; } = null!;
         public virtual DbSet<OrderDetail> OrderDetails { get; set; } = null!;
         public virtual DbSet<OrderStatus> OrderStatuses { get; set; } = null!;
         public virtual DbSet<Product> Products { get; set; } = null!;
         public virtual DbSet<ProductCategory> ProductCategories { get; set; } = null!;
-        public virtual DbSet<ShoppingCart> ShoppingCarts { get; set; } = null!;
+        public virtual DbSet<UserCart> UserCarts { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Data Source=103.182.175.232,1433;Initial Catalog=abks-project;Integrated Security=False;Persist Security Info=False;User ID=intern;Password=intern@123;Connect Timeout=60");
             }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<CartDetail>(entity =>
+            {
+                entity.HasKey(e => e.ShoppingCartId)
+                    .HasName("PK__CartDeta__7A789AE4568FFAE4");
+
+                entity.Property(e => e.UnitPrice).HasColumnType("decimal(10, 2)");
+
+                entity.HasOne(d => d.Product)
+                    .WithMany(p => p.CartDetails)
+                    .HasForeignKey(d => d.ProductId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__CartDetai__Produ__7814D14C");
+            });
+
             modelBuilder.Entity<Order>(entity =>
             {
                 entity.Property(e => e.Address)
@@ -55,7 +68,7 @@ namespace ABKS_project.Areas.Product.Models
                 entity.HasOne(d => d.OrderStatus)
                     .WithMany(p => p.Orders)
                     .HasForeignKey(d => d.OrderStatusId)
-                    .HasConstraintName("FK__Orders__OrderSta__477199F1");
+                    .HasConstraintName("FK__Orders__OrderSta__7167D3BD");
             });
 
             modelBuilder.Entity<OrderDetail>(entity =>
@@ -66,19 +79,19 @@ namespace ABKS_project.Areas.Product.Models
                     .WithMany(p => p.OrderDetails)
                     .HasForeignKey(d => d.OrderId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__OrderDeta__Order__4A4E069C");
+                    .HasConstraintName("FK__OrderDeta__Order__74444068");
 
                 entity.HasOne(d => d.Product)
                     .WithMany(p => p.OrderDetails)
                     .HasForeignKey(d => d.ProductId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__OrderDeta__Produ__4B422AD5");
+                    .HasConstraintName("FK__OrderDeta__Produ__753864A1");
             });
 
             modelBuilder.Entity<OrderStatus>(entity =>
             {
                 entity.HasKey(e => e.StatusId)
-                    .HasName("PK__OrderSta__C8EE206352DCF4F3");
+                    .HasName("PK__OrderSta__C8EE20636FA6920D");
 
                 entity.ToTable("OrderStatus");
 
@@ -104,7 +117,7 @@ namespace ABKS_project.Areas.Product.Models
                 entity.HasOne(d => d.ProductCategory)
                     .WithMany(p => p.Products)
                     .HasForeignKey(d => d.ProductCategoryId)
-                    .HasConstraintName("FK__Product__Product__3EDC53F0");
+                    .HasConstraintName("FK__Products__Produc__68D28DBC");
             });
 
             modelBuilder.Entity<ProductCategory>(entity =>
@@ -112,17 +125,6 @@ namespace ABKS_project.Areas.Product.Models
                 entity.Property(e => e.CategoryName)
                     .HasMaxLength(255)
                     .IsUnicode(false);
-            });
-
-            modelBuilder.Entity<ShoppingCart>(entity =>
-            {
-                entity.Property(e => e.UnitPrice).HasColumnType("decimal(10, 2)");
-
-                entity.HasOne(d => d.Product)
-                    .WithMany(p => p.ShoppingCarts)
-                    .HasForeignKey(d => d.ProductId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__ShoppingC__Produ__4F12BBB9");
             });
 
             OnModelCreatingPartial(modelBuilder);

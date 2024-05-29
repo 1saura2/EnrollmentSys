@@ -1,0 +1,185 @@
+﻿@model IEnumerable<ABKS_project.Areas.Ecommerce.Models.Product>
+
+<style>
+    .btn-get-started {
+        padding: 10px 20px;
+        margin-top: 20px;
+        font-size: 16px;
+        font-weight: bold;
+        color: #fff;
+        background: linear-gradient(45deg, #ff416c, #ff4b2b);
+        border: none;
+        border-radius: 30px;
+        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        cursor: pointer;
+        text-align: center;
+    }
+
+        .btn-get-started:hover {
+            background: linear-gradient(45deg, #ff4b2b, #ff416c);
+            box-shadow: 0 15px 20px rgba(0, 0, 0, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .btn-get-started:active {
+            transform: translateY(1px);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+        }
+
+    .img-thumbnail {
+        width: 50px;
+        height: 50px;
+        object-fit: cover;
+    }
+
+    .list-group-item {
+        display: flex;
+        align-items: center;
+    }
+
+        .list-group-item img {
+            margin-right: 15px;
+        }
+</style>
+
+
+<!-- ======= Prodcut  Section ======= -->
+<section id="portfolio" class="portfolio sections-bg">
+    <div class="container" data-aos="fade-up">
+
+        <div class="section-header">
+            <h2>Our Products</h2>
+            <p>Quam sed id excepturi ccusantium dolorem ut quis dolores nisi llum nostrum enim velit qui ut et autem uia reprehenderit sunt deleniti</p>
+        </div>
+
+        <div class="portfolio-isotope" data-portfolio-filter="*" data-portfolio-layout="masonry" data-portfolio-sort="original-order" data-aos="fade-up" data-aos-delay="100">
+
+            <div>
+                <ul class="portfolio-flters">
+                    <li data-filter="*" class="filter-active">All</li>
+                    <li data-filter=".filter-app">App</li>
+                    <li data-filter=".filter-product">Product</li>
+                    <li data-filter=".filter-branding">Branding</li>
+                    <li data-filter=".filter-books">Books</li>
+                </ul>
+            </div>
+
+            <div class="row gy-4 portfolio-container">
+
+                @foreach (var item in Model)
+                {
+                    <div class="col-xl-4 col-md-6 portfolio-item filter-app">
+                        <div class="portfolio-wrap">
+                            <a href="~/Images/Products/@item.ProductImg" data-gallery="portfolio-gallery-app" class="glightbox">
+                                <img src="~/Images/Products/@item.ProductImg" class="img-fluid" alt="@item.ProductName">
+                            </a>
+                            <div class="portfolio-info">
+                                <h4><a href="portfolio-details.html" title="More Details">@item.ProductName</a></h4>
+                                <p>@item.ProductDescription</p>
+                                <p>Price(Rs.): @item.ProductPrice.ToString()</p>
+                                <button class="btn-get-started" data-id="@item.ProductId" data-name="@item.ProductName" data-image="@item.ProductImg">Add to Cart</button>
+                            </div>
+                        </div>
+                    </div>
+                }
+               
+
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+<!-- Bootstrap 5 Modal -->
+<div class="modal fade" id="cartModal" tabindex="-1" aria-labelledby="cartModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="cartModalLabel">Your Cart</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="cartItemsContainer">
+                    <p>Your cart is empty</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="checkoutButton">Checkout</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@* <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0/js/bootstrap.bundle.min.js"></script> *@
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const cart = [];
+        const cartItemsContainer = document.getElementById('cartItemsContainer');
+        const cartModal = new bootstrap.Modal(document.getElementById('cartModal'));
+        const checkoutButton = document.getElementById('checkoutButton');
+
+        function updateCartModal() {
+            cartItemsContainer.innerHTML = '';
+            if (cart.length === 0) {
+                cartItemsContainer.innerHTML = '<p>Your cart is empty</p>';
+            } else {
+                const cartList = document.createElement('ul');
+                cartList.classList.add('list-group');
+                cart.forEach((item, index) => {
+                    const cartItem = document.createElement('li');
+                    cartItem.classList.add('list-group-item', 'd-flex', 'align-items-center', 'justify-content-between');
+                    cartItem.innerHTML = `
+                                    <div class="d-flex align-items-center">
+                                    <span class="me-3">${index + 1}</span>
+                                        <img src="${item.image}" alt="${item.name}" class="img-thumbnail me-3" style="width: 50px;">
+                                        <span>${item.name}</span>
+                                    </div>
+                                    <button class="btn btn-danger btn-sm" data-index="${index}">Remove</button>
+
+                                `;
+                    cartItem.querySelector('button').addEventListener('click', () => {
+                        cart.splice(index, 1);
+                        updateCartModal();
+                    });
+                    cartList.appendChild(cartItem);
+                });
+                cartItemsContainer.appendChild(cartList);
+            }
+        }
+
+        document.querySelectorAll('.btn-get-started').forEach(button => {
+            button.addEventListener('click', () => {
+                const id = button.getAttribute('data-id');
+                const name = button.getAttribute('data-name');
+                const image = button.getAttribute('data-image');
+                cart.push({ id, name, image });
+                updateCartModal();
+                cartModal.show();
+            });
+        });
+
+        checkoutButton.addEventListener('click', () => {
+            if (cart.length === 0) {
+                alert('Your cart is empty');
+                return;
+            }
+            let cartSummary = 'Items in your cart:\n';
+            cart.forEach(item => {
+                cartSummary += `- ${item.name}\n`;
+            });
+            alert(cartSummary);
+            cart.length = 0; // Clear the cart
+            updateCartModal(); // Update the modal to show the empty cart
+            cartModal.hide(); // Hide the modal after checkout
+        });
+
+        document.querySelectorAll('[data-bs-dismiss="modal"]').forEach(button => {
+            button.addEventListener('click', () => {
+                cartModal.hide();
+            });
+        });
+    });
+</script>

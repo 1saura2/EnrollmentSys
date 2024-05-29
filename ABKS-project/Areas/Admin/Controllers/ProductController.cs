@@ -1,15 +1,12 @@
-﻿using ABKS_project.Models;
-using Microsoft.AspNetCore.Mvc;
-using System.Net.Mail;
-using System.Net;
-using System.Text;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using System.IO;
-using BCrypt.Net;
-using ABKS_project.Areas.Product.Models;
-
+using System;
+using System.Threading.Tasks;
+using ABKS_project.Areas.Ecommerce.Models;
+using Microsoft.AspNetCore.Http;
+using ABKS_project.Areas.Ecommerce.ViewModels;
 
 namespace ABKS_project.Areas.Admin.Controllers
 {
@@ -17,43 +14,84 @@ namespace ABKS_project.Areas.Admin.Controllers
     public class ProductController : Controller
     {
         private readonly productContext _context;
+        private readonly IWebHostEnvironment _env;
 
-        public ProductController(productContext context)
+        public ProductController(productContext context, IWebHostEnvironment env)
         {
             _context = context;
-
+            _env = env;
         }
 
-        public IActionResult Orders()
+        public async Task<IActionResult> ListProduct(int pageNumber = 1, int pageSize = 8, string search = null)
         {
-            var Order=_context.Orders.ToList();
-            return View(Order);
+            var productsQuery = _context.Products.AsQueryable();
+
+            if (!string.IsNullOrEmpty(search))
+            {
+                productsQuery = productsQuery.Where(p => p.ProductName.Contains(search) || p.ProductCategory.CategoryName.Contains(search));
+            }
+
+            var totalCount = await productsQuery.CountAsync();
+
+            var products = await productsQuery
+                .Include(p => p.ProductCategory)
+                .OrderBy(p => p.ProductName)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            ViewBag.PageNumber = pageNumber;
+            ViewBag.PageSize = pageSize;
+            ViewBag.TotalCount = totalCount;
+            ViewBag.CurrentFilter = search;
+            ViewBag.TotalPages = (int)Math.Ceiling((double)totalCount / pageSize);
+
+            return View(products);
         }
 
-
-          public IActionResult OrderDetail()
+        public IActionResult AddProduct()
         {
+            var categories = _context.ProductCategories.ToList();
+            ViewBag.Categories = categories;
             return View();
-        } 
-          public IActionResult OrderStatus()
-        {
-            return View();
-        } 
-          public IActionResult Products()
-        { 
-            var Product=_context.Products.ToList();
-            return View(Product);
         }
 
-          public IActionResult ProductCategories()
+        [HttpPost]
+        public async Task<IActionResult> AddProduct(AddProductViewModel model)
         {
-            var Product_category = _context.ProductCategories.ToList();
-            return View(Product_category);
-        } 
-        public IActionResult ShoppingCarts()
-        {
-            return View();
-        }
+            if (ModelState.IsValid)
+            {
+                string fileName = "";
 
+                if (model.Photo != null)
+                {
+                    string folder = Path.Combine(_env.WebRootPath, "Images/Products");
+                    fileName = Guid.NewGuid().ToString() + "_" + model.Photo.FileName;
+                    string filePath = Path.Combine(folder, fileName);
+
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await model.Photo.CopyToAsync(stream);
+                    }
+
+                    var product = new Product
+                    {
+                        ProductName = model.ProductName,
+                        ProductPrice = model.ProductPrice,
+                        ProductDescription = model.ProductDescription,
+                        ProductImg = fileName,
+                        ProductCategoryId = model.ProductCategoryId,
+                        InStock = model.InStock
+                    };
+
+                    _context.Add(product);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(ListProduct));
+                }
+            }
+            var categories = _context.ProductCategories.ToList();
+            ViewBag.Categories = categories;
+            return View(model);
+        }
     }
 }

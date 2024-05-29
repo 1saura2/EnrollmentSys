@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace ABKS_project.Areas.Product.Models
+namespace ABKS_project.Areas.Ecommerce.Models
 {
     public partial class ProductCategory
     {
