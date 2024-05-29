@@ -12,7 +12,7 @@
                 <div class="form-group mb-3">
                     <label asp-for="ProductName" class="form-label" style="font-size: 1rem;">Product Name</label>
                     <div class="input-group">
-                        <span class="input-group-text"><i class="bi bi-tag-fill"></i></span>
+                        <span class="input-group-text"><i class="bi bi-card-list"></i></span>
                         <input asp-for="ProductName" class="form-control" placeholder="Enter product name" required>
                     </div>
                     <span asp-validation-for="ProductName" class="text-danger"></span>
@@ -20,7 +20,7 @@
                 <div class="form-group mb-3">
                     <label asp-for="ProductPrice" class="form-label" style="font-size: 1rem;">Product Price</label>
                     <div class="input-group">
-                        <span class="input-group-text"><i class="bi bi-currency-dollar"></i></span>
+                        <span class="input-group-text"><i class="bi bi-currency-rupee"></i></span>
                         <input asp-for="ProductPrice" type="number" class="form-control" placeholder="Enter product price" required>
                     </div>
                     <span asp-validation-for="ProductPrice" class="text-danger"></span>
@@ -45,7 +45,7 @@
                 <div class="form-group mb-3">
                     <label asp-for="ProductCategoryId" class="form-label" style="font-size: 1rem;">Product Category</label>
                     <div class="input-group">
-                        <span class="input-group-text"><i class="bi bi-list-ul"></i></span>
+                        <span class="input-group-text"><i class="bi bi-tags"></i></span>
                         <select asp-for="ProductCategoryId" asp-items="@categories.Select(category => new SelectListItem { Value = category.ProductCategoryId.ToString(), Text = category.CategoryName })" class="form-control" required>
                             <option value="">Select category</option>
                         </select>
