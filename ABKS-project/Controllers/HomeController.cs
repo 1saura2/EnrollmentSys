@@ -37,11 +37,15 @@ namespace ABKS_project.Controllers
         {
             return View();
         }
+        public IActionResult ReadMore()
+        {
+            return View();
+        }
         public IActionResult Contact()
         {
             return View();
         }
-        public IActionResult Blog()
+        public IActionResult Gallery()
         {
             return View();
         }

@@ -747,6 +747,12 @@ section {
     margin-bottom: 30px;
 }
 
+.guideline-date {
+    font-size: 14px;
+    color: #6c757d;
+    margin-left: 65%;
+}
+
 .pdf-wrap {
     position: relative;
     overflow: hidden;
@@ -797,6 +803,7 @@ section {
     .btn-download:hover {
         background-color: #0056b3;
     }
+  
 /*--------------------------------------------------------------
 # Clients Section end 
 --------------------------------------------------------------*/
