@@ -36,6 +36,7 @@
     .list-group-item {
         display: flex;
         align-items: center;
+        justify-content: space-between;
     }
 
         .list-group-item img {
@@ -43,8 +44,7 @@
         }
 </style>
 
-
-<!-- ======= Prodcut  Section ======= -->
+<!-- ======= Product Section ======= -->
 <section id="portfolio" class="portfolio sections-bg">
     <div class="container" data-aos="fade-up">
 
@@ -58,10 +58,10 @@
             <div>
                 <ul class="portfolio-flters">
                     <li data-filter="*" class="filter-active">All</li>
-                    <li data-filter=".filter-app">App</li>
-                    <li data-filter=".filter-product">Product</li>
-                    <li data-filter=".filter-branding">Branding</li>
-                    <li data-filter=".filter-books">Books</li>
+                    <li data-filter=".filter-app">Equipments</li>
+                    <li data-filter=".filter-product">Clothes</li>
+                    <li data-filter=".filter-branding">Others</li>
+
                 </ul>
             </div>
 
@@ -78,12 +78,11 @@
                                 <h4><a href="portfolio-details.html" title="More Details">@item.ProductName</a></h4>
                                 <p>@item.ProductDescription</p>
                                 <p>Price(Rs.): @item.ProductPrice.ToString()</p>
-                                <button class="btn-get-started" data-id="@item.ProductId" data-name="@item.ProductName" data-image="@item.ProductImg">Add to Cart</button>
+                                <button class="btn-get-started" data-id="@item.ProductId" data-name="@item.ProductName" data-image="~/Images/Products/@item.ProductImg" data-price="@item.ProductPrice">Add to Cart</button>
                             </div>
                         </div>
                     </div>
                 }
-               
 
             </div>
 
@@ -104,6 +103,9 @@
                 <div id="cartItemsContainer">
                     <p>Your cart is empty</p>
                 </div>
+                <div class="mt-3">
+                    <h6>Total: Rs. <span id="totalAmount">0</span></h6>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -118,28 +120,33 @@
     document.addEventListener('DOMContentLoaded', () => {
         const cart = [];
         const cartItemsContainer = document.getElementById('cartItemsContainer');
+        const totalAmountElement = document.getElementById('totalAmount');
         const cartModal = new bootstrap.Modal(document.getElementById('cartModal'));
         const checkoutButton = document.getElementById('checkoutButton');
 
         function updateCartModal() {
             cartItemsContainer.innerHTML = '';
+            let totalAmount = 0;
             if (cart.length === 0) {
                 cartItemsContainer.innerHTML = '<p>Your cart is empty</p>';
             } else {
                 const cartList = document.createElement('ul');
                 cartList.classList.add('list-group');
                 cart.forEach((item, index) => {
+                    totalAmount += parseFloat(item.price);
                     const cartItem = document.createElement('li');
                     cartItem.classList.add('list-group-item', 'd-flex', 'align-items-center', 'justify-content-between');
                     cartItem.innerHTML = `
-                                    <div class="d-flex align-items-center">
+                                <div class="d-flex align-items-center">
                                     <span class="me-3">${index + 1}</span>
-                                        <img src="${item.image}" alt="${item.name}" class="img-thumbnail me-3" style="width: 50px;">
-                                        <span>${item.name}</span>
-                                    </div>
+                                    <img src="${item.image}" alt="${item.name}" class="img-thumbnail me-3" style="width: 50px;">
+                                    <span>${item.name}</span>
+                                </div>
+                                <div>
+                                    <span class="me-3">Rs. ${item.price}</span>
                                     <button class="btn btn-danger btn-sm" data-index="${index}">Remove</button>
-
-                                `;
+                                </div>
+                            `;
                     cartItem.querySelector('button').addEventListener('click', () => {
                         cart.splice(index, 1);
                         updateCartModal();
@@ -148,14 +155,16 @@
                 });
                 cartItemsContainer.appendChild(cartList);
             }
+            totalAmountElement.textContent = totalAmount.toFixed(2);
         }
 
         document.querySelectorAll('.btn-get-started').forEach(button => {
             button.addEventListener('click', () => {
                 const id = button.getAttribute('data-id');
                 const name = button.getAttribute('data-name');
-                const image = button.getAttribute('data-image');
-                cart.push({ id, name, image });
+                const image = button.getAttribute('data-image').replace('~', '');
+                const price = button.getAttribute('data-price');
+                cart.push({ id, name, image, price });
                 updateCartModal();
                 cartModal.show();
             });
@@ -168,9 +177,9 @@
             }
             let cartSummary = 'Items in your cart:\n';
             cart.forEach(item => {
-                cartSummary += `- ${item.name}\n`;
+                cartSummary += `- ${item.name} (Rs. ${item.price})\n`;
             });
-            alert(cartSummary);
+            alert(cartSummary + `Total Amount: Rs. ${totalAmountElement.textContent}`);
             cart.length = 0; // Clear the cart
             updateCartModal(); // Update the modal to show the empty cart
             cartModal.hide(); // Hide the modal after checkout
