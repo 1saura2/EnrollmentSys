@@ -93,5 +93,29 @@ namespace ABKS_project.Areas.Admin.Controllers
             ViewBag.Categories = categories;
             return View(model);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteProduct(int productId)
+        {
+            var product = await _context.Products.FindAsync(productId);
+
+            if (product != null)
+            {
+                if (!string.IsNullOrEmpty(product.ProductImg))
+                {
+                    string filePath = Path.Combine(_env.WebRootPath, "Images/Products", product.ProductImg);
+
+                    if (System.IO.File.Exists(filePath))
+                    {
+                        System.IO.File.Delete(filePath);
+                    }
+                }
+
+                _context.Products.Remove(product);
+                await _context.SaveChangesAsync();
+            }
+
+            return RedirectToAction(nameof(ListProduct));
+        }
     }
 }

@@ -20,28 +20,28 @@
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     }
 
-    .table thead th {
-        background-color: #0e2238;
-        color: #fff;
-        font-weight: 600;
-        text-align: center;
-        vertical-align: middle;
-        padding: 12px;
-    }
+        .table thead th {
+            background-color: #0e2238;
+            color: #fff;
+            font-weight: 600;
+            text-align: center;
+            vertical-align: middle;
+            padding: 12px;
+        }
 
-    .table tbody tr:nth-child(even) {
-        background-color: #f8f9fa;
-    }
+        .table tbody tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
 
-    .table tbody tr:hover {
-        background-color: #e9ecef;
-    }
+        .table tbody tr:hover {
+            background-color: #e9ecef;
+        }
 
-    .table tbody td {
-        text-align: center;
-        vertical-align: middle;
-        padding: 12px;
-    }
+        .table tbody td {
+            text-align: center;
+            vertical-align: middle;
+            padding: 12px;
+        }
 
     .pagination {
         margin-top: 20px;
@@ -82,23 +82,19 @@
                         <td>@index</td>
                         <td>@product.ProductName</td>
                         <td><span>रु</span> @product.ProductPrice</td>
-
                         <td>@product.ProductCategory.CategoryName</td>
                         <td>
                             <img src="~/Images/Products/@product.ProductImg" alt="Product Image" style="max-width: 100px; max-height: 100px;">
                         </td>
                         <td>@((bool)product.InStock ? "Yes" : "No")</td>
                         <td>
-                          
                             <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#editModal_@product.ProductId">
                                 <i class="bi bi-pencil"></i>
                             </button>
-                           
                             <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal_@product.ProductId">
                                 <i class="bi bi-trash"></i>
                             </button>
 
-                        
                             <div class="modal fade" id="deleteModal_@product.ProductId" tabindex="-1" aria-labelledby="deleteModalLabel_@product.ProductId" aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
@@ -107,12 +103,12 @@
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
-                                            <p><b>Delete Product:</b> <i>@product.ProductName</i>?</p>
+                                            <p><b>Are you sure you want to delete the product:</b> <i>@product.ProductName</i>?</p>
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                            <form asp-area="Ecommerce" asp-controller="Product" asp-action="DeleteProduct" method="post">
-                                                <input type="hidden" name="ProductId" value="@product.ProductId" />
+                                            <form asp-area="Admin" asp-controller="Product" asp-action="DeleteProduct" method="post">
+                                                <input type="hidden" name="productId" value="@product.ProductId" />
                                                 <button type="submit" class="btn btn-danger">Delete</button>
                                             </form>
                                         </div>
@@ -163,3 +159,23 @@
         }
     </ul>
 </nav>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        $('.pdf-link').click(function (e) {
+            e.preventDefault();
+            var pdfUrl = $(this).data('pdf-url');
+            var preview = $(this).siblings('.pdf-preview');
+            preview.find('.pdf-iframe').attr('src', pdfUrl);
+            preview.show();
+        });
+
+        $('.close-btn').click(function () {
+            $(this).closest('.pdf-preview').hide();
+        });
+
+        // Prevent closing PDF preview when clicking on the iframe
+        $('.pdf-preview iframe').click(function (e) {
+            e.stopPropagation();
+        });
+    });
+</script>
