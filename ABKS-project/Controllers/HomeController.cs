@@ -45,7 +45,11 @@ namespace ABKS_project.Controllers
         {
             return View();
         }
-        public IActionResult Gallery()
+        public IActionResult Images()
+        {
+            return View();
+        } 
+        public IActionResult Videos()
         {
             return View();
         }
