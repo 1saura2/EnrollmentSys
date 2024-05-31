@@ -98,9 +98,7 @@
         </thead>
         <tbody id="managementContent">
             @{
-                int pageNumber = ViewBag.PageNumber as int? ?? 1;
-                int pageSize = ViewBag.PageSize as int? ?? 8;
-                int index = (pageNumber - 1) * pageSize;
+                int index = (ViewBag.PageNumber - 1) * ViewBag.PageSize;
 
                 if (!Model.Any())
                 {

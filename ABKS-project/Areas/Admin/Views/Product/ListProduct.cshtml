@@ -74,7 +74,7 @@
         </thead>
         <tbody>
             @{
-                int index = 0;
+                int index = (ViewBag.PageNumber - 1) * ViewBag.PageSize;
                 foreach (var product in Model)
                 {
                     index++;
@@ -120,6 +120,7 @@
                 }
             }
         </tbody>
+
     </table>
 </div>
 
