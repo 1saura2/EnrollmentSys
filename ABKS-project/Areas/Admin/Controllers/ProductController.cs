@@ -22,7 +22,7 @@ namespace ABKS_project.Areas.Admin.Controllers
             _env = env;
         }
 
-        public async Task<IActionResult> ListProduct(int pageNumber = 1, int pageSize = 8, string search = null)
+        public async Task<IActionResult> ListProduct(int pageNumber = 1, int pageSize = 4, string search = null)
         {
             var productsQuery = _context.Products.AsQueryable();
 

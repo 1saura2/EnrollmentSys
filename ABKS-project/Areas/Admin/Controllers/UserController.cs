@@ -29,10 +29,15 @@ namespace ABKS_project.Areas.Admin.Controllers
             return View();
         }
 
-        private async Task<List<User>> GetFilteredUsers(bool isVerified, bool isActive, string roleName, int pageNumber, int pageSize, string? search = null)
+        private async Task<List<User>> GetFilteredUsers(bool isVerified, bool isActive, string roleName, int? batchId, int pageNumber, int pageSize, string? search = null)
         {
             var usersQuery = _context.Users
                 .Where(u => u.IsVerified == isVerified && u.IsActive == isActive && !u.Credentials.Any(c => c.Role.RoleName == roleName));
+
+            if (batchId != null)
+            {
+                usersQuery = usersQuery.Where(u => u.UserBatches.Any(ub => ub.BatchId == batchId));
+            }
 
             if (!string.IsNullOrEmpty(search))
             {
@@ -55,15 +60,16 @@ namespace ABKS_project.Areas.Admin.Controllers
             return users;
         }
 
-        public async Task<IActionResult> ListUnverified(int pageNumber = 1, int pageSize = 8, string? search = null)
+
+        public async Task<IActionResult> ListUnverified(int? batchId = null, int pageNumber = 1, int pageSize = 8, string? search = null)
         {
-            var users = await GetFilteredUsers(isVerified: false, isActive: false, roleName: "Admin", pageNumber, pageSize, search);
+            var users = await GetFilteredUsers(isVerified: false, isActive: false, roleName: "Admin", batchId, pageNumber, pageSize, search);
             return View(users);
         }
 
-        public async Task<IActionResult> ListActive(int pageNumber = 1, int pageSize = 8, string? search = null)
+        public async Task<IActionResult> ListActive(int? batchId = null, int pageNumber = 1, int pageSize = 8, string? search = null)
         {
-            var users = await GetFilteredUsers(isVerified: true, isActive: true, roleName: "Admin", pageNumber, pageSize, search);
+            var users = await GetFilteredUsers(isVerified: true, isActive: true, roleName: "Admin", batchId, pageNumber, pageSize, search);
 
             var lastBatch = _context.Batches.OrderByDescending(b => b.BatchId).FirstOrDefault();
             bool hasActiveBatch = false;
@@ -75,15 +81,27 @@ namespace ABKS_project.Areas.Admin.Controllers
 
             ViewBag.HasActiveBatch = hasActiveBatch;
 
-
             return View(users);
         }
 
-        public async Task<IActionResult> ListInactive(int pageNumber = 1, int pageSize = 8, string? search = null)
+        public async Task<IActionResult> ListInactive(int? batchId, int pageNumber = 1, int pageSize = 8, string? search = null)
         {
-            var users = await GetFilteredUsers(isVerified: true, isActive: false, roleName: "Admin", pageNumber, pageSize, search);
+            var batches = await _context.Batches.Where(b => b.IsActive == false).ToListAsync();
+            ViewBag.Batches = batches;
+            ViewBag.SelectedBatchId = batchId;
+
+            var users = await GetFilteredUsers(isVerified: true, isActive: false, roleName: "Admin", batchId, pageNumber, pageSize, search);
+
             return View(users);
         }
+
+
+
+
+
+
+
+
 
 
         [HttpPost]
@@ -96,14 +114,28 @@ namespace ABKS_project.Areas.Admin.Controllers
                 user.IsVerified = true;
                 user.IsActive = true;
 
+                var lastActiveBatch = _context.Batches.OrderByDescending(b => b.StartDate).FirstOrDefault(b => b.IsActive == true);
+
+                if (lastActiveBatch != null)
+                {
+                    var userBatch = new UserBatch
+                    {
+                        UserId = user.UserId,
+                        BatchId = lastActiveBatch.BatchId
+                    };
+
+                    _context.UserBatches.Add(userBatch);
+                }
+
                 _context.SaveChanges();
+
                 var password = "123";
 
                 var newUserCredential = new Credential
                 {
                     UserId = user.UserId,
                     Password = BCrypt.Net.BCrypt.HashPassword(password),
-                    RoleId = 2 
+                    RoleId = 2
                 };
 
                 _context.Credentials.Add(newUserCredential);
@@ -114,6 +146,8 @@ namespace ABKS_project.Areas.Admin.Controllers
 
             return RedirectToAction("ListUnverified", "User");
         }
+
+
 
         private void SendWelcomeEmail(string email, string password)
         {
@@ -229,10 +263,67 @@ namespace ABKS_project.Areas.Admin.Controllers
             if (user != null)
             {
                 user.IsActive = true;
-                _context.SaveChanges();
+               
+               var lastActiveBatch = _context.Batches.OrderByDescending(b => b.StartDate).FirstOrDefault(b => b.IsActive == true);
+
+                if (lastActiveBatch != null)
+                {
+                    var userBatch = new UserBatch
+                    {
+                        UserId = user.UserId,
+                        BatchId = lastActiveBatch.BatchId
+                    };
+
+                    _context.UserBatches.Add(userBatch);
+                    _context.SaveChanges();
+                }
             }
 
             return RedirectToAction(nameof(ListUnverified));
         }
+
+        [HttpPost]
+        public async Task<IActionResult> StartNewBatch(string batchName, DateTime? startDate)
+        {
+            if (string.IsNullOrEmpty(batchName))
+            {
+                ModelState.AddModelError(string.Empty, "Batch name is required.");
+                return RedirectToAction("ListActive"); 
+            }
+
+            var batch = new Batch
+            {
+                BatchName = batchName,
+                StartDate = startDate ?? DateTime.Now,
+                IsActive = true
+
+            };
+
+            _context.Batches.Add(batch);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("ListActive");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CloseActiveBatch(DateTime? endDate)
+        {
+            var activeBatch = await _context.Batches.FirstOrDefaultAsync(b => b.EndDate == null);
+
+            if (activeBatch != null)
+            {
+                activeBatch.EndDate = endDate ?? DateTime.Now; 
+                activeBatch.IsActive = false; 
+
+                await _context.SaveChangesAsync();
+            }
+
+            return RedirectToAction("ListActive"); 
+        }
+
+
+
+
+
     }
 }
