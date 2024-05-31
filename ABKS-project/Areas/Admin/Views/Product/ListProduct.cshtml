@@ -159,23 +159,4 @@
         }
     </ul>
 </nav>
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        $('.pdf-link').click(function (e) {
-            e.preventDefault();
-            var pdfUrl = $(this).data('pdf-url');
-            var preview = $(this).siblings('.pdf-preview');
-            preview.find('.pdf-iframe').attr('src', pdfUrl);
-            preview.show();
-        });
 
-        $('.close-btn').click(function () {
-            $(this).closest('.pdf-preview').hide();
-        });
-
-        // Prevent closing PDF preview when clicking on the iframe
-        $('.pdf-preview iframe').click(function (e) {
-            e.stopPropagation();
-        });
-    });
-</script>
