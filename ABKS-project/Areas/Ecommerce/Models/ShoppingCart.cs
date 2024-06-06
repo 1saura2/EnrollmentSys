@@ -11,7 +11,7 @@ namespace ABKS_project.Areas.Ecommerce.Models
         }
 
         public int Id { get; set; }
-        public string UserId { get; set; } = null!;
+        public Guid UserId { get; set; }
         public bool IsDeleted { get; set; }
 
         public virtual ICollection<CartDetail> CartDetails { get; set; }

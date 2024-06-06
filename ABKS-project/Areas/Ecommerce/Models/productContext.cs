@@ -137,8 +137,6 @@ namespace ABKS_project.Areas.Ecommerce.Models
             modelBuilder.Entity<ShoppingCart>(entity =>
             {
                 entity.ToTable("ShoppingCart");
-
-                entity.Property(e => e.UserId).HasMaxLength(255);
             });
 
             OnModelCreatingPartial(modelBuilder);
