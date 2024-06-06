@@ -17,7 +17,7 @@ namespace ABKS_project.Areas.Ecommerce.Models
         public string? ProductDescription { get; set; }
         public string? ProductImg { get; set; }
         public int? ProductCategoryId { get; set; }
-        public bool InStock { get; set; }
+        public bool? InStock { get; set; }
 
         public virtual ProductCategory? ProductCategory { get; set; }
         public virtual ICollection<CartDetail> CartDetails { get; set; }
