@@ -37,7 +37,7 @@
 <body style="background-color: var(--bodyBackgroundColor); color: var(--bodyColor); font-family: var(--bodyFontFamily), var(--bodyFontFamilyFallback); font-size: var(--bodyFontSize); font-weight: var(--bodyFontWeight); line-height: var(--bodyLineHeight); margin: 0; min-block-size: 100vh;">
     <div class="grid">
         <h1 class="page-title">Register Here !!!</h1>
-        @if (TempData["Batch_Check"] != null)
+        @if (TempData["Batch_Check"] == null)
         {
             <form asp-action="Register" method="post" class="form login" enctype="multipart/form-data" id="registerForm">
                 <div class="form__field">
