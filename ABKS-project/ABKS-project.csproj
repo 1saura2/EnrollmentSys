@@ -26,7 +26,6 @@
     <Folder Include="Areas\Admin\Data\" />
     <Folder Include="Areas\Admin\Models\" />
     <Folder Include="Areas\Ecommerce\Data\" />
-    <Folder Include="Areas\Ecommerce\Models\" />
     <Folder Include="wwwroot\Documents\Citizenships\" />
     <Folder Include="wwwroot\Images\Products\" />
   </ItemGroup>
