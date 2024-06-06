@@ -39,6 +39,8 @@ namespace ABKS_project.Areas.Ecommerce.Models
             {
                 entity.ToTable("CartDetail");
 
+                entity.Property(e => e.UnitPrice).HasColumnType("decimal(18, 2)");
+
                 entity.HasOne(d => d.Product)
                     .WithMany(p => p.CartDetails)
                     .HasForeignKey(d => d.ProductId)
