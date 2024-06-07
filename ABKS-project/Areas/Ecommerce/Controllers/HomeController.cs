@@ -1,18 +1,21 @@
 ﻿using ABKS_project.Areas.Ecommerce.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+using ABKS_project.Repositories;
+using System.Threading.Tasks;
 
 namespace ABKS_project.Areas.Ecommerce.Controllers
 {
     [Area("Ecommerce")]
+    [Route("Ecommerce/[controller]/[action]")]
     public class HomeController : Controller
     {
         private readonly productContext _context;
+        private readonly ICartRepository _cartRepo;
 
-        public HomeController(productContext context)
+        public HomeController(productContext context, ICartRepository cartRepo)
         {
             _context = context;
+            _cartRepo = cartRepo;
         }
 
         public IActionResult Index()
@@ -26,22 +29,31 @@ namespace ABKS_project.Areas.Ecommerce.Controllers
             return View(product);
         }
 
-        [HttpPost]
-        public IActionResult AddToCart(int productId)
+        [HttpGet]
+        public async Task<IActionResult> AddItem(int productId, int qty = 1, int redirect = 0)
         {
-            var userId = HttpContext.Session.GetString("UserId");
-
-            if (string.IsNullOrEmpty(userId))
-            {
-                return Json(new { success = false, message = "User not logged in" });
-            }
-
-            // Here, you can add code to add the product to the user's cart
-            // For example, you might save the product ID and user ID to a database
-
-            return Json(new { success = true, userId });
+            var cartCount = await _cartRepo.AddItem(productId, qty);
+            if (redirect == 0)
+                return Ok(cartCount);
+            return RedirectToAction("GetUserCart");
         }
 
+        public async Task<IActionResult> RemoveItem(int productId)
+        {
+            var cartCount = await _cartRepo.RemoveItem(productId);
+            return RedirectToAction("GetUserCart");
+        }
+
+        public async Task<IActionResult> GetUserCart()
+        {
+            var cart = await _cartRepo.GetUserCart();
+            return View(cart);
+        }
+
+        public async Task<IActionResult> GetTotalItemInCart()
+        {
+            int cartItem = await _cartRepo.GetCartItemCount();
+            return Ok(cartItem);
+        }
     }
 }
-

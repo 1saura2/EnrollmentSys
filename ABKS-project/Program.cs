@@ -23,7 +23,7 @@ var config = provider.GetRequiredService<IConfiguration>();
 builder.Services.AddTransient<ICartRepository, CartRepository>();
 builder.Services.AddDbContext<abksContext>(item => item.UseSqlServer(config.GetConnectionString("abks_db")));
 builder.Services.AddDbContext<productContext>(item => item.UseSqlServer(config.GetConnectionString("abks_db")));
-
+builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
@@ -44,6 +44,8 @@ builder.Services.AddAuthorization(options =>
         policy.RequireRole("User");
     });
 });
+
+
 
 var app = builder.Build();
 
