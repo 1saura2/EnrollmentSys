@@ -217,48 +217,27 @@
                     </ul>
                 </li>
 
-                @*  <li class="sidebar-item">
+
+
+            <li class="sidebar-item">
                 <a href="#" class="sidebar-link collapsed has-dropdown dropdown-toggle" data-bs-toggle="collapse"
-                data-bs-target="#product" aria-expanded="false" aria-controls="product">
-                <i class="bi bi-shield-lock"></i>
-                <span>Product Management</span>
+                    data-bs-target="#product-management" aria-expanded="false" aria-controls="product-management">
+                    <i class="bi bi-person"></i>
+                    <span>Product Management</span>
                 </a>
-                <ul id="product" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
-                <li class="sidebar-item">
-                <a href="#" class="sidebar-link">Product Details</a>
-                </li>
-                <li class="sidebar-item">
-                <a href="#" class="sidebar-link">Order Details</a>
-                </li>
+                <ul id="product-management" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                    <li class="sidebar-item">
+                        <a asp-area="Admin" asp-controller="Product" asp-action="Orders" class="sidebar-link">Order Detail</a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a asp-area="Admin" asp-controller="Product" asp-action="ListProduct" class="sidebar-link">Product Detail</a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a asp-area="Admin" asp-controller="Product" asp-action="ProductCategories" class="sidebar-link">Product Categories</a>
+                    </li>
                 </ul>
-                </li>*@
+            </li>
 
-                <li class="sidebar-item">
-                    <a href="#" class="sidebar-link collapsed has-dropdown dropdown-toggle" data-bs-toggle="collapse"
-                       data-bs-target="#product-management" aria-expanded="false" aria-controls="product-management">
-                        <i class="bi bi-person"></i>
-                        <span>Product Management</span>
-
-                    </a>
-                    <ul id="product-management" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
-                        <li class="sidebar-item">
-                            <a asp-area="Admin" asp-controller="Product" asp-action="Orders" class="sidebar-link">Order Detail</a>
-                        </li>
-                    </ul>
-                     <ul id="product-management" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
-                        <li class="sidebar-item">
-                            <a asp-area="Admin" asp-controller="Product" asp-action="ListProduct" class="sidebar-link">Product Detail</a>
-                        </li>
-                    </ul> <ul id="product-management" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
-                        <li class="sidebar-item">
-                            <a asp-area="Admin" asp-controller="Product" asp-action="ProductCategories" class="sidebar-link">Product Categories</a>
-                        </li>
-                    </ul>
-
-
-                   
-
-                </li>
 
 
                 <li class="sidebar-item">
@@ -276,11 +255,8 @@
             </div>
         </aside>
         <div class="main p-3">
-            <div class="text-center">
-                <h1>
-                    @RenderBody()
-                </h1>
-            </div>
+            <!-- RenderBody content will be loaded here -->
+            @RenderBody()
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
@@ -289,9 +265,48 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('.toggle-btn').click(function () {
+            $('#sidebar').toggleClass('expand');
+        });
+
+        $('.sidebar-dropdown').on('show.bs.collapse', function () {
+            localStorage.setItem($(this).attr('id'), 'expanded');
+        });
+
+        $('.sidebar-dropdown').on('hide.bs.collapse', function () {
+            localStorage.removeItem($(this).attr('id'));
+        });
+
+        $('.sidebar-dropdown').each(function () {
+            if (localStorage.getItem($(this).attr('id')) === 'expanded') {
+                $(this).addClass('show'); 
+            }
+        });
+
+        $('.sidebar-link').click(function (e) {
+            e.preventDefault();
+            var url = $(this).attr('href');
+            if (url && url !== '#') {
+                $.ajax({
+                    type: 'GET',
+                    url: url,
+                    success: function (data) {
+                        $('.main').html($(data).find('.main').html());
+                    }
+                });
+            }
+        });
+    });
+</script>
+
+
 </body>
 
 </html>
+
+
 
 
 

@@ -11,8 +11,8 @@ using BCrypt.Net;
 
 namespace ABKS_project.Areas.Admin.Controllers
 {
-   /* [Authorize(Policy = "AdminOnly")]*/
-    [Area("Admin")]
+/*    [Authorize(Policy = "AdminOnly")]
+*/    [Area("Admin")]
     public class UserController : Controller
     {
         private readonly abksContext _context;
@@ -34,7 +34,7 @@ namespace ABKS_project.Areas.Admin.Controllers
             var usersQuery = _context.Users
                 .Where(u => u.IsVerified == isVerified && u.IsActive == isActive && !u.Credentials.Any(c => c.Role.RoleName == roleName));
 
-            if (batchId != null)
+            if (batchId.HasValue)
             {
                 usersQuery = usersQuery.Where(u => u.UserBatches.Any(ub => ub.BatchId == batchId));
             }
@@ -84,9 +84,9 @@ namespace ABKS_project.Areas.Admin.Controllers
             return View(users);
         }
 
-        public async Task<IActionResult> ListInactive(int? batchId, int pageNumber = 1, int pageSize = 8, string? search = null)
+        public async Task<IActionResult> ListInactive(int? batchId = null, int pageNumber = 1, int pageSize = 8, string? search = null)
         {
-            var batches = await _context.Batches.Where(b => b.IsActive == false).ToListAsync();
+            var batches = await _context.Batches.Where(b => b.IsActive==false).ToListAsync();
             ViewBag.Batches = batches;
             ViewBag.SelectedBatchId = batchId;
 
@@ -94,6 +94,7 @@ namespace ABKS_project.Areas.Admin.Controllers
 
             return View(users);
         }
+
 
 
 

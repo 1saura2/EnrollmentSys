@@ -91,6 +91,7 @@
 
     <div>
         <form method="get" asp-controller="User" asp-action="ListInactive" class="d-flex">
+            <input type="hidden" name="batchId" value="@ViewBag.SelectedBatchId" />
             <input class="form-control form-control-sm me-2" type="search" name="search" placeholder="Search" aria-label="Search" value="@ViewBag.CurrentFilter" style="width: 150px;">
             <button class="btn btn-outline-success" type="submit">Search</button>
         </form>
@@ -158,7 +159,7 @@
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                                <form id="reenrollForm_@user.UserId" asp-area="Admin" asp-controller="Home" asp-action="ReenrollUser" method="post">
+                                                <form id="reenrollForm_@user.UserId" asp-area="Admin" asp-controller="User" asp-action="ReenrollUser" method="post">
                                                     <input type="hidden" name="userId" value="@user.UserId" />
                                                     <button type="submit" class="btn btn-warning">Reenroll</button>
                                                 </form>
@@ -180,7 +181,7 @@
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                                <form asp-area="Admin" asp-controller="Home" asp-action="DeleteUser" method="post">
+                                                <form asp-area="Admin" asp-controller="User" asp-action="DeleteUser" method="post">
                                                     <input type="hidden" name="userId" value="@user.UserId" />
                                                     <button type="submit" class="btn btn-danger">Delete</button>
                                                 </form>
