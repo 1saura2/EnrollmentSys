@@ -17,9 +17,7 @@ namespace ABKS_project.Areas.Ecommerce.Models
         }
 
         public virtual DbSet<CartDetail> CartDetails { get; set; } = null!;
-        public virtual DbSet<Order> Orders { get; set; } = null!;
-        public virtual DbSet<OrderDetail> OrderDetails { get; set; } = null!;
-        public virtual DbSet<OrderStatus> OrderStatuses { get; set; } = null!;
+        public virtual DbSet<Checkout> Checkouts { get; set; } = null!;
         public virtual DbSet<Product> Products { get; set; } = null!;
         public virtual DbSet<ProductCategory> ProductCategories { get; set; } = null!;
         public virtual DbSet<ShoppingCart> ShoppingCarts { get; set; } = null!;
@@ -54,57 +52,21 @@ namespace ABKS_project.Areas.Ecommerce.Models
                     .HasConstraintName("FK__CartDetai__Shopp__056ECC6A");
             });
 
-            modelBuilder.Entity<Order>(entity =>
+            modelBuilder.Entity<Checkout>(entity =>
             {
-                entity.Property(e => e.Address)
-                    .HasMaxLength(255)
-                    .IsUnicode(false);
+                entity.HasNoKey();
 
-                entity.Property(e => e.CreateDate)
-                    .HasColumnType("datetime")
-                    .HasDefaultValueSql("(getdate())");
+                entity.ToTable("Checkout");
 
-                entity.Property(e => e.IsDeleted).HasDefaultValueSql("((0))");
+                entity.Property(e => e.Address).HasMaxLength(200);
 
-                entity.Property(e => e.IsPaid).HasDefaultValueSql("((0))");
+                entity.Property(e => e.Email).HasMaxLength(30);
 
-                entity.Property(e => e.PaymentMethod)
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
+                entity.Property(e => e.MobileNumber).HasMaxLength(50);
 
-                entity.HasOne(d => d.OrderStatus)
-                    .WithMany(p => p.Orders)
-                    .HasForeignKey(d => d.OrderStatusId)
-                    .HasConstraintName("FK__Orders__OrderSta__7167D3BD");
-            });
+                entity.Property(e => e.Name).HasMaxLength(30);
 
-            modelBuilder.Entity<OrderDetail>(entity =>
-            {
-                entity.Property(e => e.UnitPrice).HasColumnType("decimal(10, 2)");
-
-                entity.HasOne(d => d.Order)
-                    .WithMany(p => p.OrderDetails)
-                    .HasForeignKey(d => d.OrderId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__OrderDeta__Order__74444068");
-
-                entity.HasOne(d => d.Product)
-                    .WithMany(p => p.OrderDetails)
-                    .HasForeignKey(d => d.ProductId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__OrderDeta__Produ__753864A1");
-            });
-
-            modelBuilder.Entity<OrderStatus>(entity =>
-            {
-                entity.HasKey(e => e.StatusId)
-                    .HasName("PK__OrderSta__C8EE20636FA6920D");
-
-                entity.ToTable("OrderStatus");
-
-                entity.Property(e => e.StatusName)
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
+                entity.Property(e => e.PaymentMethod).HasMaxLength(50);
             });
 
             modelBuilder.Entity<Product>(entity =>
