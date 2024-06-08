@@ -13,7 +13,7 @@
             <tr>
                 <th>Products</th>
                 <th>Image</th>
-                <th>Category/th>
+                <th>Category</th>
                 <th>Unit Price(RS)</th>
                 <th>Total Price</th>
                 <th>Action</th>
@@ -36,8 +36,11 @@
                     <td>@item.Product.ProductPrice X @item.Quantity</td>
                     <td>@(item.Product.ProductPrice * item.Quantity)</td>
                     <td>
+
                         @* Increase Quantity button should be invisible if not enough stock *@
-                        <a class="btn btn-info" href="/Ecommerce/Home/productId=@item.ProductId">+</a>
+                        <a class="btn btn-info" href="/Ecommerce/Home/addItem?/productId=@item.ProductId">+</a>
+                      
+                       
                         @* Decrement button *@
                         <a class="btn btn-info" href="/Ecommerce/Home/removeitem?productId=@item.ProductId">-</a>
                     </td>

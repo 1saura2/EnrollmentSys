@@ -45,7 +45,7 @@ namespace ABKS_project.Repositories
                 {
                     cartItem.Quantity += qty;
                 }
-                else
+                /*else
                 {
                     var product = await _db.Products.FindAsync(productId);
                     cartItem = new CartDetail
@@ -56,7 +56,7 @@ namespace ABKS_project.Repositories
                         UnitPrice = product.ProductPrice  // it is a new line after update
                     };
                     _db.CartDetails.Add(cartItem);
-                }
+                }*/
                 await _db.SaveChangesAsync();
                 await transaction.CommitAsync();
             }
