@@ -266,57 +266,30 @@
     <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
 <script>
-    $(document).ready(function () {
-        $('.toggle-btn').click(function () {
-            $('#sidebar').toggleClass('expand');
+        $(document).ready(function () {
+            $('.toggle-btn').click(function () {
+                $('#sidebar').toggleClass('expand');
+            });
+
+            $('.sidebar-dropdown').on('show.bs.collapse', function () {
+                localStorage.setItem($(this).attr('id'), 'expanded');
+            });
+
+            $('.sidebar-dropdown').on('hide.bs.collapse', function () {
+                localStorage.removeItem($(this).attr('id'));
+            });
+
+            $('.sidebar-dropdown').each(function () {
+                if (localStorage.getItem($(this).attr('id')) === 'expanded') {
+                    $(this).addClass('show');
+                }
+            });
+
         });
 
-        $('.sidebar-dropdown').on('show.bs.collapse', function () {
-            localStorage.setItem($(this).attr('id'), 'expanded');
-        });
-
-        $('.sidebar-dropdown').on('hide.bs.collapse', function () {
-            localStorage.removeItem($(this).attr('id'));
-        });
-
-        $('.sidebar-dropdown').each(function () {
-            if (localStorage.getItem($(this).attr('id')) === 'expanded') {
-                $(this).addClass('show'); 
-            }
-        });
-
-        $('.sidebar-link').click(function (e) {
-            e.preventDefault();
-            var url = $(this).attr('href');
-            if (url && url !== '#') {
-                $.ajax({
-                    type: 'GET',
-                    url: url,
-                    success: function (data) {
-                        $('.main').html($(data).find('.main').html());
-                    }
-                });
-            }
-        });
-    });
 </script>
 
 
 </body>
 
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
