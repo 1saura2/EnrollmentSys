@@ -38,11 +38,14 @@
                     <td>
 
                         @* Increase Quantity button should be invisible if not enough stock *@
-                        <a class="btn btn-info" href="/Ecommerce/Home/addItem?/productId=@item.ProductId">+</a>
+                        @* <a class="btn btn-info" href="/Ecommerce/Home/addItem?/productId=@item.ProductId">+</a> *@
                       
                        
                         @* Decrement button *@
-                        <a class="btn btn-info" href="/Ecommerce/Home/removeitem?productId=@item.ProductId">-</a>
+                        @* <a class="btn btn-info" href="/Ecommerce/Home/removeitem?productId=@item.ProductId">-</a> *@
+
+                        <a class="btn btn-info" href="javascript:void(0)" onclick="addCartItem(@item.ProductId)">+</a>
+                        <a class="btn btn-info" href="javascript:void(0)" onclick="removeCartItem(@item.ProductId)">-</a>
                     </td>
                 </tr>
             }
@@ -63,4 +66,36 @@
         <h5>Cart is empty</h5>
     }
 </div>
+@section Scripts{
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        function addCartItem(productId) {
+            $.ajax({
+                url: `/Ecommerce/Home/AddItem`,
+                type: 'GET',
+                data: { productId: productId},
+                success: function (result) {
+                    window.location.reload();
+                },
+                error: function (err) {
+                    console.log("Error:", err);
+                }
+            });
+        }
+
+        function removeCartItem(productId) {
+            $.ajax({
+                url: `/Ecommerce/Home/RemoveItem`,
+                type: 'GET',
+                data: { productId: productId },
+                success: function (result) {
+                    window.location.reload();
+                },
+                error: function (err) {
+                    console.log("Error:", err);
+                }
+            });
+        }
+    </script>
+}
 
