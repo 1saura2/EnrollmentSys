@@ -36,13 +36,8 @@
                     <td>@item.Product.ProductPrice X @item.Quantity</td>
                     <td>@(item.Product.ProductPrice * item.Quantity)</td>
                     <td>
-
-                        @* Increase Quantity button should be invisible if not enough stock *@
-                        <a class="btn btn-info" href="/Ecommerce/Home/addItem?/productId=@item.ProductId">+</a>
-                      
-                       
-                        @* Decrement button *@
-                        <a class="btn btn-info" href="/Ecommerce/Home/removeitem?productId=@item.ProductId">-</a>
+                        <a class="btn btn-info" href="javascript:void(0)" onclick="updateCartItem(@item.ProductId, 1)">+</a>
+                        <a class="btn btn-info" href="javascript:void(0)" onclick="updateCartItem(@item.ProductId, -1)">-</a>
                     </td>
                 </tr>
             }
@@ -64,3 +59,21 @@
     }
 </div>
 
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        function updateCartItem(productId, quantity) {
+            $.ajax({
+                url: `/Ecommerce/Home/AddItem`,
+                type: 'GET',
+                data: { productId: productId, qty: quantity },
+                success: function (result) {
+                    window.location.reload();
+                },
+                error: function (err) {
+                    console.log("Error:", err);
+                }
+            });
+        }
+    </script>
+}

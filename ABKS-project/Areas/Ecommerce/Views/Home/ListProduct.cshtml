@@ -16,16 +16,16 @@
         text-align: center;
     }
 
-    .btn-get-started:hover {
-        background: linear-gradient(45deg, #ff4b2b, #ff416c);
-        box-shadow: 0 15px 20px rgba(0, 0, 0, 0.2);
-        transform: translateY(-2px);
-    }
+        .btn-get-started:hover {
+            background: linear-gradient(45deg, #ff4b2b, #ff416c);
+            box-shadow: 0 15px 20px rgba(0, 0, 0, 0.2);
+            transform: translateY(-2px);
+        }
 
-    .btn-get-started:active {
-        transform: translateY(1px);
-        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
-    }
+        .btn-get-started:active {
+            transform: translateY(1px);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+        }
 
     .img-thumbnail {
         width: 50px;
@@ -38,9 +38,9 @@
         align-items: center;
     }
 
-    .list-group-item img {
-        margin-right: 15px;
-    }
+        .list-group-item img {
+            margin-right: 15px;
+        }
 </style>
 
 <!-- ======= Product Section ======= -->
@@ -49,7 +49,8 @@
 
         <div class="section-header">
             <h2>Our Products</h2>
-            <p>Gear up with our high-quality gear, stylish clothes, and essential accessories for any adventure. From durable backpacks to versatile activewear, 
+            <p>
+                Gear up with our high-quality gear, stylish clothes, and essential accessories for any adventure. From durable backpacks to versatile activewear,
                 we've got what you need to conquer the outdoors in comfort and style. Shop now and gear up confidently for your next journey.
         </div>
 
@@ -61,7 +62,7 @@
                     <li data-filter=".filter-app">Equipments</li>
                     <li data-filter=".filter-product">Clothes</li>
                     <li data-filter=".filter-branding">Others</li>
-                    
+
                 </ul>
             </div>
 
@@ -75,10 +76,10 @@
                                 <img src="~/Images/Products/@item.ProductImg" class="img-fluid" alt="@item.ProductName">
                             </a>
                             <div class="portfolio-info">
-                              <h4><a href="portfolio-details.html" title="More Details">@item.ProductName</a></h4>
+                                <h4><a href="portfolio-details.html" title="More Details">@item.ProductName</a></h4>
                                 <p>@item.ProductDescription</p>
                                 <span class="me-3">Rs. @item.ProductPrice</span>
-                                <button class="btn-get-started" onclick="add(@item.ProductId)" data-id="@item.ProductId" data-name="@item.ProductName" data-image="~/Images/Products/@item.ProductImg" data-price="@item.ProductPrice">Add to Cart</button>
+                                <button class="btn-get-started" onclick="addItemToCart(@item.ProductId)" data-id="@item.ProductId" data-name="@item.ProductName" data-image="~/Images/Products/@item.ProductImg" data-price="@item.ProductPrice">Add to Cart</button>
                             </div>
                         </div>
                     </div>
@@ -90,151 +91,26 @@
     </div>
 </section>
 
-<!-- Bootstrap 5 Modal -->
-<<div class="modal fade" id="cartModal" tabindex="-1" aria-labelledby="cartModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="cartModalLabel">Your Cart</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div id="cartItemsContainer">
-                    <p>Your cart is empty</p>
-                </div>
-                <div id="totalPriceContainer">
-                    <p>Total Price: <span id="totalPrice">Rs. 0</span></p>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" id="checkoutButton">Checkout</button>
-            </div>
-        </div>
-    </div>
-</div>
-
 @section Scripts {
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        async function add(ProductId) {
-
-            try {
-                $.ajax({
-                    url: `/Ecommerce/Home/AddItem`,
-                    type: 'GET',
-                    data: { productId: ProductId },
-                    success: function(result) {
-                        var cartCountEl = document.getElementById("cartCount");
-                        if (cartCountEl) {
-                            cartCountEl.innerHTML = result;
-                            window.location.href = "#cartCount";
-                        } else {
-                            console.log("Cart count element not found.");
-                        }
-                    },
-                    error: function(err) {
-                        console.log("Error:", err);
+        function addItemToCart(productId) {
+            $.ajax({
+                url: `/Ecommerce/Home/AddItem`,
+                type: 'GET',
+                data: { productId: productId },
+                success: function (result) {
+                    var cartCountEl = document.getElementById("cartCount");
+                    if (cartCountEl) {
+                        cartCountEl.innerHTML = result;
+                    } else {
+                        console.log("Cart count element not found.");
                     }
-                });
-            } catch (err) {
-                console.log("Exception:", err);
-            }
+                },
+                error: function (err) {
+                    console.log("Error:", err);
+                }
+            });
         }
     </script>
-
 }
-
-@* <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const cart = [];
-        const cartItemsContainer = document.getElementById('cartItemsContainer');
-        const cartModal = new bootstrap.Modal(document.getElementById('cartModal'));
-        const checkoutButton = document.getElementById('checkoutButton');
-        const cartCountElement = document.getElementById('cartCount');
-        const totalPriceElement = document.getElementById('totalPrice');
-
-        function updateCartModal() {
-            cartItemsContainer.innerHTML = '';
-            if (cart.length === 0) {
-                cartItemsContainer.innerHTML = '<p>Your cart is empty</p>';
-            } else {
-                const cartList = document.createElement('ul');
-                cartList.classList.add('list-group');
-                cart.forEach((item, index) => {
-                    const cartItem = document.createElement('li');
-                    cartItem.classList.add('list-group-item', 'd-flex', 'align-items-center', 'justify-content-between');
-                    cartItem.innerHTML = `
-                            <div class="d-flex align-items-center">
-                                <span class="me-3">${index + 1}</span>
-                                <img src="${item.image}" alt="${item.name}" class="img-thumbnail me-3" style="width:50px">
-                                <span>${item.name}</span>
-                            </div>
-
-                                    <div>
-                                        <span class="me-3">Rs. ${item.price}</span>
-                                        <button class="btn btn-danger btn-sm" data-index="${index}">Remove</button>
-                                    </div>
-
-                        `;
-                    cartItem.querySelector('button').addEventListener('click', () => {
-                        cart.splice(index, 1);
-                        updateCartModal();
-                        updateCartCount();
-                        updateTotalPrice();
-                    });
-                    cartList.appendChild(cartItem);
-                });
-                cartItemsContainer.appendChild(cartList);
-            }
-
-        }
-
-        function updateCartCount() {
-            cartCountElement.textContent = cart.length;
-        }
-
-        function updateTotalPrice() {
-            const totalPrice = cart.reduce((total, item) => total + parseFloat(item.price), 0);
-            totalPriceElement.textContent = 'Rs. ' + totalPrice.toFixed(2);
-        }
-
-        document.querySelectorAll('.btn-get-started').forEach(button => {
-            button.addEventListener('click', () => {
-                const id = button.getAttribute('data-id');
-                const name = button.getAttribute('data-name');
-                const image = button.getAttribute('data-image').replace('~', '');
-                const price = parseFloat(button.getAttribute('data-price'));
-
-                cart.push({ id, name, image, price });
-                updateCartModal();
-                updateCartCount();
-                updateTotalPrice();
-                cartModal.show();
-            });
-        });
-
-        checkoutButton.addEventListener('click', () => {
-            if (cart.length === 0) {
-                alert('Your cart is empty');
-                return;
-            }
-            let cartSummary = 'Items in your cart:\n';
-            cart.forEach(item => {
-                cartSummary += `- ${item.name}\n`;
-            });
-            alert(cartSummary);
-            cart.length = 0; // Clear the cart
-            updateCartModal(); // Update the modal to show the empty cart
-            updateCartCount();
-            updateTotalPrice();
-            cartModal.hide(); // Hide the modal after checkout
-        });
-
-        document.querySelectorAll('[data-bs-dismiss="modal"]').forEach(button => {
-            button.addEventListener('click', () => {
-                cartModal.hide();
-            });
-        });
-    });
-</script> *@
