@@ -11,8 +11,8 @@ using BCrypt.Net;
 
 namespace ABKS_project.Areas.Admin.Controllers
 {
-/*    [Authorize(Policy = "AdminOnly")]
-*/    [Area("Admin")]
+   /* [Authorize(Policy = "AdminOnly")]*/
+    [Area("Admin")]
     public class UserController : Controller
     {
         private readonly abksContext _context;

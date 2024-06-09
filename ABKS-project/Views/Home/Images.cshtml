@@ -1,4 +1,18 @@
 ﻿<style>
+    .section-header {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 10px;
+        background: #2B3044;
+    }
+
+        .section-header h1 {
+            font: 400 32px "Montserrat", sans-serif;
+            text-transform: uppercase;
+            color: #fff;
+        }
+
     .gallery .portfolio-wrap img {
         transition: 0.3s;
         position: relative;
@@ -39,18 +53,41 @@
         transform: scale(1.1);
     }
 
-</style>
-<div class="container" data-aos="fade-up">
+    .hidden {
+        display: none;
+        opacity: 0;
+        transition: opacity 0.5s ease;
+    }
 
+    .view-more-btn, .view-less-btn {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+    }
+
+        .view-more-btn button, .view-less-btn button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #2B3044;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+            .view-more-btn button:hover, .view-less-btn button:hover {
+                background-color: #1f2538;
+                transform: scale(1.05);
+            }
+</style>
+
+<div class="container" data-aos="fade-up">
     <div class="section-header" style="margin-top:8%;">
-        <h2>Our Images</h2>
-        <p>
-            This institute also known as AIM GURKHA Training center which was established unofficially on 2061 BS and was registered officially on 2071 BS by our respected chairman Mani Ram Rai. He alone took the risk and opened this training center. Through his long journey with this training center he faced many challenges but met a good helping hand whose name was Ganesh Rai also known as Nehang sir and they both stand strong like a mountain, faced many challenges and slowly took this institute at next level and now here we are.
-            Around 120-150 candidates comes every year to get trained in this institute.
-        </p>
+        <h1>Images Gallery</h1>
     </div>
 </div>
- <!-- ======= Gallery Section ======= -->
+
 <section id="gallery" class="gallery">
     <div class="container" data-aos="fade-up">
 
@@ -59,12 +96,11 @@
             <div class="col-xl-4 col-md-6">
                 <article class="portfolio-wrap">
                     <div class="post-img">
-                        <a href="~/assets/img/blog/blog-1.jpg" class="glightbox">
-                            <img src="~/assets/img/blog/blog-1.jpg" alt="" class="img-fluid">
+                        <a href="~/Images/imagegallery/image1.jpg" class="glightbox">
+                            <img src="~/Images/imagegallery/image1.jpg" alt="" class="img-fluid">
                         </a>
                     </div>
                     <div class="portfolio-info">
-                        <p class="post-category">Category 1</p>
                         <h4 class="title">
                             <a href="image-details.html">Image Title 1</a>
                         </h4>
@@ -75,12 +111,11 @@
             <div class="col-xl-4 col-md-6">
                 <article class="portfolio-wrap">
                     <div class="post-img">
-                        <a href="~/assets/img/blog/blog-2.jpg" class="glightbox">
-                            <img src="~/assets/img/blog/blog-2.jpg" alt="" class="img-fluid">
+                        <a href="~/Images/imagegallery/image2.jpg" class="glightbox">
+                            <img src="~/Images/imagegallery/image2.jpg" alt="" class="img-fluid">
                         </a>
                     </div>
                     <div class="portfolio-info">
-                        <p class="post-category">Category 2</p>
                         <h4 class="title">
                             <a href="image-details.html">Image Title 2</a>
                         </h4>
@@ -91,12 +126,11 @@
             <div class="col-xl-4 col-md-6">
                 <article class="portfolio-wrap">
                     <div class="post-img">
-                        <a href="~/assets/img/blog/blog-3.jpg" class="glightbox">
-                            <img src="~/assets/img/blog/blog-3.jpg" alt="" class="img-fluid">
+                        <a href="~/Images/imagegallery/image3.jpg" class="glightbox">
+                            <img src="~/Images/imagegallery/image3.jpg" alt="" class="img-fluid">
                         </a>
                     </div>
                     <div class="portfolio-info">
-                        <p class="post-category">Category 3</p>
                         <h4 class="title">
                             <a href="image-details.html">Image Title 3</a>
                         </h4>
@@ -107,12 +141,11 @@
             <div class="col-xl-4 col-md-6">
                 <article class="portfolio-wrap">
                     <div class="post-img">
-                        <a href="~/assets/img/blog/blog-4.jpg" class="glightbox">
-                            <img src="~/assets/img/blog/blog-4.jpg" alt="" class="img-fluid">
+                        <a href="~/Images/imagegallery/image4.jpg" class="glightbox">
+                            <img src="~/Images/imagegallery/image4.jpg" alt="" class="img-fluid">
                         </a>
                     </div>
                     <div class="portfolio-info">
-                        <p class="post-category">Category 4</p>
                         <h4 class="title">
                             <a href="image-details.html">Image Title 4</a>
                         </h4>
@@ -123,12 +156,11 @@
             <div class="col-xl-4 col-md-6">
                 <article class="portfolio-wrap">
                     <div class="post-img">
-                        <a href="~/assets/img/blog/blog-5.jpg" class="glightbox">
-                            <img src="~/assets/img/blog/blog-5.jpg" alt="" class="img-fluid">
+                        <a href="~/Images/imagegallery/image5.jpg" class="glightbox">
+                            <img src="~/Images/imagegallery/image5.jpg" alt="" class="img-fluid">
                         </a>
                     </div>
                     <div class="portfolio-info">
-                        <p class="post-category">Category 5</p>
                         <h4 class="title">
                             <a href="image-details.html">Image Title 5</a>
                         </h4>
@@ -139,37 +171,145 @@
             <div class="col-xl-4 col-md-6">
                 <article class="portfolio-wrap">
                     <div class="post-img">
-                        <a href="~/assets/img/blog/blog-6.jpg" class="glightbox">
-                            <img src="~/assets/img/blog/blog-6.jpg" alt="" class="img-fluid">
+                        <a href="~/Images/imagegallery/image6.jpg" class="glightbox">
+                            <img src="~/Images/imagegallery/image6.jpg" alt="" class="img-fluid">
                         </a>
                     </div>
                     <div class="portfolio-info">
-                        <p class="post-category">Category 6</p>
                         <h4 class="title">
                             <a href="image-details.html">Image Title 6</a>
                         </h4>
                     </div>
                 </article>
             </div><!-- End post list item -->
+            <!-- Additional Images -->
+            <div class="col-xl-4 col-md-6 hidden">
+                <article class="portfolio-wrap">
+                    <div class="post-img">
+                        <a href="~/Images/imagegallery/image7.jpg" class="glightbox">
+                            <img src="~/Images/imagegallery/image7.jpg" alt="" class="img-fluid">
+                        </a>
+                    </div>
+                    <div class="portfolio-info">
+                        <h4 class="title">
+                            <a href="image-details.html">Image Title 7</a>
+                        </h4>
+                    </div>
+                </article>
+            </div><!-- End post list item -->
 
+            <div class="col-xl-4 col-md-6 hidden">
+                <article class="portfolio-wrap">
+                    <div class="post-img">
+                        <a href="~/Images/imagegallery/image8.jpg" class="glightbox">
+                            <img src="~/Images/imagegallery/image8.jpg" alt="" class="img-fluid">
+                        </a>
+                    </div>
+                    <div class="portfolio-info">
+                        <h4 class="title">
+                            <a href="image-details.html">Image Title 8</a>
+                        </h4>
+                    </div>
+                </article>
+            </div><!-- End post list item -->
+
+            <div class="col-xl-4 col-md-6 hidden">
+                <article class="portfolio-wrap">
+                    <div class="post-img">
+                        <a href="~/Images/imagegallery/image9.jpg" class="glightbox">
+                            <img src="~/Images/imagegallery/image9.jpg" alt="" class="img-fluid">
+                        </a>
+                    </div>
+                    <div class="portfolio-info">
+                        <h4 class="title">
+                            <a href="image-details.html">Image Title 9</a>
+                        </h4>
+                    </div>
+                </article>
+            </div><!-- End post list item -->
+
+            <div class="col-xl-4 col-md-6 hidden">
+                <article class="portfolio-wrap">
+                    <div class="post-img">
+                        <a href="~/Images/imagegallery/image9.jpg" class="glightbox">
+                            <img src="~/Images/imagegallery/image9.jpg" alt="" class="img-fluid">
+                        </a>
+                    </div>
+                    <div class="portfolio-info">
+                        <h4 class="title">
+                            <a href="image-details.html">Image Title 9</a>
+                        </h4>
+                    </div>
+                </article>
+            </div><!-- End post list item -->
+
+
+            <div class="col-xl-4 col-md-6 hidden">
+                <article class="portfolio-wrap">
+                    <div class="post-img">
+                        <a href="~/Images/imagegallery/image9.jpg" class="glightbox">
+                            <img src="~/Images/imagegallery/image9.jpg" alt="" class="img-fluid">
+                        </a>
+                    </div>
+                    <div class="portfolio-info">
+                        <h4 class="title">
+                            <a href="image-details.html">Image Title 9</a>
+                        </h4>
+                    </div>
+                </article>
+            </div><!-- End post list item -->
+
+            <div class="col-xl-4 col-md-6 hidden">
+                <article class="portfolio-wrap">
+                    <div class="post-img">
+                        <a href="~/Images/imagegallery/image9.jpg" class="glightbox">
+                            <img src="~/Images/imagegallery/image9.jpg" alt="" class="img-fluid">
+                        </a>
+                    </div>
+                    <div class="portfolio-info">
+                        <h4 class="title">
+                            <a href="image-details.html">Image Title 9</a>
+                        </h4>
+                    </div>
+                </article>
+            </div><!-- End post list item -->
         </div><!-- End posts list -->
 
-    </div>
-</section><!-- End Gallery Section -->
+        <div class="view-more-btn">
+            <button id="view-more-btn">View More</button>
         </div>
-    </section><!-- End Blog Section -->
-</main><!-- End #main -->
+        <div class="view-less-btn hidden">
+            <button id="view-less-btn">Show Less</button>
+        </div>
+    </div>
+</section>
+
 <script>
-    <!-- Include GLightbox CSS-- >
-    <link href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css" rel = "stylesheet" >
-
-        <!--Include GLightbox JS-- >
-            <script src="https://cdn.jsdelivr.net/npm/glightbox/dist/js/glightbox.min.js" ></script>
-
-
     document.addEventListener('DOMContentLoaded', () => {
         const lightbox = GLightbox({
             selector: '.glightbox'
+        });
+
+        const viewMoreBtn = document.getElementById('view-more-btn');
+        const viewLessBtn = document.getElementById('view-less-btn');
+        const hiddenItems = document.querySelectorAll('.hidden');
+
+        viewMoreBtn.addEventListener('click', () => {
+            hiddenItems.forEach(item => {
+                item.style.display = 'block';
+                setTimeout(() => item.style.opacity = '1', 600);
+            });
+            viewMoreBtn.style.display = 'none';
+            viewLessBtn.style.display = 'flex';
+        });
+
+        viewLessBtn.addEventListener('click', () => {
+            hiddenItems.forEach(item => {
+                item.style.opacity = '0';
+                setTimeout(() => item.style.display = 'none', 400);
+            });
+            viewMoreBtn.style.display = 'flex';
+            viewLessBtn.style.display = 'none';
         });
     });
 </script>

@@ -7,7 +7,230 @@
     </div>
 }
 
-<body style="background-color: var(--bodyBackgroundColor);
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,600;1,700&family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+        rel="stylesheet">
+    <title>Login</title>
+    <style>
+        :root {
+            --color-primary: #009282;
+            --bodyBackgroundColor: #f8f9fa;
+            --bodyColor: #212529;
+            --bodyFontFamily: 'Open Sans', sans-serif;
+            --bodyFontFamilyFallback: sans-serif;
+            --bodyFontSize: 16px;
+            --bodyFontWeight: 400;
+            --bodyLineHeight: 1.5;
+            --titleColor: #212529;
+        }
+
+     /*    body {
+            background-color: var(--bodyBackgroundColor);
+            color: var(--bodyColor);
+            font-family: var(--bodyFontFamily), var(--bodyFontFamilyFallback);
+            font-size: var(--bodyFontSize);
+            font-weight: var(--bodyFontWeight);
+            line-height: var(--bodyLineHeight);
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+ */
+        .contact .info-container {
+            background-color: var(--color-primary);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 2px 25px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            margin-left:45px
+            max-width: 500px;
+        }
+
+        .contact .info-item {
+            width: 100%;
+            background-color: #8b9399;
+            margin-bottom: 20px;
+            padding: 20px;
+            border-radius: 10px;
+            color: #fff;
+            box-shadow: 10px 19px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .contact .info-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .contact .info-item i {
+            font-size: 20px;
+            color: #fff;
+            float: left;
+            width: 44px;
+            height: 44px;
+            background-color: rgba(255, 255, 255, 0.2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50px;
+            transition: all 0.3s ease-in-out;
+            margin-right: 15px;
+            margin-top: 25px;
+        }
+
+        .contact .info-item h4 {
+            padding: 0;
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .contact .info-item p {
+            padding: 0;
+            margin-bottom: 0;
+            font-size: 14px;
+        }
+
+        .contact .info-item:hover i {
+            background: #fff;
+            color: var(--color-primary);
+        }
+
+        .page-title {
+            text-align: center;
+            font-size: 2em;
+            margin-bottom: 35px;
+            color: var(--titleColor);
+        }
+
+        .form__input {
+            width: 100%;
+            padding: 10px 15px;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            font-size: 14px;
+            box-shadow: none;
+        }
+
+        .form__input:focus {
+            border-color: var(--color-primary);
+            outline: none;
+        }
+
+        .form__field label {
+            font-size: 14px;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .input-container {
+            position: relative;
+        }
+
+        .input-container input {
+            padding-left: 40px;
+        }
+
+        .text-danger {
+            color: #dc3545;
+            font-size: 12px;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .form__field button[type="submit"] {
+            background: var(--color-primary);
+            border: none;
+            padding: 10px 20px;
+            color: #fff;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            width: 100%;
+            box-shadow: 10px 19px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .form__field button[type="submit"]:hover {
+            background: rgba(0, 131, 116, 0.8);
+            box-shadow: 10px 19px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .text--center {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .text--center a {
+            color: var(--color-primary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .text--center a:hover {
+            text-decoration: underline;
+        }
+
+       
+    </style>
+</head>
+
+<body>
+    <section id="contact" class="contact">
+        <div class="container" data-aos="fade-up" style="width: 50rem;">
+            <div class="row gx-0 gy-6 justify-content-center">
+                <div class="col-lg-6">
+                    <div class="info-container d-flex flex-column align-items-center justify-content-center">
+                        <h1 class="page-title" style="color: azure;">Login</h1>
+                        <form asp-action="Login" asp-controller="Home" method="post" class="form login">
+                            <div class="info-item d-flex align-items-center">
+                                <i class="bi bi-envelope flex-shrink-0"></i>
+                                <div class="input-container w-100">
+                                    <h4>Email:</h4>
+                                    <input asp-for="Email" autocomplete="email" id="login__email" type="text"
+                                        name="Email" class="form__input login__input" placeholder="Email">
+                                    <span asp-validation-for="Email" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="info-item d-flex align-items-center">
+                                <i class="bi bi-lock flex-shrink-0"></i>
+                                <div class="input-container w-100">
+                                    <h4>Password:</h4>
+                                    <input asp-for="Password" id="login__password" type="password" name="Password"
+                                        class="form__input login__input" placeholder="Password">
+                                    <span asp-validation-for="Password" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="form__field text-center">
+                                <button type="submit" style="background: #11d3be;">Log In</button>
+                            </div>
+                        </form>
+                        <p class="text--center">
+                            Not a member? <a href="Register" style="color: sandybrown;">Sign up now</a>
+                            <i class="bi bi-arrow-right opacity-50"></i>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
+
+@* <body style="background-color: var(--bodyBackgroundColor);
     color: var(--bodyColor);
     font-family: var(--bodyFontFamily), var(--bodyFontFamilyFallback);
     font-size: var(--bodyFontSize);
@@ -81,3 +304,4 @@
     </style>
 
 </body>
+ *@

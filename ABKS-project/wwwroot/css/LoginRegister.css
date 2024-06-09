@@ -1,16 +1,19 @@
-﻿/* .align {
-      display: grid;
-      place-items: center;
-    } */
-/* config.css */
+﻿/* layout/base.css */
 
 :root {
+    --htmlFontSize: 100%;
+    --bodyBackgroundColor: #2c3338;
+    --bodyColor: var(--baseColor);
+    --bodyFontFamily: "Open Sans";
+    --bodyFontFamilyFallback: sans-serif;
+    --bodyFontSize: 0.875rem;
+    --bodyFontWeight: 400;
+    --bodyLineHeight: 1.5;
     --baseColor: #606468;
+    --iconFill: var(--baseColor);
+    --anchorColor: #eee;
+    --formGap: 0.875rem;
 }
-
-/* helpers/align.css */
-
-
 
 .grid {
     inline-size: 90%;
@@ -32,15 +35,7 @@
     width: 1px;
 }
 
-/* helpers/icon.css */
 
-:root {
-    --iconFill: var(--baseColor);
-}
-
-.icons {
-    display: none;
-}
 
 .icon {
     block-size: 1em;
@@ -48,20 +43,9 @@
     fill: var(--iconFill);
     inline-size: 1em;
     vertical-align: middle;
+    display: none;
 }
 
-/* layout/base.css */
-
-:root {
-    --htmlFontSize: 100%;
-    --bodyBackgroundColor: #2c3338;
-    --bodyColor: var(--baseColor);
-    --bodyFontFamily: "Open Sans";
-    --bodyFontFamilyFallback: sans-serif;
-    --bodyFontSize: 0.875rem;
-    --bodyFontWeight: 400;
-    --bodyLineHeight: 1.5;
-}
 
 * {
     box-sizing: inherit;
@@ -73,11 +57,6 @@ html {
 }
 
 
-/* modules/anchor.css */
-
-:root {
-    --anchorColor: #eee;
-}
 
 a {
     color: var(--anchorColor);
@@ -92,9 +71,7 @@ a {
 
 /* modules/form.css */
 
-:root {
-    --formGap: 0.875rem;
-}
+
 
 input, select {
     background-image: none;

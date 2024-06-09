@@ -15,31 +15,260 @@
 }
 
 <style>
-    .modal-backdrop {
+   
+
+
+   
+
+    :root {
+        /* --htmlFontSize: 100%; */
+        --color-primary: #009282;
+        /* --bodyBackgroundColor: #f8f9fa; */
+        /* --bodyBackgroundColor: #2c3338; */
+        --bodyColor: var(--baseColor);
+        --bodyFontFamily: "Open Sans";
+        --bodyFontFamilyFallback: sans-serif;
+        --bodyFontSize: 0.875rem;
+        --bodyFontWeight: 400;
+        --bodyLineHeight: 1.5;
+        --baseColor: #606468;
+        --iconFill: var(--baseColor);
+        --anchorColor: #eee;
+        --formGap: 0.875rem;
+        --bodyColor: #212529;
+        /* --titlecolor: 212529; */
+    }
+
+    :root {
+        --loginBorderRadus: 0.25rem;
+        --loginColor: #eee;
+        /* --loginInputBackgroundColor: #3b4148; */
+        --loginInputHoverBackgroundColor: #434a52;
+        --loginLabelBackgroundColor: #363b41;
+        --loginSubmitBackgroundColor: #ea4c88;
+        --loginSubmitColor: #eee;
+        --loginSubmitHoverBackgroundColor: #d44179;
+    }
+    .grid {
+        background-color: var(--color-primary);
+        inline-size: 90%;
+        margin-inline: auto;
+        margin-top: 10rem;
+        max-inline-size: 35rem;
+        border-radius:3%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 35px; 
+
+    }
+   
+    .page-title {
+        
+        padding-bottom: 2rem;
+        text-align: center;
+        font-size: 3em;
+        margin-top: 40px;
+        color: var(--titleColor, white); /* fallback color in case CSS variable is not defined */
+    }
+    /* helpers/hidden.css */
+
+    .hidden {
+        border: 0;
+        clip: rect(0 0 0 0);
+        height: 1px;
+        margin: -1px;
+        overflow: hidden;
+        padding: 0;
+        position: absolute;
+        width: 1px;
+    }
+
+
+
+    .icon {
+        block-size: 1em;
+        display: inline-block;
+        fill: var(--iconFill);
+        inline-size: 1em;
+        vertical-align: middle;
+        display: none;
+    }
+
+
+
+    a {
+        color: var(--anchorColor);
+        outline: 0;
+        text-decoration: none;
+    }
+
+        a:focus,
+        a:hover {
+            text-decoration: underline;
+        }
+
+    /* modules/form.css */
+
+
+
+    input, select {
+        background-image: none;
+        border: 0;
+        color: black;
+        font: inherit;
+        margin: 0;
+        outline: 0;
+        padding: 0;
+        transition: background-color 0.3s;
+    }
+
+        input[type="submit"] {
+            cursor: pointer;
+        }
+
+        input[type="file"] {
+            color: inherit !important;
+        }
+
+        input[type="number"], select {
+            background-image: none;
+            border: 0;
+            color: black;
+            font: inherit;
+            margin: 0;
+            outline: 0;
+            padding: 0;
+            transition: background-color 0.3s;
+        }
+
+    .form {
+        display: grid;
+        gap: var(--formGap);
+    }
+
+        .form input[type="password"],
+        .form input[type="text"],
+        .form input[type="submit"],
+        .form input[type="number"],
+        .form select {
+            inline-size: 100%;
+        }
+
+    .form__field {
+        display: flex;
+        transition: all 0.3s ease-in-out !important;
+    }
+
+  
+
+    .login {
+        color: var(--loginColor);
+    }
+
+        .login label,
+        .login input[type="text"],
+        .login input[type="password"],
+        .login input[type="submit"],
+        .login input[type="number"],
+        .login select {
+            border-radius: var(--loginBorderRadus);
+            padding: 1rem;
+        }
+
+        .login label {
+            background-color: var(--loginLabelBackgroundColor);
+            border-bottom-right-radius: 0;
+            border-top-right-radius: 0;
+            padding-inline: 1.25rem;
+        }
+
+        .login input[type="password"],
+        .login input[type="text"],
+        .login input[type="number"],
+        .login select {
+            /* background-color: var(--loginInputBackgroundColor); */
+            border-bottom-left-radius: 0;
+            border-top-left-radius: 1px;
+        }
+
+         /*    .login input[type="password"]:focus,
+            .login input[type="password"]:hover,
+            .login input[type="text"]:focus,
+            .login input[type="text"]:hover,
+            .login input[type="number"]:focus,
+            .login input[type="number"]:hover,
+            .login select:focus,
+            .login select:hover {
+                background-color: var(--loginInputHoverBackgroundColor);
+            } */
+
+        .login input[type="submit"] {
+            background-color: var(--loginSubmitBackgroundColor);
+            color: var(--loginSubmitColor);
+            font-weight: 700;
+            text-transform: uppercase;
+            border-radius:5px;
+        }
+
+           /*  .login input[type="submit"]:focus,
+            .login input[type="submit"]:hover {
+                background-color: var(--loginSubmitHoverBackgroundColor);
+            }
+ */
+    /* modules/text.css */
+
+    p {
+        margin-block: 1.5rem;
+    }
+
+    .text--center {
+        text-align: center;
+    }
+
+    /*added by atul*/
+
+    .input-container {
+        width: 100%;
+        position: relative;
+    }
+
+  /*   .form__input {
+        width: 100%;
+    } */
+
+   
+
+        .login__input:focus,
+        .login__input:hover {
+            /* background-color: var(--loginInputHoverBackgroundColor); */
+        }
+
+
+  /*   .modal-backdrop {
         backdrop-filter: blur(1px);
         background-color: rgba(0, 0, 0, 0.5);
         z-index: 1040 !important;
-    }
+    } */
 
-    .modal {
-        z-index: 1050 !important;
-    }
 
-    .is-invalid {
-        border-color: #dc3545;
-    }
+ /*    .is-invalid {
+        border-color: #ffffff;
+    } */
 
-    .text-danger {
-        color: #dc3545;
-    }
+   /*  .text-danger {
+        color: #ffffff;
+    } */
 </style>
 
-<body style="background-color: var(--bodyBackgroundColor); color: var(--bodyColor); font-family: var(--bodyFontFamily), var(--bodyFontFamilyFallback); font-size: var(--bodyFontSize); font-weight: var(--bodyFontWeight); line-height: var(--bodyLineHeight); margin: 0; min-block-size: 100vh;">
+<body>
     <div class="grid">
-        <h1 class="page-title">Register Here !!!</h1>
-        @if (TempData["Batch_Check"] == null)
+       
+        @if (TempData["Batch_Check"] != null)
         {
             <form asp-action="Register" method="post" class="form login" enctype="multipart/form-data" id="registerForm">
+                <h1 class="page-title">Register Here !!!</h1>
                 <div class="form__field">
                     <div>
                         <label for="login__firstname" class="d-flex align-items-center">
@@ -141,7 +370,7 @@
 
 
                 <div class="form__field">
-                    <input type="submit" value="Sign Up">
+                    <input type="submit" style="background: #11d3be;" value="Sign Up">
                 </div>
             </form>
         }
@@ -185,21 +414,4 @@
         </div>
     }
 
-
-    <style>
-        .page-title {
-            text-align: center;
-            font-size: 2em;
-            margin-top: 40px;
-            color: var(--titleColor, white); /* fallback color in case CSS variable is not defined */
-        }
-
-        .grid {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 35px;
-        }
-    </style>
 </body>
