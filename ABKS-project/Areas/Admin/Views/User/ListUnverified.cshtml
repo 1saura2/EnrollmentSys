@@ -141,7 +141,7 @@
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                                <form id="acceptForm_@user.UserId" asp-area="Admin" asp-controller="Home" asp-action="AcceptUser" method="post">
+                                                <form id="acceptForm_@user.UserId" asp-area="Admin" asp-controller="User" asp-action="AcceptUser" method="post">
                                                     <input type="hidden" name="userId" value="@user.UserId" />
                                                     <button type="submit" class="btn btn-success"> Accept</button>
                                                 </form>
@@ -165,7 +165,7 @@
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                                <form asp-area="Admin" asp-controller="Home" asp-action="RejectUser" method="post">
+                                                <form asp-area="Admin" asp-controller="User" asp-action="RejectUser" method="post">
                                                     <input type="hidden" name="userId" value="@user.UserId" />
                                                     <button type="submit" class="btn btn-danger"> Reject</button>
                                                 </form>
