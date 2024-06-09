@@ -9,6 +9,6 @@ namespace ABKS_project.Repositories
         Task<ShoppingCart> GetUserCart();
         Task<int> GetCartItemCount(string userId = "");
         Task<ShoppingCart> GetCart(string userId);
-       
+        Task<bool> DoCheckout(Checkout model);
     }
 }

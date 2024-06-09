@@ -18,6 +18,9 @@ namespace ABKS_project.Areas.Ecommerce.Models
 
         public virtual DbSet<CartDetail> CartDetails { get; set; } = null!;
         public virtual DbSet<Checkout> Checkouts { get; set; } = null!;
+        public virtual DbSet<Order> Orders { get; set; } = null!;
+        public virtual DbSet<OrderDetail> OrderDetails { get; set; } = null!;
+        public virtual DbSet<OrderStatus> OrderStatuses { get; set; } = null!;
         public virtual DbSet<Product> Products { get; set; } = null!;
         public virtual DbSet<ProductCategory> ProductCategories { get; set; } = null!;
         public virtual DbSet<ShoppingCart> ShoppingCarts { get; set; } = null!;
@@ -36,8 +39,6 @@ namespace ABKS_project.Areas.Ecommerce.Models
             modelBuilder.Entity<CartDetail>(entity =>
             {
                 entity.ToTable("CartDetail");
-
-                entity.Property(e => e.UnitPrice).HasColumnType("decimal(18, 2)");
 
                 entity.HasOne(d => d.Product)
                     .WithMany(p => p.CartDetails)
@@ -69,6 +70,50 @@ namespace ABKS_project.Areas.Ecommerce.Models
                 entity.Property(e => e.PaymentMethod).HasMaxLength(50);
             });
 
+            modelBuilder.Entity<Order>(entity =>
+            {
+                entity.ToTable("Order");
+
+                entity.Property(e => e.Address).HasMaxLength(200);
+
+                entity.Property(e => e.CreateDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getutcdate())");
+
+                entity.Property(e => e.Email).HasMaxLength(30);
+
+                entity.Property(e => e.Name).HasMaxLength(30);
+
+                entity.Property(e => e.PaymentMethod).HasMaxLength(30);
+            });
+
+            modelBuilder.Entity<OrderDetail>(entity =>
+            {
+                entity.ToTable("OrderDetail");
+
+                entity.HasOne(d => d.Order)
+                    .WithMany(p => p.OrderDetails)
+                    .HasForeignKey(d => d.OrderId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_OrderDetail_Order");
+
+                entity.HasOne(d => d.Product)
+                    .WithMany(p => p.OrderDetails)
+                    .HasForeignKey(d => d.ProductId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_OrderDetail_Products");
+            });
+
+            modelBuilder.Entity<OrderStatus>(entity =>
+            {
+                entity.ToTable("OrderStatus");
+
+                entity.HasIndex(e => e.StatusId, "UC_OrderStatus_StatusId")
+                    .IsUnique();
+
+                entity.Property(e => e.StatusName).HasMaxLength(20);
+            });
+
             modelBuilder.Entity<Product>(entity =>
             {
                 entity.Property(e => e.ProductDescription).HasColumnType("text");
@@ -80,8 +125,6 @@ namespace ABKS_project.Areas.Ecommerce.Models
                 entity.Property(e => e.ProductName)
                     .HasMaxLength(255)
                     .IsUnicode(false);
-
-                entity.Property(e => e.ProductPrice).HasColumnType("decimal(10, 2)");
 
                 entity.HasOne(d => d.ProductCategory)
                     .WithMany(p => p.Products)

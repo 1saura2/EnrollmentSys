@@ -77,7 +77,7 @@ namespace ABKS_project.Areas.Admin.Controllers
                     var product = new Product
                     {
                         ProductName = model.ProductName,
-                        ProductPrice = model.ProductPrice,
+                        ProductPrice = (double)model.ProductPrice,
                         ProductDescription = model.ProductDescription,
                         ProductImg = fileName,
                         ProductCategoryId = model.ProductCategoryId,
