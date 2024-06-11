@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace ABKS_project.Repositories
@@ -102,7 +103,7 @@ namespace ABKS_project.Repositories
         }
         public async Task<ShoppingCart> GetUserCart()
         {
-            var userId = GetUserId();
+            string userId = GetUserId();
             if (userId == null)
                 throw new InvalidOperationException("Invalid userid");
             var shoppingCart = await _db.ShoppingCarts
@@ -212,7 +213,7 @@ namespace ABKS_project.Repositories
         }
         private string GetUserId()
         {
-            return _httpContextAccessor.HttpContext?.Session.GetString("UserId");
+            return _httpContextAccessor.HttpContext.User.FindFirstValue("UserId");
         }
 
     }

@@ -85,20 +85,27 @@ namespace ABKS_project.Controllers
                     {
                         var claims = new[]
                         {
-                    new Claim(ClaimTypes.Role, userType)
+                    new Claim(ClaimTypes.Name, userFromDb.Email),
+                    new Claim(ClaimTypes.Role, userType),
+                    new Claim("UserId", myuser.UserId.ToString())
                 };
                         var claimsIdentity = new ClaimsIdentity(
                             claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
                         var authProperties = new AuthenticationProperties
                         {
-                            IsPersistent = true // persist cookie after browser is closed
+                            IsPersistent = true,
+                            ExpiresUtc = DateTime.UtcNow.AddMinutes(30) 
                         };
+
                         HttpContext.SignInAsync(
                             CookieAuthenticationDefaults.AuthenticationScheme,
                             new ClaimsPrincipal(claimsIdentity),
                             authProperties);
 
-                        HttpContext.Session.SetString("UserId", myuser.UserId.ToString());
+                     
+/*                        HttpContext.Session.SetString("UserId", myuser.UserId.ToString());
+                        HttpContext.Session.SetInt32("UserIdExpire", 30);*/
 
                         return RedirectToAction("RedirectToDashboard");
                     }
@@ -108,6 +115,7 @@ namespace ABKS_project.Controllers
             TempData["Login_Check"] = "Login User Not Found!";
             return View();
         }
+
 
 
 
@@ -126,6 +134,10 @@ namespace ABKS_project.Controllers
 
         public IActionResult Register()
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("RedirectToDashboard");
+            }
             var lastBatch = _context.Batches.OrderByDescending(b => b.BatchId).FirstOrDefault();
             if (lastBatch != null && lastBatch.IsActive==false)
             {
@@ -270,12 +282,15 @@ namespace ABKS_project.Controllers
 
         public IActionResult Logout()
         {
+           
             HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 
+           
             HttpContext.Session.Clear();
 
             return RedirectToAction("Login");
         }
+
 
         public IActionResult Product()
         {
