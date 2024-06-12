@@ -322,7 +322,24 @@ namespace ABKS_project.Areas.Admin.Controllers
             return RedirectToAction("ListActive"); 
         }
 
+        public async Task<IActionResult> ManageAttendance()
+        {
+            var activeBatch = await _context.Batches
+                .Where(b => b.IsActive==true)
+                .FirstOrDefaultAsync();
 
+            if (activeBatch == null)
+            {
+                return NotFound();
+            }
+
+            var usersInBatch = await _context.UserBatches
+                .Where(ub => ub.BatchId == activeBatch.BatchId)
+                .Select(ub => ub.User)
+                .ToListAsync();
+
+            return View(usersInBatch);
+        }
 
 
 

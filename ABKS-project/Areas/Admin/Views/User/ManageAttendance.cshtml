@@ -1,0 +1,48 @@
+﻿@model IEnumerable<ABKS_project.Models.User>
+
+<h1 class="mb-4">Manage Attendance</h1>
+
+<form method="post" asp-action="UpdateAttendance">
+    <div class="form-group">
+        <label for="attendanceDate">Attendance Date:</label>
+        <input type="date" id="attendanceDate" name="attendanceDate" class="form-control" />
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Attendance</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in Model)
+            {
+                <tr>
+                    <td>@user.FirstName @user.LastName</td>
+                    <td>@user.Email</td>
+                    <td>
+                        <input type="hidden" name="userId" value="@user.UserId" />
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" name="attendanceStatus[@user.UserId]" value="true" />
+                            <label class="form-check-label" data-on="Present" data-off="Absent">Absent</label>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <button type="submit" class="btn btn-primary">Submit Attendance</button>
+</form>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('.form-check-input').change(function () {
+                var isChecked = $(this).prop('checked');
+                var label = $(this).siblings('label');
+                label.text(isChecked ? 'Present' : 'Absent');
+            });
+        });
+    </script>
+}
