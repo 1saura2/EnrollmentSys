@@ -21,7 +21,6 @@ var provider = builder.Services.BuildServiceProvider();
 var config = provider.GetRequiredService<IConfiguration>();
 
 builder.Services.AddTransient<ICartRepository, CartRepository>();
-builder.Services.AddTransient<IUserOrderRepository, UserOrderRepository>();
 builder.Services.AddDbContext<abksContext>(item => item.UseSqlServer(config.GetConnectionString("abks_db")));
 builder.Services.AddDbContext<productContext>(item => item.UseSqlServer(config.GetConnectionString("abks_db")));
 builder.Services.AddHttpContextAccessor();
