@@ -8,6 +8,7 @@ namespace ABKS_project.Areas.Ecommerce.Models
         public Order()
         {
             OrderDetails = new HashSet<OrderDetail>();
+            OrderStatus = new HashSet<OrderStatus>();
         }
 
         public int Id { get; set; }
@@ -23,5 +24,6 @@ namespace ABKS_project.Areas.Ecommerce.Models
         public bool IsPaid { get; set; }
 
         public virtual ICollection<OrderDetail> OrderDetails { get; set; }
+        public virtual ICollection<OrderStatus> OrderStatus { get; set; }
     }
 }
