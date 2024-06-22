@@ -46,68 +46,76 @@
     .pagination {
         margin-top: 20px;
     }
+
+    .custom-select {
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 140 140" xmlns="http://www.w3.org/2000/svg"><polygon points="0,0 140,0 70,70" fill="black"/></svg>') no-repeat right 10px center;
+        background-size: 10px;
+        padding-right: 30px;
+    }
 </style>
 
 <h1>Admin Operations</h1>
 
 <div class="table-responsive">
-<table class="table table-striped">
-    <thead class="thead-dark">
-        <tr>
-            <th>Order ID</th>
-            <th>Create Date</th>
-            <th>Status</th>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Mobile Number</th>
-            <th>Address</th>
-            <th>Payment Method</th>
-            <th>Is Paid</th>
-            <th>Update Status</th>
-            <th>Update Payment</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var order in Model)
-        {
+    <table class="table table-striped">
+        <thead class="thead-dark">
             <tr>
-                <td>@order.Id</td>
-                <td>@order.CreateDate</td>
-                <td>@order.OrderStatus.StatusName</td>
-                <td>@order.Name</td>
-                <td>@order.Email</td>
-                <td>@order.MobileNumber</td>
-                <td>@order.Address</td>
-                <td>@order.PaymentMethod</td>
-                <td>@(order.IsPaid ? "Paid" : "Not Paid")</td>
-                <td>
-                    <form asp-controller="OrderManagement" asp-action="UpdateStatus" method="post">
-                        <input type="hidden" name="orderId" value="@order.Id" />
-                        <select name="orderStatusId" class="form-control">
-                            @if (ViewBag.OrderStatuses != null)
-                            {
-                                @foreach (var status in ViewBag.OrderStatuses as List<OrderStatus>)
-                                {
-                                    <option value="@status.Id">@status.StatusName</option>
-                                }
-                            }
-                        </select>
-                        <button type="submit" class="btn btn-primary">Update Status</button>
-                    </form>
-                </td>
-                <td>
-                    <form asp-controller="OrderManagement" asp-action="UpdatePayment" method="post">
-                        <input type="hidden" name="orderId" value="@order.Id" />
-                        <select name="isPaid" class="form-control">
-                            <option value="true">Paid</option>
-                            <option value="false">Not Paid</option>
-                        </select>
-                        <button type="submit" class="btn btn-primary">Update Payment</button>
-                    </form>
-                </td>
+                <th>Order ID</th>
+                <th>Create Date</th>
+                <th>Status</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Mobile Number</th>
+                <th>Address</th>
+                <th>Payment Method</th>
+                <th>Is Paid</th>
+                <th>Update Status</th>
+                <th>Update Payment</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var order in Model)
+            {
+                <tr>
+                    <td>@order.Id</td>
+                    <td>@order.CreateDate</td>
+                    <td>@order.OrderStatus.StatusName</td>
+                    <td>@order.Name</td>
+                    <td>@order.Email</td>
+                    <td>@order.MobileNumber</td>
+                    <td>@order.Address</td>
+                    <td>@order.PaymentMethod</td>
+                    <td>@(order.IsPaid ? "Paid" : "Not Paid")</td>
+                    <td>
+                        <form asp-controller="OrderManagement" asp-action="UpdateStatus" method="post">
+                            <input type="hidden" name="orderId" value="@order.Id" />
+                            <select name="orderStatusId" class="form-control custom-select">
+                                @if (ViewBag.OrderStatuses != null)
+                                {
+                                    @foreach (var status in ViewBag.OrderStatuses as List<OrderStatus>)
+                                    {
+                                        <option value="@status.Id">@status.StatusName</option>
+                                    }
+                                }
+                            </select>
+                            <button type="submit" class="btn btn-primary">Update Status</button>
+                        </form>
+                    </td>
+                    <td>
+                        <form asp-controller="OrderManagement" asp-action="UpdatePayment" method="post">
+                            <input type="hidden" name="orderId" value="@order.Id" />
+                            <select name="isPaid" class="form-control custom-select">
+                                <option value="true">Paid</option>
+                                <option value="false">Not Paid</option>
+                            </select>
+                            <button type="submit" class="btn btn-primary">Update Payment</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
 </div>
-
