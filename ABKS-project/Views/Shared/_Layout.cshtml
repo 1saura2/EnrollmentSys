@@ -56,6 +56,7 @@
                         <span id="cartCount" class="badge text-bg-info">0</span>
                         <i class="bi bi-cart text-white ms-2"></i>
                     </a>
+                    <a class="nav-link" asp-area="Ecommerce" asp-controller="UserOrder" asp-action="GetOrdersByUserId">My Orders</a>
                 }
 
                 @if (User.Identity.IsAuthenticated)

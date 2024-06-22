@@ -1,0 +1,81 @@
+﻿@using ABKS_project.Areas.Ecommerce.Models
+@model IEnumerable<Order>
+
+@{
+    ViewData["Title"] = "Your Orders";
+}
+
+<h1>Your Orders</h1>
+
+<table class="table table-striped">
+    
+        <tr>
+            <th>Order ID</th>
+            <th>Create Date</th>
+            <th>Status</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Mobile Number</th>
+            <th>Address</th>
+            <th>Payment Method</th>
+            <th>Is Paid</th>
+            <th>Total</th>
+            <th>Details</th>
+        </tr>
+ 
+    <tbody>
+        @foreach (var order in Model)
+        {
+            var orderTotal = order.OrderDetails.Sum(od => od.Quantity * od.UnitPrice);
+
+            <tr>
+                <td>@order.Id</td>
+                <td>@order.CreateDate</td>
+                <td>@order.OrderStatus.StatusName</td>
+                <td>@order.Name</td>
+                <td>@order.Email</td>
+                <td>@order.MobileNumber</td>
+                <td>@order.Address</td>
+                <td>@order.PaymentMethod</td>
+                <td>@order.IsPaid</td>
+                <td>Rs @orderTotal.ToString("N2")</td>
+                <td>
+                    <button class="btn btn-info" type="button" data-toggle="collapse" data-target="#details-@order.Id" aria-expanded="false" aria-controls="details-@order.Id">
+                        View Details
+                    </button>
+                </td>
+            </tr>
+            <tr class="collapse" id="details-@order.Id">
+                <td colspan="11">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Product Name</th>
+                                <th>Quantity</th>
+                                <th>Unit Price</th>
+                                <th>Subtotal</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var detail in order.OrderDetails)
+                            {
+                                <tr>
+                                    <td>@detail.Product.ProductName</td>
+                                    <td>@detail.Quantity</td>
+                                    <td>Rs @detail.UnitPrice</td>
+                                    <td>Rs @(detail.Quantity * detail.UnitPrice)</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- Ensure Bootstrap JS and CSS are included -->
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

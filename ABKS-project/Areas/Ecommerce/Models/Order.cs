@@ -23,5 +23,6 @@ namespace ABKS_project.Areas.Ecommerce.Models
         public bool IsPaid { get; set; }
 
         public virtual ICollection<OrderDetail> OrderDetails { get; set; }
+        public virtual OrderStatus OrderStatus { get; set; } = null!;
     }
 }
