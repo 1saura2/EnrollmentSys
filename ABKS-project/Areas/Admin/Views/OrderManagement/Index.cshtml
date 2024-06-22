@@ -1,0 +1,113 @@
+﻿@using ABKS_project.Areas.Ecommerce.Models
+@model List<Order>
+<style>
+    h2 {
+        font-weight: 600;
+        font-size: 1.5rem;
+        color: #0e2238;
+    }
+
+    .table-responsive {
+        padding: 0px;
+    }
+
+    .table {
+        border-collapse: collapse;
+        width: 100%;
+        background-color: #fff;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+        .table thead th {
+            background-color: #0e2238;
+            color: #fff;
+            font-weight: 600;
+            text-align: center;
+            vertical-align: middle;
+            padding: 12px;
+        }
+
+        .table tbody tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+
+        .table tbody tr:hover {
+            background-color: #e9ecef;
+        }
+
+        .table tbody td {
+            text-align: center;
+            vertical-align: middle;
+            padding: 12px;
+        }
+
+    .pagination {
+        margin-top: 20px;
+    }
+</style>
+
+<h1>Admin Operations</h1>
+
+<div class="table-responsive">
+<table class="table table-striped">
+    <thead class="thead-dark">
+        <tr>
+            <th>Order ID</th>
+            <th>Create Date</th>
+            <th>Status</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Mobile Number</th>
+            <th>Address</th>
+            <th>Payment Method</th>
+            <th>Is Paid</th>
+            <th>Update Status</th>
+            <th>Update Payment</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var order in Model)
+        {
+            <tr>
+                <td>@order.Id</td>
+                <td>@order.CreateDate</td>
+                <td>@order.OrderStatus.StatusName</td>
+                <td>@order.Name</td>
+                <td>@order.Email</td>
+                <td>@order.MobileNumber</td>
+                <td>@order.Address</td>
+                <td>@order.PaymentMethod</td>
+                <td>@(order.IsPaid ? "Paid" : "Not Paid")</td>
+                <td>
+                    <form asp-controller="OrderManagement" asp-action="UpdateStatus" method="post">
+                        <input type="hidden" name="orderId" value="@order.Id" />
+                        <select name="orderStatusId" class="form-control">
+                            @if (ViewBag.OrderStatuses != null)
+                            {
+                                @foreach (var status in ViewBag.OrderStatuses as List<OrderStatus>)
+                                {
+                                    <option value="@status.Id">@status.StatusName</option>
+                                }
+                            }
+                        </select>
+                        <button type="submit" class="btn btn-primary">Update Status</button>
+                    </form>
+                </td>
+                <td>
+                    <form asp-controller="OrderManagement" asp-action="UpdatePayment" method="post">
+                        <input type="hidden" name="orderId" value="@order.Id" />
+                        <select name="isPaid" class="form-control">
+                            <option value="true">Paid</option>
+                            <option value="false">Not Paid</option>
+                        </select>
+                        <button type="submit" class="btn btn-primary">Update Payment</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+</div>
+
