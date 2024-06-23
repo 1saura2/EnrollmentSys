@@ -74,6 +74,7 @@
                 <th>Is Paid</th>
                 <th>Update Status</th>
                 <th>Update Payment</th>
+                <th>Delete Order</th>
             </tr>
         </thead>
         <tbody>
@@ -112,6 +113,12 @@
                                 <option value="false">Not Paid</option>
                             </select>
                             <button type="submit" class="btn btn-primary">Update Payment</button>
+                        </form>
+                    </td>
+                    <td>
+                        <form asp-controller="OrderManagement" asp-action="DeleteOrder" method="post" onsubmit="return confirm('Are you sure you want to delete this order?');">
+                            <input type="hidden" name="orderId" value="@order.Id" />
+                            <button type="submit" class="btn btn-danger">Delete</button>
                         </form>
                     </td>
                 </tr>

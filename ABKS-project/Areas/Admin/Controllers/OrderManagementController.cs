@@ -52,6 +52,29 @@ namespace ABKS_project.Areas.Admin.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+        [HttpPost]
+        public IActionResult DeleteOrder(int orderId)
+        {
+            // Find the order and related order details
+            var order = _context.Orders.Include(o => o.OrderDetails).FirstOrDefault(o => o.Id == orderId);
+
+            if (order != null)
+            {
+                // Remove related order details first
+                foreach (var orderDetail in order.OrderDetails)
+                {
+                    _context.OrderDetails.Remove(orderDetail);
+                }
+
+                // Remove the order
+                _context.Orders.Remove(order);
+                _context.SaveChanges();
+            }
+
+            return RedirectToAction("Index"); // Redirect back to the orders list
+        }
+
+
     }
 }
 
