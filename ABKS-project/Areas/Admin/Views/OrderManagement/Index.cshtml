@@ -115,11 +115,33 @@
                             <button type="submit" class="btn btn-primary">Update Payment</button>
                         </form>
                     </td>
-                    <td>
-                        <form asp-controller="OrderManagement" asp-action="DeleteOrder" method="post" onsubmit="return confirm('Are you sure you want to delete this order?');">
-                            <input type="hidden" name="orderId" value="@order.Id" />
-                            <button type="submit" class="btn btn-danger">Delete</button>
-                        </form>
+                   <td>
+                        <div class="action-buttons">
+                            <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal_@order.Id">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </div>
+
+                        <div class="modal fade" id="deleteModal_@order.Id" tabindex="-1" aria-labelledby="deleteModalLabel_@order.Id" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header bg-danger text-white">
+                                        <h5 class="modal-title" id="deleteModalLabel_@order.Id">Delete Order</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p><b>Are you sure you want to delete the order for:</b> <i>@order.Name</i>?</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                        <form asp-controller="OrderManagement" asp-action="DeleteOrder" method="post">
+                                            <input type="hidden" name="orderId" value="@order.Id" />
+                                            <button type="submit" class="btn btn-danger">Delete</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </td>
                 </tr>
             }
