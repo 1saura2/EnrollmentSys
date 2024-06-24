@@ -37,7 +37,7 @@
                 <td>@order.MobileNumber</td>
                 <td>@order.Address</td>
                 <td>@order.PaymentMethod</td>
-                <td>@order.IsPaid</td>
+                <td>@(order.IsPaid ? "Paid" : "Not Paid")</td>
                 <td>Rs @orderTotal.ToString("N2")</td>
                 <td>
                     <button class="btn btn-info" type="button" data-toggle="collapse" data-target="#details-@order.Id" aria-expanded="false" aria-controls="details-@order.Id">
