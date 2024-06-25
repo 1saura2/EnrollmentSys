@@ -10,7 +10,6 @@
 <table class="table table-hover table-bordered">
     <thead class="thead-dark">
         <tr>
-            <th><i class="fas fa-hashtag"></i> Order ID</th>
             <th><i class="fas fa-calendar-alt"></i> Create Date</th>
             <th><i class="fas fa-info-circle"></i> Status</th>
             <th><i class="fas fa-user"></i> Name</th>
@@ -29,7 +28,6 @@
             var orderTotal = order.OrderDetails.Sum(od => od.Quantity * od.UnitPrice);
 
             <tr>
-               
                 <td>@order.CreateDate</td>
                 <td>@order.OrderStatus.StatusName</td>
                 <td>@order.Name</td>
