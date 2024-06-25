@@ -97,25 +97,47 @@ namespace ABKS_project.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> DeleteProduct(int productId)
         {
-            var product = await _context.Products.FindAsync(productId);
+            var product = await _context.Products
+                .Include(p => p.OrderDetails)  // Include related OrderDetails
+                .Include(p => p.CartDetails)   // Include related CartDetails
+                .FirstOrDefaultAsync(p => p.ProductId == productId);
 
-            if (product != null)
+            if (product == null)
             {
-                if (!string.IsNullOrEmpty(product.ProductImg))
-                {
-                    string filePath = Path.Combine(_env.WebRootPath, "Images/Products", product.ProductImg);
-
-                    if (System.IO.File.Exists(filePath))
-                    {
-                        System.IO.File.Delete(filePath);
-                    }
-                }
-
-                _context.Products.Remove(product);
-                await _context.SaveChangesAsync();
+                return NotFound();
             }
+
+            // Delete related OrderDetails first
+            if (product.OrderDetails != null && product.OrderDetails.Any())
+            {
+                _context.OrderDetails.RemoveRange(product.OrderDetails);
+            }
+
+            // Delete related CartDetails first
+            if (product.CartDetails != null && product.CartDetails.Any())
+            {
+                _context.CartDetails.RemoveRange(product.CartDetails);
+            }
+
+            // Delete the product image file if it exists
+            if (!string.IsNullOrEmpty(product.ProductImg))
+            {
+                string filePath = Path.Combine(_env.WebRootPath, "Images/Products", product.ProductImg);
+
+                if (System.IO.File.Exists(filePath))
+                {
+                    System.IO.File.Delete(filePath);
+                }
+            }
+
+            // Remove the product from the database
+            _context.Products.Remove(product);
+            await _context.SaveChangesAsync();
 
             return RedirectToAction(nameof(ListProduct));
         }
+
+
+
     }
 }
