@@ -19,7 +19,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
 </head>
 <body>
-    <header id="header" class="header d-flex align-items-center">
+    <header id="header" class="header d-flex align-items-center" style="min-height:10vh;">
         <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
             <a href="index" class="logo d-flex align-items-center">
                 <img src="~/assets/img/Aim_Gurkha.svg" alt="BKAS Training" style="max-height: 80px; margin-left: -55px;">
@@ -84,12 +84,12 @@
         </div>
     </header>
     <div class="zero">
-        <main role="main" class="pb-3" sty>
+        <main role="main" class="pb-3" style="min-height:70vh;">
             @RenderBody()
         </main>
     </div>
 
-    <footer id="footer" class="footer">
+    <footer id="footer" class="footer" style="min-height:20vh;">
         <div class="container">
             <div class="row gy-4">
                 <div class="col-lg-5 col-md-12 footer-info">
