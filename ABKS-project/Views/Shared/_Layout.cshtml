@@ -26,7 +26,7 @@
             </a>
 
             <nav class="navbar" id="navbar">
-                <ul class="d-flex align-items-center" style="text-decoration:none">
+                <ul class="menu d-flex align-items-center justify-content-center" style="text-decoration: none;">
                     <li><a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
                     @if (User.IsInRole("User"))
                     {
@@ -49,7 +49,7 @@
                 </ul>
             </nav>
 
-            <div class="d-flex align-items-center">
+            <div class="login d-flex align-items-center">
                 @if (User.IsInRole("User"))
                 {
                     <a class="nav-link d-flex align-items-center" asp-area="Ecommerce" asp-controller="Home" asp-action="GetUserCart">
@@ -83,6 +83,7 @@
             <i class="mobile-nav-toggle mobile-nav-hide d-none bi bi-x"></i>
         </div>
     </header>
+
     <div class="zero">
         <main role="main" class="pb-3">
             @RenderBody()

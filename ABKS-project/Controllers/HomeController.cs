@@ -88,7 +88,7 @@ namespace ABKS_project.Controllers
                     {
                         var claims = new[]
                         {
-                    new Claim(ClaimTypes.Name, userFromDb.Email),
+                    new Claim(ClaimTypes.Email, userFromDb.Email),
                     new Claim(ClaimTypes.Role, userType),
                     new Claim("UserId", myuser.UserId.ToString())
                 };
