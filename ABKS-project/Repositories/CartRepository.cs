@@ -160,7 +160,7 @@ namespace ABKS_project.Repositories
                 var order = new Order
                 {
                     UserId = userId,
-                    CreateDate = DateTime.UtcNow,
+                    CreateDate = DateTime.Now,
                     Name = model.Name,
                     Email = model.Email,
                     MobileNumber = model.MobileNumber,
