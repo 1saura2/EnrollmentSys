@@ -138,7 +138,7 @@ namespace ABKS_project.Areas.Admin.Controllers
         }
 
 
-        [HttpGet]
+ 
         public async Task<IActionResult> EditProduct(int id)
         {
             var product = await _context.Products.FindAsync(id);
@@ -166,8 +166,7 @@ namespace ABKS_project.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> EditProduct(EditProductViewModel model)
         {
-            if (ModelState.IsValid)
-            {
+            
                 var product = await _context.Products.FindAsync(model.ProductId);
                 if (product == null)
                 {
@@ -206,11 +205,6 @@ namespace ABKS_project.Areas.Admin.Controllers
                 _context.Update(product);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(ListProduct));
-            }
-
-            var categories = _context.ProductCategories.ToList();
-            ViewBag.Categories = categories;
-            return View(model); // Use EditProduct view
         }
 
 

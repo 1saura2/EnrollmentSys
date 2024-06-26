@@ -2,7 +2,7 @@
 {
     public enum PaymentMethods
     {
-        COD = 1,
+        CashOnDelivery = 1,
         Online
     }
 }
