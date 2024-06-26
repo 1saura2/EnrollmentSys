@@ -5,20 +5,21 @@
     ViewData["Title"] = "Your Orders";
 }
 
-<h1>Your Orders</h1>
 
-<table class="table table-hover table-bordered">
+<div class="myorders" style="margin: 0 100px;">
+    <h1 style="margin: 15px;">Your Orders</h1>
+<table class="table table-hover table-bordered text-center">
     <thead class="thead-dark">
         <tr>
-            <th><i class="fas fa-calendar-alt"></i> Create Date</th>
+            <th><i class=""></i> Create Date</th>
             <th><i class="fas fa-info-circle"></i> Status</th>
             <th><i class="fas fa-user"></i> Name</th>
-            <th><i class="fas fa-envelope"></i> Email</th>
-            <th><i class="fas fa-phone"></i> Mobile Number</th>
+            @* <th><i class="fas fa-envelope"></i> Email</th>
+            <th><i class="fas fa-phone"></i> Mobile Number</th> *@
             <th><i class="fas fa-map-marker-alt"></i> Address</th>
             <th><i class="fas fa-credit-card"></i> Payment Method</th>
-            <th><i class="fas fa-check"></i> Is Paid</th>
-            <th><i class="fas fa-rupee-sign"></i> Total</th>
+            @* <th><i class="fas fa-check"></i> Is Paid</th> *@
+           @*  <th><i class="fas fa-rupee-sign"></i> Total</th> *@
             <th><i class="fas fa-info-circle"></i> Details</th>
         </tr>
     </thead>
@@ -31,12 +32,12 @@
                 <td>@order.CreateDate</td>
                 <td>@order.OrderStatus.StatusName</td>
                 <td>@order.Name</td>
-                <td>@order.Email</td>
-                <td>@order.MobileNumber</td>
+                @* <td>@order.Email</td>
+                <td>@order.MobileNumber</td> *@
                 <td>@order.Address</td>
                 <td>@order.PaymentMethod</td>
-                <td>@(order.IsPaid ? "Paid" : "Not Paid")</td>
-                <td>Rs @orderTotal.ToString("N2")</td>
+                @* <td>@(order.IsPaid ? "Paid" : "Not Paid")</td>
+                <td>Rs @orderTotal.ToString("N2")</td> *@
                 <td>
                     <button class="btn btn-info" type="button" data-toggle="collapse" data-target="#details-@order.Id" aria-expanded="false" aria-controls="details-@order.Id">
                         View Details
@@ -75,6 +76,7 @@
         }
     </tbody>
 </table>
+</div>
 
 <!-- Ensure Bootstrap and FontAwesome CSS and JS are included -->
 <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
