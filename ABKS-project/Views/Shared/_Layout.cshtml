@@ -26,7 +26,7 @@
             </a>
 
             <nav class="navbar" id="navbar">
-                <ul class="menu d-flex align-items-center justify-content-center" style="text-decoration: none;">
+                <ul class="d-flex align-items-center" style="text-decoration:none">
                     <li><a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
                     @if (User.IsInRole("User"))
                     {
@@ -49,7 +49,7 @@
                 </ul>
             </nav>
 
-            <div class="login d-flex align-items-center">
+            <div class="d-flex align-items-center">
                 @if (User.IsInRole("User"))
                 {
                     <a class="nav-link d-flex align-items-center" asp-area="Ecommerce" asp-controller="Home" asp-action="GetUserCart">
@@ -63,10 +63,10 @@
                 {
                     <div class="dropdown ms-3">
                         <a class="text-white dropdown-toggle d-flex align-items-center" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="bi bi-person-circle me-2"></i>
-                            <span>@User.Identity.Name</span>
+                            <i class="bi bi-person-circle me-2" style="color:black;"></i>
+                            <span style=" color:black;">@User.Identity.Name</span>
                         </a>
-                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown" style=" color: var(--color-primary);">
                             <li><a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="Profile"><i class="bi bi-person"></i> Profile</a></li>
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="Logout"><i class="bi bi-box-arrow-right"></i> Logout</a></li>
@@ -79,13 +79,12 @@
                 }
             </div>
 
-            <i class="mobile-nav-toggle mobile-nav-show bi bi-list"></i>
-            <i class="mobile-nav-toggle mobile-nav-hide d-none bi bi-x"></i>
+            <i class="mobile-nav-toggle mobile-nav-show bi bi-list" style=" color: black"></i>
+            <i class="mobile-nav-toggle mobile-nav-hide d-none bi bi-x"  style=" color: black"></i>
         </div>
     </header>
-
     <div class="zero">
-        <main role="main" class="pb-3">
+        <main role="main" class="pb-3" sty>
             @RenderBody()
         </main>
     </div>

@@ -17,7 +17,7 @@
 @if (TempData["Email_Confirmation_Message"] != null)
 {
     <div class="alert alert-info" role="alert">
-        TempData["Email_Confirmation_Message"]
+        @TempData["Email_Confirmation_Message"]
     </div>
 }
 
@@ -200,16 +200,6 @@
             border-top-left-radius: 1px;
         }
 
-         /*    .login input[type="password"]:focus,
-            .login input[type="password"]:hover,
-            .login input[type="text"]:focus,
-            .login input[type="text"]:hover,
-            .login input[type="number"]:focus,
-            .login input[type="number"]:hover,
-            .login select:focus,
-            .login select:hover {
-                background-color: var(--loginInputHoverBackgroundColor);
-            } */
 
         .login input[type="submit"] {
             background-color: var(--loginSubmitBackgroundColor);
@@ -219,11 +209,7 @@
             border-radius:5px;
         }
 
-           /*  .login input[type="submit"]:focus,
-            .login input[type="submit"]:hover {
-                background-color: var(--loginSubmitHoverBackgroundColor);
-            }
- */
+        
     /* modules/text.css */
 
     p {
@@ -241,32 +227,9 @@
         position: relative;
     }
 
-  /*   .form__input {
-        width: 100%;
-    } */
-
-   
-
-        .login__input:focus,
-        .login__input:hover {
-            /* background-color: var(--loginInputHoverBackgroundColor); */
-        }
 
 
-  /*   .modal-backdrop {
-        backdrop-filter: blur(1px);
-        background-color: rgba(0, 0, 0, 0.5);
-        z-index: 1040 !important;
-    } */
 
-
- /*    .is-invalid {
-        border-color: #ffffff;
-    } */
-
-   /*  .text-danger {
-        color: #ffffff;
-    } */
 </style>
 
 <body>
