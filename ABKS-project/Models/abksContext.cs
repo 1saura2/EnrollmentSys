@@ -27,22 +27,20 @@ namespace ABKS_project.Models
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
-            {  }
+            { }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Attendance>(entity =>
             {
-                entity.ToTable("Attendance");
-
                 entity.Property(e => e.AttendanceDate).HasColumnType("date");
 
-                entity.HasOne(d => d.User)
+                entity.HasOne(d => d.UserBatch)
                     .WithMany(p => p.Attendances)
-                    .HasForeignKey(d => d.UserId)
+                    .HasForeignKey(d => d.UserBatchId)
                     .OnDelete(DeleteBehavior.Cascade)
-                    .HasConstraintName("FK_Attendance_Users");
+                    .HasConstraintName("FK_Attendances_UserBatch");
             });
 
             modelBuilder.Entity<Batch>(entity =>
@@ -112,6 +110,12 @@ namespace ABKS_project.Models
             modelBuilder.Entity<UserBatch>(entity =>
             {
                 entity.ToTable("UserBatch");
+
+                entity.HasOne(d => d.Batch)
+                    .WithMany(p => p.UserBatches)
+                    .HasForeignKey(d => d.BatchId)
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .HasConstraintName("FK_UserBatch_Batches");
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.UserBatches)

@@ -15,6 +15,7 @@ using System.Security.Claims;
 using BCrypt.Net;
 using Newtonsoft.Json;
 using ABKS_project.Models.MetaData;
+using ABKS_project.Utilities;
 
 namespace ABKS_project.Controllers
 {
@@ -22,11 +23,13 @@ namespace ABKS_project.Controllers
     {
         private readonly abksContext _context;
         private readonly IWebHostEnvironment _env;
+        private readonly EmailService _emailService;
 
-        public HomeController(abksContext context, IWebHostEnvironment env)
+        public HomeController(abksContext context, IWebHostEnvironment env, EmailService emailService)
         {
             _context = context;
             _env = env;
+            _emailService = emailService;
         }
 
         public IActionResult Index()
@@ -200,7 +203,11 @@ namespace ABKS_project.Controllers
 
                 string encodedUser = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(serializedUser));
 
-                SendVerificationEmail(usr.Email, encodedUser);
+                _emailService.SendEmail(usr.Email, "Registration Confirmation",
+                $"Please confirm your registration by clicking this <a href=\"{Url.Action("ConfirmEmail", "Home", new { encodedUser }, Request.Scheme)}\">link</a>.");
+
+
+                /*SendVerificationEmail(usr.Email, encodedUser);*/
 
                 TempData["Email_Confirmation_Message"] = "Please check your email for registration confirmation.";
 
@@ -255,7 +262,7 @@ namespace ABKS_project.Controllers
             return RedirectToAction("Register");
         }
 
-        private void SendVerificationEmail(string userEmail, string encodedUser)
+/*        private void SendVerificationEmail(string userEmail, string encodedUser)
         {
             string smtpServer = "smtp.gmail.com";
             int port = 587;
@@ -278,7 +285,7 @@ namespace ABKS_project.Controllers
 
                 client.Send(mailMessage);
             }
-        }
+        }*/
 
         public IActionResult Logout()
         {

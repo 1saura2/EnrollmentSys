@@ -14,6 +14,13 @@
     </div>
 }
 
+@if (TempData["Email_Confirmation_Message"] != null)
+{
+    <div class="alert alert-info" role="alert">
+        TempData["Email_Confirmation_Message"]
+    </div>
+}
+
 <style>
    
 
@@ -394,7 +401,7 @@
     </div>
 
     @* Popup for Email Confirmation Message *@
-    @if (TempData["Email_Confirmation_Message"] != null)
+@*     @if (TempData["Email_Confirmation_Message"] != null)
     {
         <div class="modal fade show" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true" style="display: block;">
             <div class="modal-dialog">
@@ -412,6 +419,6 @@
                 </div>
             </div>
         </div>
-    }
+    } *@
 
 </body>

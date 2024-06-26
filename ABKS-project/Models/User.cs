@@ -7,7 +7,6 @@ namespace ABKS_project.Models
     {
         public User()
         {
-            Attendances = new HashSet<Attendance>();
             Credentials = new HashSet<Credential>();
             UserBatches = new HashSet<UserBatch>();
         }
@@ -23,7 +22,6 @@ namespace ABKS_project.Models
         public bool? IsVerified { get; set; }
         public bool? IsActive { get; set; }
 
-        public virtual ICollection<Attendance> Attendances { get; set; }
         public virtual ICollection<Credential> Credentials { get; set; }
         public virtual ICollection<UserBatch> UserBatches { get; set; }
     }

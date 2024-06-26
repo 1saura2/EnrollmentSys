@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.Extensions.Configuration;
 using ABKS_project.Areas.Ecommerce.Models;
 using ABKS_project.Repositories;
+using ABKS_project.Utilities;
 
 
 
@@ -24,6 +25,7 @@ builder.Services.AddTransient<ICartRepository, CartRepository>();
 builder.Services.AddDbContext<abksContext>(item => item.UseSqlServer(config.GetConnectionString("abks_db")));
 builder.Services.AddDbContext<productContext>(item => item.UseSqlServer(config.GetConnectionString("abks_db")));
 builder.Services.AddHttpContextAccessor();
+builder.Services.AddTransient<EmailService>();
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
