@@ -1,0 +1,66 @@
+﻿@model ABKS_project.Areas.Ecommerce.ViewModels.EditProductViewModel
+@{
+    ViewData["Title"] = "Edit Product";
+    var categories = ViewBag.Categories as List<ABKS_project.Areas.Ecommerce.Models.ProductCategory>;
+}
+<div class="container text-start" style="font-family: 'Roboto', sans-serif;">
+    <div class="card form-box">
+        <h1 class="card-header" style="font-size: 1.5rem;">@ViewData["Title"]</h1>
+        <div class="card-body">
+            <form asp-action="EditProduct" method="post" enctype="multipart/form-data">
+                <input type="hidden" asp-for="ProductId" />
+                <div class="form-group mb-3">
+                    <label asp-for="ProductName" class="form-label" style="font-size: 1rem;">Product Name</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="bi bi-card-list"></i></span>
+                        <input asp-for="ProductName" class="form-control" placeholder="Enter product name" required>
+                    </div>
+                    <span asp-validation-for="ProductName" class="text-danger"></span>
+                </div>
+                <div class="form-group mb-3">
+                    <label asp-for="ProductPrice" class="form-label" style="font-size: 1rem;">Product Price</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="bi bi-currency-rupee"></i></span>
+                        <input asp-for="ProductPrice" type="number" class="form-control" placeholder="Enter product price" required>
+                    </div>
+                    <span asp-validation-for="ProductPrice" class="text-danger"></span>
+                </div>
+                <div class="form-group mb-3">
+                    <label asp-for="ProductDescription" class="form-label" style="font-size: 1rem;">Product Description</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="bi bi-card-text"></i></span>
+                        <textarea asp-for="ProductDescription" class="form-control" rows="3" placeholder="Enter product description"></textarea>
+                    </div>
+                    <span asp-validation-for="ProductDescription" class="text-danger"></span>
+                </div>
+                <div class="form-group mb-3">
+                    <label asp-for="Photo" class="form-label" style="font-size: 1rem;">Product Image</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="bi bi-image"></i></span>
+                        <input asp-for="Photo" type="file" class="form-control custom-file-input">
+                    </div>
+                    @if (Model.ExistingPhotoPath != null)
+                    {
+                        <img src="~/Images/Products/@Model.ExistingPhotoPath" class="img-thumbnail mt-2" width="100" height="100" />
+                    }
+                    <span asp-validation-for="Photo" class="text-danger"></span>
+                </div>
+                <div class="form-group mb-3">
+                    <label asp-for="ProductCategoryId" class="form-label" style="font-size: 1rem;">Product Category</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="bi bi-tags"></i></span>
+                        <select asp-for="ProductCategoryId" asp-items="@categories.Select(category => new SelectListItem { Value = category.ProductCategoryId.ToString(), Text = category.CategoryName })" class="form-control" required>
+                            <option value="">Select category</option>
+                        </select>
+                    </div>
+                    <span asp-validation-for="ProductCategoryId" class="text-danger"></span>
+                </div>
+                <div class="form-group form-check mb-3">
+                    <input asp-for="InStock" class="form-check-input" type="checkbox" checked>
+                    <label asp-for="InStock" class="form-check-label" style="font-size: 1rem;">In Stock</label>
+                </div>
+                <button type="submit" class="btn btn-primary" style="font-size: 1rem;">Save Changes</button>
+            </form>
+        </div>
+    </div>
+</div>

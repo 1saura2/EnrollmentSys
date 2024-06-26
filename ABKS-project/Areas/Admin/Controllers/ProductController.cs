@@ -138,6 +138,82 @@ namespace ABKS_project.Areas.Admin.Controllers
         }
 
 
+        [HttpGet]
+        public async Task<IActionResult> EditProduct(int id)
+        {
+            var product = await _context.Products.FindAsync(id);
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            var viewModel = new EditProductViewModel
+            {
+                ProductId = product.ProductId,
+                ProductName = product.ProductName,
+                ProductPrice = (decimal)product.ProductPrice,
+                ProductDescription = product.ProductDescription,
+                ExistingPhotoPath = product.ProductImg,
+                ProductCategoryId = product.ProductCategoryId,
+                InStock = (bool)product.InStock
+            };
+
+            var categories = _context.ProductCategories.ToList();
+            ViewBag.Categories = categories;
+            return View(viewModel); // Use EditProduct view
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditProduct(EditProductViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var product = await _context.Products.FindAsync(model.ProductId);
+                if (product == null)
+                {
+                    return NotFound();
+                }
+
+                product.ProductName = model.ProductName;
+                product.ProductPrice = (double)model.ProductPrice;
+                product.ProductDescription = model.ProductDescription;
+                product.ProductCategoryId = model.ProductCategoryId;
+                product.InStock = model.InStock;
+
+                if (model.Photo != null)
+                {
+                    string folder = Path.Combine(_env.WebRootPath, "Images/Products");
+                    string fileName = Guid.NewGuid().ToString() + "_" + model.Photo.FileName;
+                    string filePath = Path.Combine(folder, fileName);
+
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await model.Photo.CopyToAsync(stream);
+                    }
+
+                    if (!string.IsNullOrEmpty(model.ExistingPhotoPath))
+                    {
+                        string existingFilePath = Path.Combine(folder, model.ExistingPhotoPath);
+                        if (System.IO.File.Exists(existingFilePath))
+                        {
+                            System.IO.File.Delete(existingFilePath);
+                        }
+                    }
+
+                    product.ProductImg = fileName;
+                }
+
+                _context.Update(product);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(ListProduct));
+            }
+
+            var categories = _context.ProductCategories.ToList();
+            ViewBag.Categories = categories;
+            return View(model); // Use EditProduct view
+        }
+
+
 
     }
 }
