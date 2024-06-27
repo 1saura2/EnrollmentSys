@@ -1,14 +1,20 @@
 ﻿@using ABKS_project.Areas.Ecommerce.Models
 @model List<Order>
+
 <style>
-    h2 {
-        font-weight: 600;
-        font-size: 1.5rem;
+    h1 {
+        font-weight: bold;
+        font-size: 2rem;
         color: #0e2238;
+        border-bottom: 3px solid #0e2238;
+        padding-bottom: 10px;
+        margin-bottom: 20px;
     }
 
     .table-responsive {
         padding: 0px;
+        overflow-y: auto;
+        height: 600px; /* Set a height to enable scrolling */
     }
 
     .table {
@@ -18,6 +24,7 @@
         border-radius: 8px;
         overflow: hidden;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
     }
 
         .table thead th {
@@ -26,8 +33,17 @@
             font-weight: 600;
             text-align: center;
             vertical-align: middle;
-            padding: 12px;
+            padding: 15px;
+            position: sticky;
+            top: 0;
+            z-index: 1;
         }
+
+            .table thead th i {
+                display: inline-block;
+                margin-right: 5px;
+                vertical-align: middle;
+            }
 
         .table tbody tr:nth-child(even) {
             background-color: #f8f9fa;
@@ -43,9 +59,14 @@
             padding: 12px;
         }
 
-    .pagination {
-        margin-top: 20px;
+    .btn-primary {
+        background-color: #0e2238;
+        border: none;
     }
+
+        .btn-primary:hover {
+            background-color: #0c1c31;
+        }
 
     .custom-select {
         appearance: none;
@@ -54,7 +75,35 @@
         background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 140 140" xmlns="http://www.w3.org/2000/svg"><polygon points="0,0 140,0 70,70" fill="black"/></svg>') no-repeat right 10px center;
         background-size: 10px;
         padding-right: 30px;
+        width: 150px;
     }
+
+        .custom-select.form-control {
+            display: inline-block;
+        }
+
+    .btn-sm {
+        padding: 5px 10px;
+    }
+
+    .action-buttons .btn {
+        margin-right: 5px;
+    }
+
+    .form-inline {
+        display: flex;
+        align-items: center;
+    }
+
+        .form-inline .form-control {
+            margin-right: 10px;
+            width: auto;
+            flex: 1;
+        }
+
+        .form-inline button {
+            flex-shrink: 0;
+        }
 </style>
 
 <h1>Admin Operations</h1>
@@ -63,25 +112,23 @@
     <table class="table table-striped">
         <thead class="thead-dark">
             <tr>
-                
-                <th>Create Date</th>
-                <th>Status</th>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Mobile Number</th>
-                <th>Address</th>
-                <th>Payment Method</th>
-                <th>Is Paid</th>
-                <th>Update Status</th>
-                <th>Update Payment</th>
-                <th>Delete Order</th>
+                <th class="text-center"><i class="fas fa-calendar-alt"></i><br /> Create Date</th>
+                <th class="text-center"><i class="fas fa-info-circle"></i><br /> Status</th>
+                <th class="text-center"><i class="fas fa-user"></i><br /> Name</th>
+                <th class="text-center"><i class="fas fa-envelope"></i><br /> Email</th>
+                <th class="text-center"><i class="fas fa-phone"></i><br /> Mobile Number</th>
+                <th class="text-center"><i class="fas fa-map-marker-alt"></i><br /> Address</th>
+                <th class="text-center"><i class="fas fa-credit-card"></i><br /> Payment Method</th>
+                <th class="text-center"><i class="fas fa-check"></i><br /> Is Paid</th>
+                <th class="text-center"><i class="fas fa-edit"></i><br /> Update Status</th>
+                <th class="text-center"><i class="fas fa-money-check-alt"></i><br /> Update Payment</th>
+                <th class="text-center"><i class="fas fa-trash-alt"></i><br /> Delete Order</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var order in Model)
             {
                 <tr>
-                   
                     <td>@order.CreateDate</td>
                     <td>@order.OrderStatus.StatusName</td>
                     <td>@order.Name</td>
@@ -91,7 +138,7 @@
                     <td>@order.PaymentMethod</td>
                     <td>@(order.IsPaid ? "Paid" : "Not Paid")</td>
                     <td>
-                        <form asp-controller="OrderManagement" asp-action="UpdateStatus" method="post">
+                        <form class="form-inline" asp-controller="OrderManagement" asp-action="UpdateStatus" method="post">
                             <input type="hidden" name="orderId" value="@order.Id" />
                             <select name="orderStatusId" class="form-control custom-select">
                                 @if (ViewBag.OrderStatuses != null)
@@ -102,23 +149,27 @@
                                     }
                                 }
                             </select>
-                            <button type="submit" class="btn btn-primary">Update Status</button>
+                            <button type="submit" class="btn btn-primary btn-sm">
+                                <i class="fas fa-edit"></i> Update
+                            </button>
                         </form>
                     </td>
                     <td>
-                        <form asp-controller="OrderManagement" asp-action="UpdatePayment" method="post">
+                        <form class="form-inline" asp-controller="OrderManagement" asp-action="UpdatePayment" method="post">
                             <input type="hidden" name="orderId" value="@order.Id" />
                             <select name="isPaid" class="form-control custom-select">
                                 <option value="true">Paid</option>
                                 <option value="false">Not Paid</option>
                             </select>
-                            <button type="submit" class="btn btn-primary">Update Payment</button>
+                            <button type="submit" class="btn btn-primary btn-sm">
+                                <i class="fas fa-money-check-alt"></i> Update
+                            </button>
                         </form>
                     </td>
-                   <td>
+                    <td>
                         <div class="action-buttons">
                             <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal_@order.Id">
-                                <i class="bi bi-trash"></i>
+                                <i class="fas fa-trash-alt"></i>
                             </button>
                         </div>
 
@@ -148,3 +199,10 @@
         </tbody>
     </table>
 </div>
+
+<!-- Ensure Bootstrap and FontAwesome CSS and JS are included -->
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
