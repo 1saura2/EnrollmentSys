@@ -41,6 +41,20 @@
         .list-group-item img {
             margin-right: 15px;
         }
+
+    .alert-warning {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 1000;
+        padding: 20px; /* Increase padding for bigger size */
+        width: 300px; /* Set a width for the card */
+        background-color: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+        border-radius: 5px;
+    }
 </style>
 
 <!-- ======= Product Section ======= -->
@@ -49,9 +63,7 @@
 
         <div class="section-header">
             <h2>Our Products</h2>
-            <p>
-                Gear up with our high-quality gear, stylish clothes, and essential accessories for any adventure. From durable backpacks to versatile activewear,
-                we've got what you need to conquer the outdoors in comfort and style. Shop now and gear up confidently for your next journey.
+            <p>Gear up with our high-quality gear, stylish clothes, and essential accessories for any adventure. From durable backpacks to versatile activewear, we've got what you need to conquer the outdoors in comfort and style. Shop now and gear up confidently for your next journey.</p>
         </div>
 
         <div class="portfolio-isotope" data-portfolio-filter="*" data-portfolio-layout="masonry" data-portfolio-sort="original-order" data-aos="fade-up" data-aos-delay="100">
@@ -111,6 +123,8 @@
     </div>
 </div>
 
+<div id="loginMessage">Please login first!!</div>
+
 @section Scripts {
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
@@ -118,7 +132,20 @@
             var isLoggedIn = '@User.Identity.IsAuthenticated'.toLowerCase() === 'true';
 
             if (!isLoggedIn) {
-                window.location.href = "/Home/Login";
+                // Blur background
+                $('body').addClass('blur-background');
+
+                // Display warning message
+                var warningMessage = $('<div class="alert alert-warning text-center" role="alert" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1000; padding: 20px; width: 300px;">Please Login First!!</div>');
+                $('body').append(warningMessage);
+
+                // Remove blur and warning message after 1 second
+                setTimeout(function () {
+                    $('body').removeClass('blur-background');
+                    warningMessage.remove();
+                    // Redirect to login page
+                    window.location.href = "/Home/Login";
+                }, 1000);
                 return;
             }
 
@@ -150,7 +177,20 @@
 
             $('#checkoutButton').on('click', function () {
                 if (!isLoggedIn) {
-                    window.location.href = "/Home/Login";
+                    // Blur background
+                    $('body').addClass('blur-background');
+
+                    // Display warning message
+                    var warningMessage = $('<div class="alert alert-warning text-center" role="alert" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1000; padding: 20px; width: 300px;">Please Login First!!!</div>');
+                    $('body').append(warningMessage);
+
+                    // Remove blur and warning message after 1 second
+                    setTimeout(function () {
+                        $('body').removeClass('blur-background');
+                        warningMessage.remove();
+                        // Redirect to login page
+                        window.location.href = "/Home/Login";
+                    }, 1000);
                 } else {
                     alert('Proceed to checkout');
                 }
