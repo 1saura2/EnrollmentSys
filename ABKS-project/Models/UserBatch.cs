@@ -13,7 +13,7 @@ namespace ABKS_project.Models
 
         public int UserBatchId { get; set; }
         public Guid? UserId { get; set; }
-        public int? BatchId { get; set; }
+        public int BatchId { get; set; }
 
         public virtual Batch? Batch { get; set; }
         public virtual User? User { get; set; }
