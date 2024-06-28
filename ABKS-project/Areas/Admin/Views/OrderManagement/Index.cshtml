@@ -1,197 +1,111 @@
 ﻿@using ABKS_project.Areas.Ecommerce.Models
 @model List<Order>
 
-<style>
-    h1 {
-        font-weight: bold;
-        font-size: 2rem;
-        color: #0e2238;
-        border-bottom: 3px solid #0e2238;
-        padding-bottom: 10px;
-        margin-bottom: 20px;
-    }
-
-    .table-responsive {
-        padding: 0px;
-        overflow-y: auto;
-        height: 600px; /* Set a height to enable scrolling */
-    }
-
-    .table {
-        border-collapse: collapse;
-        width: 100%;
-        background-color: #fff;
-        border-radius: 8px;
-        overflow: hidden;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        margin-bottom: 20px;
-    }
-
-        .table thead th {
-            background-color: #0e2238;
-            color: #fff;
-            font-weight: 600;
-            text-align: center;
-            vertical-align: middle;
-            padding: 15px;
-            position: sticky;
-            top: 0;
-            z-index: 1;
-        }
-
-            .table thead th i {
-                display: inline-block;
-                margin-right: 5px;
-                vertical-align: middle;
-            }
-
-        .table tbody tr:nth-child(even) {
-            background-color: #f8f9fa;
-        }
-
-        .table tbody tr:hover {
-            background-color: #e9ecef;
-        }
-
-        .table tbody td {
-            text-align: center;
-            vertical-align: middle;
-            padding: 12px;
-        }
-
-    .btn-primary {
-        background-color: #0e2238;
-        border: none;
-    }
-
-        .btn-primary:hover {
-            background-color: #0c1c31;
-        }
-
-    .custom-select {
-        appearance: none;
-        -webkit-appearance: none;
-        -moz-appearance: none;
-        background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 140 140" xmlns="http://www.w3.org/2000/svg"><polygon points="0,0 140,0 70,70" fill="black"/></svg>') no-repeat right 10px center;
-        background-size: 10px;
-        padding-right: 30px;
-        width: 150px;
-    }
-
-        .custom-select.form-control {
-            display: inline-block;
-        }
-
-    .btn-sm {
-        padding: 5px 10px;
-    }
-
-    .action-buttons .btn {
-        margin-right: 5px;
-    }
-
-    .form-inline {
-        display: flex;
-        align-items: center;
-    }
-
-        .form-inline .form-control {
-            margin-right: 10px;
-            width: auto;
-            flex: 1;
-        }
-
-        .form-inline button {
-            flex-shrink: 0;
-        }
-</style>
-
 <h1>Admin Operations</h1>
 
 <div class="table-responsive">
-    <table class="table table-striped">
+    <table class="table table-striped table-bordered rounded">
         <thead class="thead-dark">
             <tr>
-                <th class="text-center"><i class="fas fa-calendar-alt"></i><br /> Create Date</th>
-                <th class="text-center"><i class="fas fa-info-circle"></i><br /> Status</th>
-                <th class="text-center"><i class="fas fa-user"></i><br /> Name</th>
-                <th class="text-center"><i class="fas fa-envelope"></i><br /> Email</th>
-                <th class="text-center"><i class="fas fa-phone"></i><br /> Mobile Number</th>
-                <th class="text-center"><i class="fas fa-map-marker-alt"></i><br /> Address</th>
-                <th class="text-center"><i class="fas fa-credit-card"></i><br /> Payment Method</th>
-                <th class="text-center"><i class="fas fa-check"></i><br /> Is Paid</th>
-                <th class="text-center"><i class="fas fa-edit"></i><br /> Update Status</th>
-                <th class="text-center"><i class="fas fa-money-check-alt"></i><br /> Update Payment</th>
-                <th class="text-center"><i class="fas fa-trash-alt"></i><br /> Delete Order</th>
+                <th class="text-center align-middle">Create Date <i class="fas fa-calendar-alt"></i></th>
+                <th class="text-center align-middle">Status <i class="fas fa-info-circle"></i></th>
+                <th class="text-center align-middle">Name <i class="fas fa-user"></i></th>
+                <th class="text-center align-middle">Email <i class="fas fa-envelope"></i></th>
+                <th class="text-center align-middle">Mobile Number <i class="fas fa-phone"></i></th>
+                <th class="text-center align-middle">Address <i class="fas fa-map-marker-alt"></i></th>
+                <th class="text-center align-middle">Payment Method <i class="fas fa-credit-card"></i></th>
+                <th class="text-center align-middle">Is Paid <i class="fas fa-money-bill-wave"></i></th>
+                <th class="text-center align-middle">Actions <i class="fas fa-cogs"></i></th>
             </tr>
         </thead>
         <tbody>
             @foreach (var order in Model)
             {
                 <tr>
-                    <td>@order.CreateDate</td>
-                    <td>@order.OrderStatus.StatusName</td>
-                    <td>@order.Name</td>
-                    <td>@order.Email</td>
-                    <td>@order.MobileNumber</td>
-                    <td>@order.Address</td>
-                    <td>@order.PaymentMethod</td>
-                    <td>@(order.IsPaid ? "Paid" : "Not Paid")</td>
-                    <td>
-                        <form class="form-inline" asp-controller="OrderManagement" asp-action="UpdateStatus" method="post">
-                            <input type="hidden" name="orderId" value="@order.Id" />
-                            <select name="orderStatusId" class="form-control custom-select">
-                                @if (ViewBag.OrderStatuses != null)
-                                {
-                                    @foreach (var status in ViewBag.OrderStatuses as List<OrderStatus>)
-                                    {
-                                        <option value="@status.Id">@status.StatusName</option>
-                                    }
-                                }
-                            </select>
-                            <button type="submit" class="btn btn-primary btn-sm">
-                                <i class="fas fa-edit"></i> Update
-                            </button>
-                        </form>
+                    <td class="align-middle">@order.CreateDate</td>
+                    <td class="align-middle">@order.OrderStatus.StatusName</td>
+                    <td class="align-middle">@order.Name</td>
+                    <td class="align-middle">@order.Email</td>
+                    <td class="align-middle">@order.MobileNumber</td>
+                    <td class="align-middle">@order.Address</td>
+                    <td class="align-middle">@order.PaymentMethod</td>
+                    <td class="align-middle">@(order.IsPaid ? "Paid" : "Not Paid")</td>
+                    <td class="align-middle">
+                        <button class="btn btn-primary btn-sm" data-toggle="collapse" data-target="#details_@order.Id">
+                            <i class="fas fa-edit"></i> Update Detail
+                        </button>
                     </td>
-                    <td>
-                        <form class="form-inline" asp-controller="OrderManagement" asp-action="UpdatePayment" method="post">
-                            <input type="hidden" name="orderId" value="@order.Id" />
-                            <select name="isPaid" class="form-control custom-select">
-                                <option value="true">Paid</option>
-                                <option value="false">Not Paid</option>
-                            </select>
-                            <button type="submit" class="btn btn-primary btn-sm">
-                                <i class="fas fa-money-check-alt"></i> Update
-                            </button>
-                        </form>
-                    </td>
-                    <td>
-                        <div class="action-buttons">
-                            <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal_@order.Id">
-                                <i class="fas fa-trash-alt"></i>
-                            </button>
-                        </div>
-
-                        <div class="modal fade" id="deleteModal_@order.Id" tabindex="-1" aria-labelledby="deleteModalLabel_@order.Id" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header bg-danger text-white">
-                                        <h5 class="modal-title" id="deleteModalLabel_@order.Id">Delete Order</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <p><b>Are you sure you want to delete the order for:</b> <i>@order.Name</i>?</p>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                        <form asp-controller="OrderManagement" asp-action="DeleteOrder" method="post">
-                                            <input type="hidden" name="orderId" value="@order.Id" />
-                                            <button type="submit" class="btn btn-danger">Delete</button>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
+                </tr>
+                <tr>
+                    <td colspan="9" class="p-0">
+                        <div id="details_@order.Id" class="collapse">
+                            <table class="table table-bordered mb-0">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th class="text-center">Update Status <i class="fas fa-sync"></i></th>
+                                        <th class="text-center">Update Payment <i class="fas fa-money-check"></i></th>
+                                        <th class="text-center">Delete Order <i class="fas fa-trash-alt"></i></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="align-middle">
+                                            <form class="form-inline" asp-controller="OrderManagement" asp-action="UpdateStatus" method="post">
+                                                <input type="hidden" name="orderId" value="@order.Id" />
+                                                <select name="orderStatusId" class="form-control custom-select">
+                                                    @if (ViewBag.OrderStatuses != null)
+                                                    {
+                                                        @foreach (var status in ViewBag.OrderStatuses as List<OrderStatus>)
+                                                        {
+                                                            <option value="@status.Id">@status.StatusName</option>
+                                                        }
+                                                    }
+                                                </select>
+                                                <button type="submit" class="btn btn-primary btn-sm">
+                                                    <i class="fas fa-edit"></i> Update Status
+                                                </button>
+                                            </form>
+                                        </td>
+                                        <td class="align-middle">
+                                            <form class="form-inline" asp-controller="OrderManagement" asp-action="UpdatePayment" method="post">
+                                                <input type="hidden" name="orderId" value="@order.Id" />
+                                                <select name="isPaid" class="form-control custom-select">
+                                                    <option value="true">Paid</option>
+                                                    <option value="false">Not Paid</option>
+                                                </select>
+                                                <button type="submit" class="btn btn-primary btn-sm">
+                                                    <i class="fas fa-money-check-alt"></i> Update Payment
+                                                </button>
+                                            </form>
+                                        </td>
+                                        <td class="align-middle">
+                                            <form asp-controller="OrderManagement" asp-action="DeleteOrder" method="post">
+                                                <input type="hidden" name="orderId" value="@order.Id" />
+                                                <button type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#deleteModal_@order.Id">
+                                                    <i class="fas fa-trash-alt"></i> Delete Order
+                                                </button>
+                                                <div class="modal fade" id="deleteModal_@order.Id" tabindex="-1" aria-labelledby="deleteModalLabel_@order.Id" aria-hidden="true">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header bg-danger text-white">
+                                                                <h5 class="modal-title" id="deleteModalLabel_@order.Id">Delete Order</h5>
+                                                                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <p><b>Are you sure you want to delete the order for:</b> <i>@order.Name</i>?</p>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                                                <button type="submit" class="btn btn-danger">Delete</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </td>
                 </tr>
