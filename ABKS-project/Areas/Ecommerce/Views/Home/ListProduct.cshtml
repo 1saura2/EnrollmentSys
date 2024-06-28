@@ -132,14 +132,14 @@
             var isLoggedIn = '@User.Identity.IsAuthenticated'.toLowerCase() === 'true';
 
             if (!isLoggedIn) {
-                // Blur background
+                // Blur and dim background
                 $('body').addClass('blur-background');
 
                 // Display warning message
-                var warningMessage = $('<div class="alert alert-warning text-center" role="alert" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1000; padding: 20px; width: 300px;">Please Login First!!</div>');
+                var warningMessage = $('<div class="alert alert-warning text-center" role="alert">Please Login First!!</div>');
                 $('body').append(warningMessage);
 
-                // Remove blur and warning message after 1 second
+                // Remove blur and dim effect, and warning message after 1 second
                 setTimeout(function () {
                     $('body').removeClass('blur-background');
                     warningMessage.remove();
@@ -177,14 +177,14 @@
 
             $('#checkoutButton').on('click', function () {
                 if (!isLoggedIn) {
-                    // Blur background
+                    // Blur and dim background
                     $('body').addClass('blur-background');
 
                     // Display warning message
-                    var warningMessage = $('<div class="alert alert-warning text-center" role="alert" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1000; padding: 20px; width: 300px;">Please Login First!!!</div>');
+                    var warningMessage = $('<div class="alert alert-warning text-center" role="alert">Please Login First!!!</div>');
                     $('body').append(warningMessage);
 
-                    // Remove blur and warning message after 1 second
+                    // Remove blur and dim effect, and warning message after 1 second
                     setTimeout(function () {
                         $('body').removeClass('blur-background');
                         warningMessage.remove();
@@ -198,3 +198,4 @@
         });
     </script>
 }
+
