@@ -1,211 +1,48 @@
-﻿@model IEnumerable<ABKS_project.ViewModels.UserAttendanceViewModel>
+﻿@model IEnumerable<ABKS_project.Models.User>
 
-<style>
-    * {
-        box-sizing: border-box;
-    }
+<h1 class="mb-4">Manage Attendance</h1>
 
-    html, body {
-        height: 100%;
-    }
-
-    body {
-        margin: 0;
-        background: #ffffff;
-        color: #0e2238;
-        font-family: "Cambria";
-    }
-
-    h2 {
-        font-weight: 600;
-        font-size: 1.5rem;
-        color: #0e2238;
-        text-align: center;
-    }
-
-    .table-responsive {
-        padding: 0px;
-    }
-
-    .table {
-        border-collapse: collapse;
-        width: 100%;
-        background-color: #fff;
-        border-radius: 8px;
-        overflow: hidden;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
-
-        .table thead th {
-            background-color: #0e2238;
-            color: #fff;
-            font-weight: 600;
-            text-align: center;
-            vertical-align: middle;
-            padding: 12px;
-        }
-
-        .table tbody tr:nth-child(even) {
-            background-color: #f8f9fa;
-        }
-
-        .table tbody tr:hover {
-            background-color: #e9ecef;
-        }
-
-        .table tbody td {
-            text-align: center;
-            vertical-align: middle;
-            padding: 12px;
-        }
-
-    .search-form {
-        display: flex;
-        justify-content: end;
-        align-items: center;
-        margin-bottom: 10px;
-        position: relative;
-    }
-
-        .search-form .form-control {
-            width: 200px;
-        }
-
-    .attendance-date {
-        position: absolute;
-        left: 20px;
-        top: 0;
-    }
-
-    /* Custom Switch Styles */
-    .switch {
-        position: relative;
-        display: inline-block;
-        width: 60px;
-        height: 34px;
-    }
-
-        .switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-
-    .slider {
-        position: absolute;
-        cursor: pointer;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background-color: red;
-        transition: .4s;
-        border-radius: 34px;
-    }
-
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 26px;
-            width: 26px;
-            left: 4px;
-            bottom: 4px;
-            background-color: white;
-            transition: .4s;
-            border-radius: 50%;
-        }
-
-    input:checked + .slider {
-        background-color:green;
-    }
-
-        input:checked + .slider:before {
-            transform: translateX(26px);
-        }
-</style>
-
-<h2 class="text-center"><i class="bi bi-people"></i> Manage Attendance</h2>
-
-<div class="search-form">
-    <div class="attendance-date mb-3">
+<form method="post" asp-action="UpdateAttendance">
+    <div class="form-group">
         <label for="attendanceDate">Attendance Date:</label>
-        <input type="date" id="attendanceDate" name="attendanceDate" required>
+        <input type="date" id="attendanceDate" name="attendanceDate" class="form-control" />
     </div>
-    <form method="get" asp-controller="User" asp-action="ManageAttendance" class="d-flex">
-        <input class="form-control form-control-sm me-2" type="search" name="search" placeholder="Search" aria-label="Search" value="@ViewBag.CurrentFilter">
-        <button class="btn btn-outline-success" type="submit">Search</button>
-    </form>
-</div>
-
-<div class="table-responsive mt-5">
-    <form id="attendanceForm" method="post" asp-controller="User" asp-action="SaveAttendanceBatch">
-        <input type="hidden" id="hiddenAttendanceDate" name="attendanceDate" value="">
-        <table class="table table-striped table-hover">
-            <thead class="bg-primary text-white">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Attendance</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in Model)
+            {
                 <tr>
-                    <th>#</th>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Present</th>
+                    <td>@user.FirstName @user.LastName</td>
+                    <td>@user.Email</td>
+                    <td>
+                        <input type="hidden" name="userId" value="@user.UserId" />
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" name="attendanceStatus[@user.UserId]" value="true" />
+                            <label class="form-check-label" data-on="Present" data-off="Absent">Absent</label>
+                        </div>
+                    </td>
                 </tr>
-            </thead>
-            <tbody>
-                @{
-                    int index = 0;
-                    foreach (var userAttendance in Model)
-                    {
-                        <tr>
-                            <td>@(index + 1)</td>
-                            <td>@userAttendance.FirstName @userAttendance.LastName</td>
-                            <td>@userAttendance.Email</td>
-                            <td>
-                                <input type="hidden" name="attendances[@index].UserId" value="@userAttendance.UserId" />
-                                <!-- Hidden input to maintain default false value -->
-                                <input type="hidden" name="attendances[@index].IsPresent" value="false" />
-                                <!-- Toggle switch -->
-                                <label class="switch">
-                                    <input type="checkbox" id="toggle-@index" class="attendance-toggle" name="attendances[@index].IsPresent" @(userAttendance.IsPresent ? "checked" : "") />
-                                    <span class="slider"></span>
-                                </label>
-                            </td>
-                        </tr>
-                        index++;
-                    }
-                }
-            </tbody>
-        </table>
-
-        <div class="d-flex justify-content-end mt-3">
-            <button id="saveAttendanceBtn" type="submit" class="btn btn-primary">Save Attendance</button>
-        </div>
-    </form>
-</div>
+            }
+        </tbody>
+    </table>
+    <button type="submit" class="btn btn-primary">Submit Attendance</button>
+</form>
 
 @section Scripts {
     <script>
-        // Update hidden input value when toggle is changed
-        document.addEventListener('DOMContentLoaded', function () {
-            const toggleSwitches = document.querySelectorAll('.attendance-toggle');
-
-            toggleSwitches.forEach((toggle, index) => {
-                toggle.addEventListener('change', function () {
-                    // Update hidden input value based on toggle state
-                    const hiddenInput = document.querySelector(`input[name="attendances[${index}].IsPresent"]`);
-                    hiddenInput.value = this.checked ? 'true' : 'false';
-
-                    // Optional: Add/remove class for styling purposes
-                    if (this.checked) {
-                        this.nextElementSibling.classList.add('checked');
-                    } else {
-                        this.nextElementSibling.classList.remove('checked');
-                    }
-                });
+        $(document).ready(function () {
+            $('.form-check-input').change(function () {
+                var isChecked = $(this).prop('checked');
+                var label = $(this).siblings('label');
+                label.text(isChecked ? 'Present' : 'Absent');
             });
-        });
-
-        // Update hiddenAttendanceDate value based on user input
-        document.getElementById('attendanceDate').addEventListener('change', function () {
-            document.getElementById('hiddenAttendanceDate').value = this.value;
         });
     </script>
 }
