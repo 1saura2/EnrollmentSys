@@ -3,13 +3,13 @@ using Microsoft.EntityFrameworkCore;
 using ABKS_project.Models;
 using ABKS_project.ViewModels;
 using System;
-using System.Linq;
 using System.Collections.Generic;
-using System.Globalization;
-using System.Security.Claims;
+using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
 
-namespace ABKS_project.Controllers
+namespace ABKS_project.Areas.UserEvaluation.Controllers
 {
     [Area("UserEvaluation")]
     public class EvaluationController : Controller
@@ -25,64 +25,63 @@ namespace ABKS_project.Controllers
 
         public async Task<IActionResult> FetchGraph()
         {
-            // Retrieve UserId from claims
+           
             var userIdClaim = _httpContextAccessor.HttpContext.User.FindFirstValue("UserId");
             if (!Guid.TryParse(userIdClaim, out var userId))
             {
-                // Handle error or redirect if UserId is invalid
                 return BadRequest("Invalid UserId.");
             }
 
             var evaluations = await _context.Evaluations
                 .Include(e => e.UserBatch)
-                .ThenInclude(ub => ub.User)
                 .Where(e => e.UserBatch.UserId == userId)
                 .OrderBy(e => e.EvaluationDate)
                 .ToListAsync();
 
             var attendances = await _context.Attendances
                 .Include(a => a.UserBatch)
-                .ThenInclude(ub => ub.User)
                 .Where(a => a.UserBatch.UserId == userId)
                 .OrderBy(a => a.AttendanceDate)
                 .ToListAsync();
 
-            // Group evaluations by week
-            var weeklyEvaluationData = evaluations
-                .GroupBy(e => ISOWeek.GetWeekOfYear(e.EvaluationDate.GetValueOrDefault()))
-                .Select(g => new WeeklyEvaluationData
-                {
-                    Week = g.Key,
-                    StartDate = g.Min(e => e.EvaluationDate).GetValueOrDefault(),
-                    EndDate = g.Max(e => e.EvaluationDate).GetValueOrDefault(),
-                    AverageDisciplineTest = (decimal)g.Average(e => e.DisciplineTest),
-                    AverageFitnessTest = (decimal)g.Average(e => e.FitnessTest),
-                    AverageWriteTest = (decimal)g.Average(e => e.WriteTest)
-                })
-                .ToList();
-
-            // Generate labels for the chart
-            var labels = weeklyEvaluationData
-                .Select(w => $"Week {w.Week} ({w.StartDate:MMM dd} - {w.EndDate:MMM dd})")
-                .ToList();
-
-            // Group attendances by evaluation weeks
-            var weeklyAttendanceData = weeklyEvaluationData.Select(week => new WeeklyAttendanceData
+            var weeklyData = new List<WeeklyData>();
+            for (int i = 0; i < evaluations.Count; i++)
             {
-                Week = week.Week,
-                AttendancePercentage = attendances
+                var evaluation = evaluations[i];
+                var nextEvaluationDate = i + 1 < evaluations.Count ? evaluations[i + 1].EvaluationDate.GetValueOrDefault() : DateTime.MaxValue;
+
+                var weeklyAttendances = attendances
                     .Where(a => a.AttendanceDate.HasValue &&
-                                a.AttendanceDate.Value >= week.StartDate &&
-                                a.AttendanceDate.Value <= week.EndDate)
-                    .GroupBy(a => a.AttendanceDate.Value)
-                    .Select(g => (double)g.Count(a => a.IsPresent == true) / g.Count() * 100)
-                    .Average()
-            }).ToList();
+                                a.AttendanceDate.Value >= evaluation.EvaluationDate.GetValueOrDefault() &&
+                                a.AttendanceDate.Value < nextEvaluationDate)
+                    .ToList();
+
+                double attendancePercentage = 0;
+                if (weeklyAttendances.Any())
+                {
+                    attendancePercentage = weeklyAttendances
+                        .GroupBy(a => a.AttendanceDate.Value)
+                        .Select(g => (double)(g.Count(a => a.IsPresent == true) / (double)g.Count() * 100))
+                        .Average();
+                }
+
+                weeklyData.Add(new WeeklyData
+                {
+                    EvaluationDate = evaluation.EvaluationDate.GetValueOrDefault(),
+                    DisciplineTest = evaluation.DisciplineTest.GetValueOrDefault(),
+                    FitnessTest = evaluation.FitnessTest.GetValueOrDefault(),
+                    WriteTest = evaluation.WriteTest.GetValueOrDefault(),
+                    AttendancePercentage = attendancePercentage
+                });
+            }
+
+            var labels = weeklyData
+                .Select(w => $"Week of {w.EvaluationDate:MMM dd}")
+                .ToList();
 
             var viewModel = new UserEvaluationViewModel
             {
-                WeeklyEvaluations = weeklyEvaluationData,
-                WeeklyAttendances = weeklyAttendanceData,
+                WeeklyData = weeklyData,
                 Labels = labels
             };
 

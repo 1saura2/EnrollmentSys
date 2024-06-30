@@ -1,28 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace ABKS_project.ViewModels
+﻿namespace ABKS_project.ViewModels
 {
     public class UserEvaluationViewModel
     {
-        public IEnumerable<WeeklyEvaluationData> WeeklyEvaluations { get; set; }
-        public IEnumerable<WeeklyAttendanceData> WeeklyAttendances { get; set; }
-        public IEnumerable<string> Labels { get; set; } // Labels for the chart
+        public List<WeeklyData> WeeklyData { get; set; } = new();
+        public List<string> Labels { get; set; } = new();
+        public List<double> AverageScores { get; set; }
     }
 
-    public class WeeklyEvaluationData
+    public class WeeklyData
     {
-        public int Week { get; set; }
-        public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
-        public decimal AverageDisciplineTest { get; set; }
-        public decimal AverageFitnessTest { get; set; }
-        public decimal AverageWriteTest { get; set; }
-    }
-
-    public class WeeklyAttendanceData
-    {
-        public int Week { get; set; }
+        public DateTime EvaluationDate { get; set; }
+        public decimal DisciplineTest { get; set; }
+        public decimal FitnessTest { get; set; }
+        public decimal WriteTest { get; set; }
         public double AttendancePercentage { get; set; }
     }
 }
