@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using ABKS_project.Repositories;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace ABKS_project.Areas.Ecommerce.Controllers
 {
@@ -25,9 +26,14 @@ namespace ABKS_project.Areas.Ecommerce.Controllers
 
         public IActionResult ListProduct()
         {
-            var product = _context.Products.ToList();
-            return View(product);
+            var productsInStock = _context.Products
+                                          .Include(p => p.ProductCategory) // Ensure categories are included
+                                          .Where(p => p.InStock == true)
+                                          .ToList();
+            return View(productsInStock);
         }
+
+
 
         [HttpGet]
         public async Task<IActionResult> AddItem(int productId, int qty = 1, int redirect = 0)
