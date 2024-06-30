@@ -51,10 +51,10 @@
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td class="align-middle">
-                                            <form class="form-inline" asp-controller="OrderManagement" asp-action="UpdateStatus" method="post">
+                                        <td class="align-middle text-center">
+                                            <form class="form-inline justify-content-center" asp-controller="OrderManagement" asp-action="UpdateStatus" method="post">
                                                 <input type="hidden" name="orderId" value="@order.Id" />
-                                                <select name="orderStatusId" class="form-control custom-select">
+                                                <select name="orderStatusId" class="form-control custom-select mr-2">
                                                     @if (ViewBag.OrderStatuses != null)
                                                     {
                                                         @foreach (var status in ViewBag.OrderStatuses as List<OrderStatus>)
@@ -68,10 +68,10 @@
                                                 </button>
                                             </form>
                                         </td>
-                                        <td class="align-middle">
-                                            <form class="form-inline" asp-controller="OrderManagement" asp-action="UpdatePayment" method="post">
+                                        <td class="align-middle text-center">
+                                            <form class="form-inline justify-content-center" asp-controller="OrderManagement" asp-action="UpdatePayment" method="post">
                                                 <input type="hidden" name="orderId" value="@order.Id" />
-                                                <select name="isPaid" class="form-control custom-select">
+                                                <select name="isPaid" class="form-control custom-select mr-2">
                                                     <option value="true">Paid</option>
                                                     <option value="false">Not Paid</option>
                                                 </select>
@@ -80,7 +80,7 @@
                                                 </button>
                                             </form>
                                         </td>
-                                        <td class="align-middle">
+                                        <td class="align-middle text-center">
                                             <form asp-controller="OrderManagement" asp-action="DeleteOrder" method="post">
                                                 <input type="hidden" name="orderId" value="@order.Id" />
                                                 <button type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#deleteModal_@order.Id">
@@ -116,11 +116,15 @@
     </table>
 </div>
 
-<!-- Custom CSS for border radius -->
+<!-- Custom CSS for border radius and alignment -->
 <style>
     .custom-table {
         border-radius: 10px;
         overflow: hidden;
+    }
+
+    .form-inline .custom-select, .form-inline .btn {
+        margin-bottom: 5px;
     }
 </style>
 
