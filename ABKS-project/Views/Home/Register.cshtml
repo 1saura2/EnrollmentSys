@@ -14,24 +14,10 @@
     </div>
 }
 
-@if (TempData["Email_Confirmation_Message"] != null)
-{
-    <div class="alert alert-info" role="alert">
-        @TempData["Email_Confirmation_Message"]
-    </div>
-}
-
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.1/css/bootstrap.min.css" rel="stylesheet">
 <style>
-   
-
-
-   
-
     :root {
-        /* --htmlFontSize: 100%; */
         --color-primary: #009282;
-        /* --bodyBackgroundColor: #f8f9fa; */
-        /* --bodyBackgroundColor: #2c3338; */
         --bodyColor: var(--baseColor);
         --bodyFontFamily: "Open Sans";
         --bodyFontFamilyFallback: sans-serif;
@@ -43,43 +29,39 @@
         --anchorColor: #eee;
         --formGap: 0.875rem;
         --bodyColor: #212529;
-        /* --titlecolor: 212529; */
     }
 
     :root {
         --loginBorderRadus: 0.25rem;
         --loginColor: #eee;
-        /* --loginInputBackgroundColor: #3b4148; */
         --loginInputHoverBackgroundColor: #434a52;
         --loginLabelBackgroundColor: #363b41;
         --loginSubmitBackgroundColor: #ea4c88;
         --loginSubmitColor: #eee;
         --loginSubmitHoverBackgroundColor: #d44179;
     }
+
     .grid {
         background-color: var(--color-primary);
         inline-size: 90%;
         margin-inline: auto;
         margin-top: 10rem;
         max-inline-size: 35rem;
-        border-radius:3%;
+        border-radius: 3%;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        padding: 35px; 
-
+        padding: 35px;
     }
-   
+
     .page-title {
-        
         padding-bottom: 2rem;
         text-align: center;
         font-size: 3em;
         margin-top: 40px;
-        color: var(--titleColor, white); /* fallback color in case CSS variable is not defined */
+        color: var(--titleColor, white);
     }
-    /* helpers/hidden.css */
 
     .hidden {
         border: 0;
@@ -92,8 +74,6 @@
         width: 1px;
     }
 
-
-
     .icon {
         block-size: 1em;
         display: inline-block;
@@ -102,8 +82,6 @@
         vertical-align: middle;
         display: none;
     }
-
-
 
     a {
         color: var(--anchorColor);
@@ -116,11 +94,8 @@
             text-decoration: underline;
         }
 
-    /* modules/form.css */
-
-
-
-    input, select {
+    input,
+    select {
         background-image: none;
         border: 0;
         color: black;
@@ -139,7 +114,8 @@
             color: inherit !important;
         }
 
-        input[type="number"], select {
+        input[type="number"],
+        select {
             background-image: none;
             border: 0;
             color: black;
@@ -168,8 +144,6 @@
         transition: all 0.3s ease-in-out !important;
     }
 
-  
-
     .login {
         color: var(--loginColor);
     }
@@ -195,22 +169,17 @@
         .login input[type="text"],
         .login input[type="number"],
         .login select {
-            /* background-color: var(--loginInputBackgroundColor); */
             border-bottom-left-radius: 0;
             border-top-left-radius: 1px;
         }
-
 
         .login input[type="submit"] {
             background-color: var(--loginSubmitBackgroundColor);
             color: var(--loginSubmitColor);
             font-weight: 700;
             text-transform: uppercase;
-            border-radius:5px;
+            border-radius: 5px;
         }
-
-        
-    /* modules/text.css */
 
     p {
         margin-block: 1.5rem;
@@ -220,168 +189,152 @@
         text-align: center;
     }
 
-    /*added by atul*/
-
     .input-container {
         width: 100%;
         position: relative;
     }
-
-
-
-
 </style>
 
 <body>
     <div class="grid">
-       
-        @if (TempData["Batch_Check"] != null)
-        {
-            <form asp-action="Register" method="post" class="form login" enctype="multipart/form-data" id="registerForm">
-                <h1 class="page-title">Register Here !!!</h1>
-                <div class="form__field">
-                    <div>
-                        <label for="login__firstname" class="d-flex align-items-center">
-                            <i class="bi bi-person opacity-50 me-2"></i>
-                            <span class="hidden">First Name</span>
-                        </label>
-                    </div>
-                    <div class="input-container">
-                        <input asp-for="FirstName" autocomplete="given-name" id="login__firstname" type="text" name="FirstName" class="form__input login__input" placeholder="First Name">
-                        <span asp-validation-for="FirstName" class="text-danger"></span>
-                    </div>
+        <form asp-action="Register" method="post" class="form login" enctype="multipart/form-data" id="registerForm">
+            <h1 class="page-title">Register Here !!!</h1>
+            <div class="form__field">
+                <div>
+                    <label for="login__firstname" class="d-flex align-items-center">
+                        <i class="bi bi-person opacity-50 me-2"></i>
+                        <span class="hidden">First Name</span>
+                    </label>
                 </div>
-
-                <div class="form__field">
-                    <div>
-                        <label for="login__lastname" class="d-flex align-items-center">
-                            <i class="bi bi-person opacity-50 me-2"></i>
-                            <span class="hidden">Last Name</span>
-                        </label>
-                    </div>
-                    <div class="input-container">
-                        <input asp-for="LastName" autocomplete="family-name" id="login__lastname" type="text" name="LastName" class="form__input login__input" placeholder="Last Name">
-                        <span asp-validation-for="LastName" class="text-danger"></span>
-                    </div>
-                </div>
-
-                <div class="form__field">
-                    <div>
-                        <label for="login__email" class="d-flex align-items-center">
-                            <i class="bi bi-envelope opacity-50 me-2"></i>
-                            <span class="hidden">Email</span>
-                        </label>
-                    </div>
-                    <div class="input-container">
-                        <input asp-for="Email" autocomplete="email" id="login__email" type="text" name="Email" class="form__input login__input" placeholder="Email">
-                        <span asp-validation-for="Email" class="text-danger"></span>
-                    </div>
-                </div>
-
-                <div class="form__field">
-                    <div>
-                        <label for="login__contactnumber" class="d-flex align-items-center">
-                            <i class="bi bi-telephone opacity-50 me-2"></i>
-                            <span class="hidden">Contact Number</span>
-                        </label>
-                    </div>
-                    <div class="input-container">
-                        <input asp-for="ContactNumber" autocomplete="tel" id="login__contactnumber" type="text" name="ContactNumber" class="form__input login__input" placeholder="Contact Number">
-                        <span asp-validation-for="ContactNumber" class="text-danger"></span>
-                    </div>
-                </div>
-
-                <div class="form__field">
-                    <div>
-                        <label for="login__education" class="d-flex align-items-center">
-                            <i class="bi bi-book opacity-50 me-2"></i>
-                            <span class="hidden">Education</span>
-                        </label>
-                    </div>
-                    <div class="input-container">
-                        <select asp-for="Education" id="login__education" name="Education" class="form__input login__input" style="background-color: #444c55; color: white; opacity:60%; border: none; padding:16px">
-                            <option value="" disabled selected>Select Education</option>
-                            <option value="SEE">SEE</option>
-                            <option value="High School">High School</option>
-                            <option value="Bachelors">Bachelors</option>
-                        </select>
-                        <span asp-validation-for="Education" class="text-danger"></span>
-                    </div>
-                </div>
-
-                <div class="form__field">
-                    <div>
-                        <label for="login__age" class="d-flex align-items-center">
-                            <i class="bi bi-person-bounding-box opacity-50 me-2"></i>
-                            <span class="hidden">Age</span>
-                        </label>
-                    </div>
-                    <div class="input-container">
-                        <input asp-for="Age" autocomplete="age" id="login__age" type="number" name="Age" class="form__input login__input" placeholder="Age" min="0">
-                        <span asp-validation-for="Age" class="text-danger"></span>
-                    </div>
-                </div>
-
-                <div class="form__field">
-                    <div>
-                        <label for="login__CitizenshipPdf" class="d-flex align-items-center px-3 p-1">
-                            <i class="bi bi-image opacity-50 me-2"></i>
-                            <span class="me-2">Citizenship:</span>
-                        </label>
-                    </div>
-                    <div class="input-container">
-                        <input asp-for="CitizenshipPdf" autocomplete="CitizenshipPdf" id="login__CitizenshipPdf" type="file" name="CitizenshipPdf" accept="application/pdf">
-                        <span asp-validation-for="CitizenshipPdf" class="text-danger"></span>
-                    </div>
-                </div>
-                <div class="form__field note">Please provide PDF only of size less than 1MB.</div>
-
-
-
-
-                <div class="form__field">
-                    <input type="submit" style="background: #11d3be;" value="Sign Up">
-                </div>
-            </form>
-        }
-        else
-        {
-            <div class="row justify-content-center">
-                <div class="col-md-6">
-                    <div class="alert" role="alert">
-                        <h1>Registration Not Available</h1>
-                        <p>@TempData["Register_Check"]</p>
-                        <p>Please try again later.</p>
-                    </div>
+                <div class="input-container">
+                    <input asp-for="FirstName" autocomplete="given-name" id="login__firstname" type="text" name="FirstName" class="form__input login__input" placeholder="First Name">
+                    <span asp-validation-for="FirstName" class="text-danger"></span>
                 </div>
             </div>
 
-        }
+            <div class="form__field">
+                <div>
+                    <label for="login__lastname" class="d-flex align-items-center">
+                        <i class="bi bi-person opacity-50 me-2"></i>
+                        <span class="hidden">Last Name</span>
+                    </label>
+                </div>
+                <div class="input-container">
+                    <input asp-for="LastName" autocomplete="family-name" id="login__lastname" type="text" name="LastName" class="form__input login__input" placeholder="Last Name">
+                    <span asp-validation-for="LastName" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form__field">
+                <div>
+                    <label for="login__email" class="d-flex align-items-center">
+                        <i class="bi bi-envelope opacity-50 me-2"></i>
+                        <span class="hidden">Email</span>
+                    </label>
+                </div>
+                <div class="input-container">
+                    <input asp-for="Email" autocomplete="email" id="login__email" type="text" name="Email" class="form__input login__input" placeholder="Email">
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form__field">
+                <div>
+                    <label for="login__contactnumber" class="d-flex align-items-center">
+                        <i class="bi bi-telephone opacity-50 me-2"></i>
+                        <span class="hidden">Contact Number</span>
+                    </label>
+                </div>
+                <div class="input-container">
+                    <input asp-for="ContactNumber" autocomplete="tel" id="login__contactnumber" type="text" name="ContactNumber" class="form__input login__input" placeholder="Contact Number">
+                    <span asp-validation-for="ContactNumber" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form__field">
+                <div>
+                    <label for="login__education" class="d-flex align-items-center">
+                        <i class="bi bi-book opacity-50 me-2"></i>
+                        <span class="hidden">Education</span>
+                    </label>
+                </div>
+                <div class="input-container">
+                    <select asp-for="Education" id="login__education" name="Education" class="form__input login__input" style="background-color: #444c55; color: white; opacity: 60%; border: none; padding: 16px">
+                        <option value="" disabled selected>Select Education</option>
+                        <option value="SEE">SEE</option>
+                        <option value="High School">High School</option>
+                        <option value="Bachelors">Bachelors</option>
+                    </select>
+                    <span asp-validation-for="Education" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form__field">
+                <div>
+                    <label for="login__age" class="d-flex align-items-center">
+                        <i class="bi bi-person-bounding-box opacity-50 me-2"></i>
+                        <span class="hidden">Age</span>
+                    </label>
+                </div>
+                <div class="input-container">
+                    <input asp-for="Age" autocomplete="age" id="login__age" type="number" name="Age" class="form__input login__input" placeholder="Age" min="0">
+                    <span asp-validation-for="Age" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form__field">
+                <div>
+                    <label for="login__CitizenshipPdf" class="d-flex align-items-center px-3 p-1">
+                        <i class="bi bi-image opacity-50 me-2"></i>
+                        <span class="me-2">Citizenship:</span>
+                    </label>
+                </div>
+                <div class="input-container">
+                    <input asp-for="CitizenshipPdf" autocomplete="CitizenshipPdf" id="login__CitizenshipPdf" type="file" name="CitizenshipPdf" accept="application/pdf">
+                    <span asp-validation-for="CitizenshipPdf" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form__field note">Please provide PDF only of size less than 1MB.</div>
+
+            <div class="form__field">
+                <input type="submit" style="background: #11d3be;" value="Sign Up">
+            </div>
+        </form>
+
         <p class="text--center">
-            Do you have an account? <a href="Login">Log In Now</a>
-            <i class="bi bi-arrow-right opacity-50"></i>
+            Do you have an account? <a href="Login">Log In Now</a> <i class="bi bi-arrow-right opacity-50"></i>
         </p>
     </div>
 
-    @* Popup for Email Confirmation Message *@
-@*     @if (TempData["Email_Confirmation_Message"] != null)
-    {
-        <div class="modal fade show" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true" style="display: block;">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="confirmationModalLabel">Email Confirmation</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        @TempData["Email_Confirmation_Message"]
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    </div>
+    <!-- Popup for Email Confirmation Message -->
+    <div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmationModalLabel">Email Confirmation</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    @TempData["Email_Confirmation_Message"]
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
-    } *@
+    </div>
 
+    <!-- Bootstrap JS -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.1/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Initialize the Modal -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const emailConfirmationMessage = '@TempData["Email_Confirmation_Message"]';
+            if (emailConfirmationMessage) {
+                const confirmationModal = new bootstrap.Modal(document.getElementById('confirmationModal'));
+                confirmationModal.show();
+            }
+        });
+    </script>
 </body>

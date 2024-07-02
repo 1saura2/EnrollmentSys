@@ -248,8 +248,8 @@ namespace ABKS_project.Controllers
                         _context.Users.Add(newUser);
                         _context.SaveChanges();
 
-                        TempData["Register_Success"] = "You are registered.";
-                        return RedirectToAction("Login");
+                        TempData["Register_Success"] = "You are registered. ";
+                        return RedirectToAction("RegisterConfirmation");
                     }
                     else
                     {
@@ -263,30 +263,37 @@ namespace ABKS_project.Controllers
             return RedirectToAction("Register");
         }
 
-/*        private void SendVerificationEmail(string userEmail, string encodedUser)
+
+
+        /*        private void SendVerificationEmail(string userEmail, string encodedUser)
+                {
+                    string smtpServer = "smtp.gmail.com";
+                    int port = 587;
+                    string senderEmail = "atul.baral8421@gmail.com";
+                    string senderPassword = "nemm arey koqy bmvm\r\n";
+
+                    using (SmtpClient client = new SmtpClient(smtpServer, port))
+                    {
+                        client.UseDefaultCredentials = false;
+                        client.Credentials = new NetworkCredential(senderEmail, senderPassword);
+                        client.EnableSsl = true;
+
+                        MailMessage mailMessage = new MailMessage();
+                        mailMessage.From = new MailAddress(senderEmail, "ABKS TEAM");
+                        mailMessage.To.Add(userEmail);
+                        mailMessage.Subject = "Registration Confirmation";
+                        mailMessage.Body = $"Please confirm your registration by clicking this <a href=\"{Url.Action("ConfirmEmail", "Home", new { encodedUser }, Request.Scheme)}\">link</a>.";
+
+                        mailMessage.IsBodyHtml = true;
+
+                        client.Send(mailMessage);
+                    }
+                }*/
+        public IActionResult RegisterConfirmation()
         {
-            string smtpServer = "smtp.gmail.com";
-            int port = 587;
-            string senderEmail = "atul.baral8421@gmail.com";
-            string senderPassword = "nemm arey koqy bmvm\r\n";
 
-            using (SmtpClient client = new SmtpClient(smtpServer, port))
-            {
-                client.UseDefaultCredentials = false;
-                client.Credentials = new NetworkCredential(senderEmail, senderPassword);
-                client.EnableSsl = true;
-
-                MailMessage mailMessage = new MailMessage();
-                mailMessage.From = new MailAddress(senderEmail, "ABKS TEAM");
-                mailMessage.To.Add(userEmail);
-                mailMessage.Subject = "Registration Confirmation";
-                mailMessage.Body = $"Please confirm your registration by clicking this <a href=\"{Url.Action("ConfirmEmail", "Home", new { encodedUser }, Request.Scheme)}\">link</a>.";
-
-                mailMessage.IsBodyHtml = true;
-
-                client.Send(mailMessage);
-            }
-        }*/
+            return View();
+        }
 
         public IActionResult Logout()
         {
