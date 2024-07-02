@@ -170,21 +170,7 @@
                     </a>
                 </li>
 
-                <li class="sidebar-item">
-                    <a href="#" class="sidebar-link collapsed has-dropdown dropdown-toggle" data-bs-toggle="collapse"
-                       data-bs-target="#auth" aria-expanded="false" aria-controls="auth">
-                        <i class="bi bi-shield-lock"></i>
-                        <span>Auth</span>
-                    </a>
-                    <ul id="auth" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
-                        <li class="sidebar-item">
-                            <a href="#" class="sidebar-link">Login</a>
-                        </li>
-                        <li class="sidebar-item">
-                            <a href="#" class="sidebar-link">Register</a>
-                        </li>
-                    </ul>
-                </li>
+               
                 <li class="sidebar-item">
                     <a href="#" class="sidebar-link collapsed has-dropdown dropdown-toggle" data-bs-toggle="collapse"
                        data-bs-target="#user-management" aria-expanded="false" aria-controls="user-management">
@@ -199,16 +185,16 @@
                         <li class="sidebar-item">
                             <a href="#" class="sidebar-link collapsed has-dropdown dropdown-toggle" data-bs-toggle="collapse"
                                data-bs-target="#verified-users" aria-expanded="false" aria-controls="verified-users">
-                                Verified Users
+                                Batch Users
 
                             </a>
 
                             <ul id="verified-users" class="sidebar-dropdown list-unstyled collapse">
                                 <li class="sidebar-item">
-                                    <a asp-area="Admin" asp-controller="User" asp-action="ListActive" class="sidebar-link">Active Users</a>
+                                    <a asp-area="Admin" asp-controller="User" asp-action="ListActive" class="sidebar-link">Current Batch</a>
                                 </li>
                                 <li class="sidebar-item">
-                                    <a asp-area="Admin" asp-controller="User" asp-action="ListInActive" class="sidebar-link">Inactive Users</a>
+                                    <a asp-area="Admin" asp-controller="User" asp-action="ListInActive" class="sidebar-link">Past Batch</a>
                                 </li>
                             </ul>
                         </li>
@@ -237,22 +223,22 @@
                 <li class="sidebar-item">
                     <a href="#" class="sidebar-link collapsed has-dropdown dropdown-toggle" data-bs-toggle="collapse"
                        data-bs-target="#product-management" aria-expanded="false" aria-controls="product-management">
-                        <i class="bi bi-person"></i>
+                        <i class="bi bi-check"></i>
                         <span>Product Management</span>
                     </a>
                     <ul id="product-management" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
                         <li class="sidebar-item">
                             <a asp-area="Admin" asp-controller="Product" asp-action="ListProduct" class="sidebar-link">Product Detail</a>
                         </li>
-                        <li class="sidebar-item">
+                       @*  <li class="sidebar-item">
                             <a asp-area="Admin" asp-controller="Product" asp-action="ProductCategories" class="sidebar-link">Product Categories</a>
-                        </li>
+                        </li> *@
                     </ul>
                 </li>
                 <li class="sidebar-item">
                     <a href="#" class="sidebar-link collapsed has-dropdown dropdown-toggle" data-bs-toggle="collapse"
                        data-bs-target="#order-management" aria-expanded="false" aria-controls="order-management">
-                        <i class="bi bi-person"></i>
+                        <i class="bi bi-filter"></i>
                         <span>Order Management</span>
                     </a>
                     <ul id="order-management" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
@@ -266,15 +252,9 @@
 
 
 
-                <li class="sidebar-item">
-                    <a href="#" class="sidebar-link">
-                        <i class="bi bi-gear"></i>
-                        <span>Setting</span>
-                    </a>
-                </li>
             </ul>
             <div class="sidebar-footer">
-                <div class="mt-auto">
+                <div class="mt-auto" style="margin-right: 8rem;">
                     <a asp-area="" asp-controller="Home" asp-action="Logout" class="sidebar-link">
                         <i class="bi bi-box-arrow-right"></i>
                         <span>Logout</span>

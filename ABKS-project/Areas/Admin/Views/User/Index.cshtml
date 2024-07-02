@@ -1,3 +1,119 @@
 ﻿
 
-<p>This is admin page  </p>
+@* <p>This is admin page  </p> *@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+
+        }
+        a{
+            text-decoration:none;
+        }
+        .hero-section {
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://example.com/mis-classroom.jpg') center/cover no-repeat;
+            color: #fff;
+            padding: 100px 0;
+            text-align: center;
+        }
+
+            .hero-section h1 {
+                font-size: 3em;
+                margin-bottom: 20px;
+            }
+
+            .hero-section p {
+                font-size: 1.5em;
+                margin-bottom: 40px;
+            }
+
+        .feature {
+            background-color: #f8f9fa;
+            padding: 50px 0;
+            text-align: center;
+        }
+
+            .feature h2 {
+                margin-bottom: 20px;
+            }
+
+            .feature .card {
+                margin-bottom: 20px;
+                transition: transform 0.2s, box-shadow 0.2s;
+            }
+
+                .feature .card:hover {
+                    transform: scale(1.05);
+                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+                }
+
+        .footer {
+            background-color: #343a40;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+        }
+    </style>
+</head>
+
+<body>
+
+    <section class="hero-section">
+        <div class="container">
+            <h1>Welcome to ABKS Team </h1>
+            <p>Where learning meets innovation</p>
+        </div>
+    </section>
+
+    <section class="feature">
+        <div class="container">
+            <h2>Admin Dashboard</h2>
+            <div class="row">
+                <div class="col-md-6 col-lg-4">
+                    <div class="card p-3">
+                        <h3>Student Enrollment</h3>
+                        <p>Manage the enrollment process of students.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="card p-3">
+                        <h3>Student Evaluation</h3>
+                        <p>Evaluate student performance and assessments.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="card p-3">
+                        <h3>Product Management</h3>
+                        <p>Manage educational products and resources.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="card p-3">
+                        <h3>Student Management</h3>
+                        <p>Handle student information and records.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 Admin Dashboard. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js"></script>
+</body>
+
+</html>

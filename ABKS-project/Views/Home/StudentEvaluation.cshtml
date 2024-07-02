@@ -26,6 +26,13 @@
     </style>
 </head>
 <body>
+    <section id="about" class="about">
+        <div class="container" data-aos="fade-up">
+    <div class="section-header">
+        <h2>Students Evaluation Section</h2>
+        <p>Welcome to the Students Evaluation Section! Here you can find and review evaluation forms for various students. This section is designed to provide insights into student performance and feedback. Explore the evaluations to understand the strengths and areas for improvement, helping guide future development and learning strategies.</p>
+    </div>
+
     
     <div class="d-flex justify-content-center justify-content-lg-start">
         <a asp-area="Home" asp-controller="Home" asp-action="Register" class="btn-get-started">Batch</a>
@@ -33,7 +40,7 @@
     </div>
 
     <div class="container mt-5">
-        <canvas id="barChart"></canvas>
+        <canvas id="barChart"></canvas>@* /user can seem the result on this barchart *@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.0/dist/chart.min.js"></script>
@@ -95,9 +102,11 @@
 
 
     <div class="container mt-5">
-        <canvas id="lineChart"></canvas>
+                <canvas id="lineChart"></canvas> @* user can seem the result on this linechart *@
     </div>
 
+   </div>
+ </div>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.0/dist/chart.min.js"></script>
     <script>
         $(document).ready(function () {

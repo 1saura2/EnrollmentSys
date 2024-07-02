@@ -30,8 +30,9 @@
                     <li><a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
                     @if (User.IsInRole("User"))
                     {
-                        <li><a class="nav-link" asp-area="UserEvaluation" asp-controller="Evaluation" asp-action="FetchGraph">View Evaluation</a></li>
+                        <li><a class="nav-link" asp-area="UserEvaluation" asp-controller="Evaluation" asp-action="FetchGraph">My Evaluation</a></li>
                     }
+                    <li><a class="nav-link" asp-area="" asp-controller="Home" asp-action="AboutUs">About Us</a></li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="galleryDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Gallery
@@ -44,8 +45,9 @@
                     <li class="nav-item">
                         <a class="nav-link" asp-area="Ecommerce" asp-controller="Home" asp-action="ListProduct">Product</a>
                     </li>
-                    <li><a class="nav-link" asp-area="" asp-controller="Home" asp-action="AboutUs">About Us</a></li>
+                    
                     <li><a class="nav-link" asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
+
                 </ul>
             </nav>
 
