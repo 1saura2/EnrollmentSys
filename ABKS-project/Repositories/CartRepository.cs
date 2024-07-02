@@ -93,13 +93,9 @@ namespace ABKS_project.Repositories
                 if (cartItem.Quantity > 1)
                 {
                     cartItem.Quantity -= 1; // Decrease the quantity by 1
-                }
-                else
-                {
-                    _db.CartDetails.Remove(cartItem); // Remove the item from cart if quantity is 1
+                    await _db.SaveChangesAsync();
                 }
 
-                await _db.SaveChangesAsync();
             }
             catch (Exception ex)
             {
@@ -110,6 +106,7 @@ namespace ABKS_project.Repositories
             var cartItemCount = await GetCartItemCount(userId);
             return cartItemCount;
         }
+
 
 
         public async Task<ShoppingCart> GetUserCart()

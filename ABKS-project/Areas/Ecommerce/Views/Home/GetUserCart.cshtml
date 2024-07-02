@@ -127,8 +127,7 @@
                     }
                 });
             } else {
-                $('#confirmRemoveButton').data('productId', productId);
-                $('#confirmRemoveModal').modal('show');
+                console.log("Quantity cannot be less than 1");
             }
             return false; // Prevent default action of anchor tag
         }
@@ -146,7 +145,7 @@
 
         function removeCartItem(productId) {
             $.ajax({
-                url: `/Ecommerce/Home/RemoveItem`,
+                url: `/Ecommerce/Home/RemoveItems`,
                 type: 'GET',
                 data: { productId: productId },
                 success: function (result) {
