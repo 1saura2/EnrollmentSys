@@ -170,7 +170,7 @@ namespace ABKS_project.Controllers
                     {
 
                         TempData["Email_Confirmation_Message"] = "User Already Register and not Verified yet";
-                        return RedirectToAction("Login");
+                        return RedirectToAction("Register");
                     }
                     else
                     {

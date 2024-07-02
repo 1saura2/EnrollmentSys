@@ -5,6 +5,11 @@
     <div class="alert alert-info" role="alert">
         @TempData["Register_Success"]
     </div>
+}@if  (TempData["Email_Confirmation_Message"] != null)
+{
+    <div class="alert alert-info" role="alert">
+        @TempData["Email_Confirmation_Message"]
+    </div>
 }
 
 <!DOCTYPE html>
