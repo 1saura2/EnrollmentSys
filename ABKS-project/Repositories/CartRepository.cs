@@ -74,33 +74,43 @@ namespace ABKS_project.Repositories
 
         public async Task<int> RemoveItem(int productId)
         {
-            //using var transaction = _db.Database.BeginTransaction();
             string userId = GetUserId();
             try
             {
                 if (string.IsNullOrEmpty(userId))
                     throw new UnauthorizedAccessException("user is not logged-in");
+
                 var cart = await GetCart(userId);
-                if (cart is null)
+                if (cart == null)
                     throw new InvalidOperationException("Invalid cart");
-                // cart detail section
-                var cartItem = _db.CartDetails
-                                  .FirstOrDefault(a => a.ShoppingCartId == cart.Id && a.ProductId == productId);
-                if (cartItem is null)
-                    throw new InvalidOperationException("Not items in cart");
-                else if (cartItem.Quantity == 1)
-                    _db.CartDetails.Remove(cartItem);
+
+                var cartItem = await _db.CartDetails
+                                      .FirstOrDefaultAsync(a => a.ShoppingCartId == cart.Id && a.ProductId == productId);
+
+                if (cartItem == null)
+                    throw new InvalidOperationException("Item not found in cart");
+
+                if (cartItem.Quantity == 1)
+                {
+                    _db.CartDetails.Remove(cartItem); // Remove the item from cart if quantity is 1
+                }
                 else
-                    cartItem.Quantity = cartItem.Quantity - 1;
-                _db.SaveChanges();
+                {
+                    cartItem.Quantity = 1; // Set the quantity to 1 if it's greater than 1
+                }
+
+                await _db.SaveChangesAsync();
             }
             catch (Exception ex)
             {
-
+                // Handle exception (log it, rethrow it, etc.)
+                throw;
             }
+
             var cartItemCount = await GetCartItemCount(userId);
             return cartItemCount;
         }
+
         public async Task<ShoppingCart> GetUserCart()
         {
             string userId = GetUserId();
