@@ -85,5 +85,12 @@ namespace ABKS_project.Areas.Ecommerce.Controllers
         {
             return View();
         }
+
+        public async Task<IActionResult> RemoveItems(int productId)
+        {
+            var cartCount = await _cartRepo.RemoveAllItems(productId);
+            return RedirectToAction("GetUserCart");
+        }
+
     }
 }

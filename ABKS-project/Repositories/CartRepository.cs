@@ -216,5 +216,23 @@ namespace ABKS_project.Repositories
             return _httpContextAccessor.HttpContext.User.FindFirstValue("UserId");
         }
 
+        public async Task<bool> RemoveAllItems(int productId)
+        {
+            string userId = GetUserId();
+            var cart = await GetCart(userId);
+            if (cart == null)
+                throw new InvalidOperationException("Invalid cart");
+
+            var cartItems = _db.CartDetails.Where(cd => cd.ShoppingCartId == cart.Id && cd.ProductId == productId).ToList();
+            if (cartItems.Count == 0)
+                throw new InvalidOperationException("Item not found in cart");
+
+            _db.CartDetails.RemoveRange(cartItems);
+            await _db.SaveChangesAsync();
+
+            return true;
+        }
+
+
     }
 }
