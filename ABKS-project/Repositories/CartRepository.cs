@@ -90,13 +90,13 @@ namespace ABKS_project.Repositories
                 if (cartItem == null)
                     throw new InvalidOperationException("Item not found in cart");
 
-                if (cartItem.Quantity == 1)
+                if (cartItem.Quantity > 1)
                 {
-                    _db.CartDetails.Remove(cartItem); // Remove the item from cart if quantity is 1
+                    cartItem.Quantity -= 1; // Decrease the quantity by 1
                 }
                 else
                 {
-                    cartItem.Quantity = 1; // Set the quantity to 1 if it's greater than 1
+                    _db.CartDetails.Remove(cartItem); // Remove the item from cart if quantity is 1
                 }
 
                 await _db.SaveChangesAsync();
@@ -110,6 +110,7 @@ namespace ABKS_project.Repositories
             var cartItemCount = await GetCartItemCount(userId);
             return cartItemCount;
         }
+
 
         public async Task<ShoppingCart> GetUserCart()
         {
