@@ -114,10 +114,7 @@
         }
 
         function decreaseCartItem(productId, quantity) {
-            if (quantity <= 1) {
-                $('#confirmRemoveButton').data('productId', productId);
-                $('#confirmRemoveModal').modal('show');
-            } else {
+            if (quantity > 1) {
                 $.ajax({
                     url: `/Ecommerce/Home/RemoveItem`,
                     type: 'GET',
@@ -129,6 +126,9 @@
                         console.log("Error:", err);
                     }
                 });
+            } else {
+                $('#confirmRemoveButton').data('productId', productId);
+                $('#confirmRemoveModal').modal('show');
             }
             return false; // Prevent default action of anchor tag
         }
