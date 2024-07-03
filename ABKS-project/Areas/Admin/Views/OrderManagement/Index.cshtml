@@ -2,7 +2,7 @@
 @model List<Order>
 
 <h1 class="text-center">
-    <i class="fas fa-tasks"></i> Admin Operations
+    <i class="fas fa-tasks"></i> Order Details
 </h1>
 
 <div class="table-responsive">
@@ -34,7 +34,7 @@
                     <td class="align-middle">@(order.IsPaid ? "Paid" : "Not Paid")</td>
                     <td class="align-middle">
                         <button class="btn btn-primary btn-sm" data-toggle="collapse" data-target="#details_@order.Id">
-                            <i class="fas fa-edit"></i> Update Detail
+                            <i class="fas fa-edit"></i> Manage Order
                         </button>
                     </td>
                 </tr>
