@@ -3,8 +3,20 @@
 @{
     ViewData["Title"] = "Checkout";
 }
-<div style="width:90%;margin:auto;padding-top:1rem" class="mt-2">
-<h2>Checkout</h2>
+<style>
+    h5 {
+        font-size: 24px; /* Larger font size */
+        font-weight: bold; /* Bold font */
+        color: #ff5722; /* Orange color */
+        text-align: center; /* Center alignment */
+        background-color: #f1f1f1; /* Light grey background */
+        padding: 10px; /* Padding for spacing */
+        border-radius: 5px; /* Rounded corners */
+        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+        padding-top: 1rem;
+    }</style>
+<div style="width:90%;margin:auto;" class="mt-2">
+<h5>Checkout</h5>
 <form asp-action="Checkout">
     <div class="py-2">
         <label asp-for="Name">Name*</label>

@@ -477,6 +477,26 @@ section {
   }
 }
 
+
+.custom-login-btn {
+    background-color: #009383;
+    border-color: #009383;
+    color: white;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+    .custom-login-btn:hover {
+        background-color: #007a6e;
+        border-color: #007a6e;
+    }
+
+    .custom-login-btn:active {
+        background-color: #005f53;
+        border-color: #005f53;
+    }
+
+
+
 /*--------------------------------------------------------------
 # Mobile Navigation
 --------------------------------------------------------------*/
