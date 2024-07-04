@@ -11,15 +11,28 @@ namespace ABKS_project.Areas.Admin.Controllers
         public OrderManagementController(productContext context) {
             _context = context;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index(int pageNumber = 1, int pageSize = 10)
         {
-            var orders = _context.Orders.Include(o => o.OrderStatus).ToList();
-            var orderStatuses = _context.OrderStatuses.ToList(); // Ensure OrderStatuses are loaded
+            var ordersQuery = _context.Orders.Include(o => o.OrderStatus).OrderByDescending(o => o.CreateDate).AsQueryable();
+
+            var totalCount = await ordersQuery.CountAsync();
+            var orders = await ordersQuery
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            var orderStatuses = await _context.OrderStatuses.ToListAsync(); // Ensure OrderStatuses are loaded
 
             ViewBag.OrderStatuses = orderStatuses;
+            ViewBag.PageNumber = pageNumber;
+            ViewBag.PageSize = pageSize;
+            ViewBag.TotalCount = totalCount;
+            ViewBag.TotalPages = (int)Math.Ceiling((double)totalCount / pageSize);
 
             return View(orders);
         }
+
+
 
         // POST: /AdminOperations/UpdateStatus
         [HttpPost]

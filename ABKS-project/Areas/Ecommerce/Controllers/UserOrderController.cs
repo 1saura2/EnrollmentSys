@@ -38,10 +38,12 @@ namespace ABKS_project.Areas.Ecommerce.Controllers
                 .Include(o => o.OrderDetails)
                 .ThenInclude(od => od.Product)
                 .Include(o => o.OrderStatus)
+                .OrderByDescending(o => o.CreateDate) // Sort by CreateDate in descending order
                 .ToListAsync();
 
             return View(orders);
         }
+
 
 
 
