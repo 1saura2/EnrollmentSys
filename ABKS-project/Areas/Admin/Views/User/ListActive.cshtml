@@ -138,7 +138,7 @@
                             <td class="text-center align-middle">
 
                                 <!-- Reset Password button -->
-                                <button type="button" class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#resetPasswordModal_@user.UserId">
+                                <button type="button" class="btn btn-sm btn-warning" style="background:#cfb35e" data-bs-toggle="modal" data-bs-target="#resetPasswordModal_@user.UserId">
                                     <i class="bi bi-key"></i> </button>
 
                                 <!-- Edit button -->
@@ -152,9 +152,9 @@
                                 <!-- Reset Password Modal -->
                                 <div class="modal fade" id="resetPasswordModal_@user.UserId" tabindex="-1" aria-labelledby="resetPasswordModalLabel_@user.UserId" aria-hidden="true">
                                     <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header bg-warning text-white">
-                                                <h5 class="modal-title" id="resetPasswordModalLabel_@user.UserId">Reset Password</h5>
+                                        <div class="modal-content" >
+                                            <div class="modal-header bg-warning text-white" style="background:#cfb35e !important">
+                                                <h5 class="modal-title"  id="resetPasswordModalLabel_@user.UserId">Reset Password</h5>
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
                                             <div class="modal-body">
@@ -172,7 +172,10 @@
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                <button type="submit" class="btn btn-warning">Reset Password</button>
+                                                <a asp-area="Admin" asp-controller="Home" asp-action="ListProduct">
+                                                    <button type="submit" class="btn btn-success">Reset Password
+                                                    </button>
+                                                </a>
                                             </div>
                                         </div>
                                     </div>

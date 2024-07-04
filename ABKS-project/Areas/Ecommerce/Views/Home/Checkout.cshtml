@@ -3,51 +3,108 @@
 @{
     ViewData["Title"] = "Checkout";
 }
-<div style="width:90%;margin:auto;padding-top:1rem" class="mt-2">
-<h2>Checkout</h2>
-<form asp-action="Checkout">
-    <div class="py-2">
-        <label asp-for="Name">Name*</label>
-        <input type="text" class="form-control" asp-for="Name" />
-        <span asp-validation-for="Name" class="text-danger"></span>
-    </div>
 
-    <div class="py-2">
-        <label asp-for="Email">Email*</label>
-        <input type="text" class="form-control" asp-for="Email" />
-        <span asp-validation-for="Email" class="text-danger"></span>
+<style>
+    h5 {
+        font-size: 24px;
+        font-weight: bold;
+        color: #ff5722;
+        text-align: center;
+        background-color: #f1f1f1;
+        padding: 15px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        margin-top: 2rem;
+    }
+    .form-container {
+        width: 80%;
+        margin: auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        margin-top: 2rem;
+    }
+    .form-control {
+        width: 100%;
+    }
+    .form-row {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+    .form-group {
+        flex: 0 0 48%;
+        margin-bottom: 15px;
+    }
+    .form-group-full {
+        flex: 0 0 100%;
+        margin-bottom: 15px;
+    }
 
-    </div>
+    .btn-custom {
+        background-color: #009383;
+        border: none;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+        display: block;
+        margin: 20px auto 0;
+        width:25%;
+    }
 
-    <div class="py-2">
-        <label asp-for="MobileNumber">MobileNumber*</label>
-        <input type="text" class="form-control" asp-for="MobileNumber" />
-        <span asp-validation-for="MobileNumber" class="text-danger"></span>
-    </div>
+        .btn-custom:hover {
+            background-color: #005f53;
+            color:aqua;
+        }
+  
+</style>
 
+<div class="form-container">
+    <h5>Checkout</h5>
+    <form asp-action="Checkout">
+        <div class="form-row">
+            <div class="form-group">
+                <label asp-for="Name" class="form-label">Name*</label>
+                <input type="text" class="form-control" asp-for="Name" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
 
-    <div class="py-2">
-        <label asp-for="Address">Address*</label>
-        <textarea class="form-control" asp-for="Address" rows="5"> </textarea>
-        <span asp-validation-for="Address" class="text-danger"></span>
-    </div>
+            <div class="form-group">
+                <label asp-for="Email" class="form-label">Email*</label>
+                <input type="email" class="form-control" asp-for="Email" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
 
-    <div class="py-2">
-        <span class="mr-2">Payment Method </span>
-        <select asp-for="PaymentMethod" class="form-control">
-            <option value="">Select Payment Method</option>
-            @foreach (var method in Enum.GetValues(typeof(ABKS_project.Constants.PaymentMethods)))
-            {
-                <option value="@method.ToString()">@method.ToString()</option>
+            <div class="form-group">
+                <label asp-for="MobileNumber" class="form-label">Mobile Number*</label>
+                <input type="text" class="form-control" asp-for="MobileNumber" />
+                <span asp-validation-for="MobileNumber" class="text-danger"></span>
+            </div>
 
-            }
-        </select>
-        <span asp-validation-for="PaymentMethod" class="text-danger"></span>
-    </div>
+            <div class="form-group-full">
+                <label asp-for="Address" class="form-label">Address*</label>
+                <textarea class="form-control" asp-for="Address" rows="3"></textarea>
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
 
-    <div class="py-2">
-        <button type="submit" c class="btn btn-info">Next</button>
+            <div class="form-group-full">
+                <label asp-for="PaymentMethod" class="form-label">Payment Method</label>
+                <select asp-for="PaymentMethod" class="form-select">
+                    <option value="">Select Payment Method</option>
+                    @foreach (var method in Enum.GetValues(typeof(ABKS_project.Constants.PaymentMethods)))
+                    {
+                        <option value="@method.ToString()">@method.ToString()</option>
+                    }
+                </select>
+                <span asp-validation-for="PaymentMethod" class="text-danger"></span>
+            </div>
 
-    </div>
-</form>
+            <div class="form-group-full">
+                <button type="submit" class="btn btn-custom">Next</button>
+            </div>
+        </div>
+    </form>
 </div>

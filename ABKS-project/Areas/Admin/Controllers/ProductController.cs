@@ -86,7 +86,8 @@ namespace ABKS_project.Areas.Admin.Controllers
 
                     _context.Add(product);
                     await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(ListProduct));
+                    TempData["Product_add"]= "Product add sucessfully";
+                    return RedirectToAction(nameof(AddProduct));
                 }
             }
             var categories = _context.ProductCategories.ToList();

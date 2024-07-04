@@ -10,6 +10,11 @@
     <div class="alert alert-info" role="alert">
         @TempData["Email_Confirmation_Message"]
     </div>
+}@if (TempData["Login_Check"] != null)
+{
+    <div class="alert alert-danger text-center" role="alert">
+        @TempData["Login_Check"]
+    </div>
 }
 
 <!DOCTYPE html>
