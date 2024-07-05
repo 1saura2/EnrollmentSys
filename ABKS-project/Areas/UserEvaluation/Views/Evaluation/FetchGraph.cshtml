@@ -8,6 +8,7 @@
     <title>Your Evaluation Results</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.0/dist/chart.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.0.2"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
         .container {
@@ -72,7 +73,7 @@
             padding: 15px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             color: #495057;
-            margin-top: 1rem;
+            margin-top: 4rem;
         }
 
             .message h6 {
@@ -80,13 +81,50 @@
                 margin-bottom: 10px;
             }
 
-        #performanceFeedback {
-            margin-top: 1rem;
-        }
 
-        .alert {
-            margin-top: 20px;
+       #performanceFeedback {
+    margin-top: 1rem;
+}
+
+.usersmg {
+    font-size: 2.1rem;
+     text-align: center; 
+    padding: 15px;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+     /* background: linear-gradient(135deg, #a2c2e8, #f6d365);  */
+     /* background: linear-gradient(135deg, #f6d365, #fda085);  */
+        background: linear-gradient(135deg, #00c6ff, #0072ff);
+     /* background: linear-gradient(135deg, #ff7e5f, #feb47b); */
+     /* background: linear-gradient(135deg, #ff7e5f, #d8338a); */
+     /* background: linear-gradient(135deg, #fbb6ce, #f6d365); */
+    border: 1px solid #ffeeba;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    color: #5a3e1b; 
+}
+
+.alert {
+    margin-top: 20px;
+}
+
+.usersmg:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    color: #fff;
+    background-color: blueviolet;
+    border-color: blueviolet;
+}
+
+
+.feedback-heading {
+            margin: 0;
+            font-size: 1.5rem; 
+            text-align: center;
+            font-weight: bold;
+            color: #5a3e1b;
         }
+      
+
+
     </style>
 </head>
 <body>
@@ -98,7 +136,12 @@
         </div>
 
         <div class="chart-section">
-            <div id="performanceFeedback" class="alert"></div>
+            <h2 class="feedback-heading">Feedback Message</h2>
+            <div id="performanceFeedback" class="alert usersmg">
+
+            </div>
+
+
             <div class="chart-title">Detailed Evaluation Scores Over Time</div>
             <div class="chart-container">
                 <canvas id="lineChart"></canvas>
@@ -140,7 +183,6 @@
             averagePerformance.push(avg.toFixed(2));
         }
 
-       
         function getPerformanceFeedback(averagePerformance) {
             let lastAvgPerformance = averagePerformance[averagePerformance.length - 1];
             let feedbackMessage = '';
@@ -163,7 +205,13 @@
             return `<div class="${feedbackClass}" role="alert">${feedbackMessage}</div>`;
         }
 
-      
+        // Example usage
+        var feedbackHTML = getPerformanceFeedback(averagePerformance);
+        document.getElementById('performanceFeedback').innerHTML = feedbackHTML;
+    
+
+
+
         document.getElementById('performanceFeedback').innerHTML = getPerformanceFeedback(averagePerformance);
 
         // Line Chart
@@ -239,12 +287,13 @@
                         annotations: {
                             line1: {
                                 type: 'line',
-                                y: 60,
+                                yMin: 60,
+                                yMax: 60,
                                 borderColor: 'green',
                                 borderWidth: 2,
                                 label: {
                                     enabled: true,
-                                    content: 'Benchmark 60%',
+                                    content: 'Average point',
                                     position: 'end'
                                 }
                             }

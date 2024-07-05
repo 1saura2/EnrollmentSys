@@ -73,13 +73,19 @@
 
         .sidebar-logo {
             margin: auto 0;
+           
         }
 
             .sidebar-logo a {
                 color: #FFF;
-                font-size: 1.15rem;
+                font-size: 1rem;
                 font-weight: 600;
             }
+
+                .sidebar-logo a:hover{
+                    color: white;
+                    
+                }
 
         .sidebar-nav {
             padding: 2rem 0;
@@ -159,7 +165,7 @@
                     <i class="bi bi-grid"></i>
                 </div>
                 <div class="sidebar-logo">
-                    <a href="#">Admin Dashboard</a>
+                    <a class="nav-link" asp-area="Admin" asp-controller="User" asp-action="Index">Admin Dashboard</a>
                 </div>
             </div>
             <ul class="sidebar-nav">

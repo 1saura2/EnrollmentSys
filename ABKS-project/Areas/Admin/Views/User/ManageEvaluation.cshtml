@@ -105,13 +105,13 @@
                             <td>@user.FirstName @user.LastName</td>
                             <td>@user.Email</td>
                             <td>
-                                <input type="number" id="DisciplineTest[@index]" name="Evaluations[@index].DisciplineTest" class="form-control evaluation-input" step="0.01"  />
+                                <input type="number" id="DisciplineTest[@index]" name="Evaluations[@index].DisciplineTest" class="form-control evaluation-input" min="0" max="100" step="0.01"  />
                             </td>
                             <td>
-                                <input type="number" id="FitnessTest[@index]" name="Evaluations[@index].FitnessTest" class="form-control evaluation-input" step="0.01"  />
+                                <input type="number" id="FitnessTest[@index]" name="Evaluations[@index].FitnessTest" class="form-control evaluation-input" min="0" max="100" step="0.01" />
                             </td>
                             <td>
-                                <input type="number" id="WriteTest[@index]" name="Evaluations[@index].WriteTest" class="form-control evaluation-input" step="0.01"  />
+                                <input type="number" id="WriteTest[@index]" name="Evaluations[@index].WriteTest" class="form-control evaluation-input" min="0" max="100" step="0.01" />
                             </td>
                             <td>
                                 <input type="hidden" id="UserId[@index]" name="Evaluations[@index].UserId" value="@user.UserId" />
