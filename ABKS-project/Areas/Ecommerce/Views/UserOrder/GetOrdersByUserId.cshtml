@@ -5,6 +5,13 @@
     ViewData["Title"] = "Your Orders";
 }
 
+@if (TempData["Order_Success"] != null)
+{
+    <div class="alert alert-success text-center" role="alert">
+        @TempData["Order_Success"]
+    </div>
+}
+
 <style>
     h5 {
         font-size: 24px; /* Larger font size */

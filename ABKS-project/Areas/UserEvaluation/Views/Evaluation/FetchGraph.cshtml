@@ -10,16 +10,17 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.0/dist/chart.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
-   
         .container {
             max-width: 900px;
             margin: 0 auto;
             padding: 20px;
         }
+
         .chart-container {
             position: relative;
-            height: 400px; 
+            height: 400px;
         }
+
         .info-card {
             background-color: #f8f9fa;
             border-radius: 8px;
@@ -27,72 +28,87 @@
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             margin-bottom: 30px;
         }
-        .info-card h5 {
-            margin-bottom: 15px;
-            color: #007bff;
-        }
-        .info-card p {
-            margin-bottom: 0;
-            color: #495057;
-        }
+
+            .info-card h5 {
+                margin-bottom: 15px;
+                color: #007bff;
+            }
+
+            .info-card p {
+                margin-bottom: 0;
+                color: #495057;
+            }
+
         .chart-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 30px;
         }
+
         .chart-section {
             margin-bottom: 40px;
         }
+
         .info-card .btn {
             background-color: #007bff;
             color: #fff;
             border: none;
         }
-        .info-card .btn:hover {
-            background-color: #0056b3;
-        }
+
+            .info-card .btn:hover {
+                background-color: #0056b3;
+            }
+
         .chart-title {
             font-size: 1.25rem;
             color: #343a40;
             margin-bottom: 20px;
         }
+
         .message {
             background-color: #e9ecef;
             border-radius: 8px;
             padding: 15px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             color: #495057;
-            margin-top:5rem;
+            margin-top: 1rem;
         }
-        .message h6 {
-            color: #007bff;
-            margin-bottom: 10px;
+
+            .message h6 {
+                color: #007bff;
+                margin-bottom: 10px;
+            }
+
+        #performanceFeedback {
+            margin-top: 1rem;
+        }
+
+        .alert {
+            margin-top: 20px;
         }
     </style>
 </head>
 <body>
     <div class="container mt-5">
-      
         <div class="info-card">
             <h5>Welcome to Your Evaluation Dashboard!</h5>
             <p>Here you can view a detailed breakdown of your evaluation results. The charts below represent your performance across different evaluation components over time and provide a comparative overview of your scores.</p>
             <p>Use this information to track your progress and focus on areas for improvement. If you have any questions or need further assistance, please feel free to contact your administrator.</p>
         </div>
-        
-      
+
         <div class="chart-section">
             <div class="chart-title">Detailed Evaluation Scores Over Time</div>
             <div class="chart-container">
                 <canvas id="lineChart"></canvas>
             </div>
+            <div id="performanceFeedback" class="alert"></div>
             <div class="message">
                 <h6>Understanding Your Line Chart</h6>
                 <p>The line chart above shows your scores for Attendance, Written Test, Interview, and Physical Fitness over the past months. Each line represents a different evaluation component, allowing you to see trends and changes over time.</p>
             </div>
         </div>
-        
-     
+
         <div class="chart-section">
             <div class="chart-title">Comparative Overview of Evaluation Components</div>
             <div class="chart-container">
@@ -103,29 +119,54 @@
                 <p>The multi-bar chart below provides a snapshot of your overall scores for different evaluation components. Each bar represents a different component, allowing you to compare Attendance, Written Test, Interview, and Physical Fitness directly.</p>
             </div>
         </div>
-        
-        
+
         <div class="mt-3">
             <p class="text-muted">If you need a detailed report or have questions about your evaluation, please reach out to your administrator. We're here to help you succeed!</p>
         </div>
     </div>
 
     <script>
-       
+        // Data
         var labels = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.Labels));
         var disciplineTestData = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.WeeklyData.Select(w => w.DisciplineTest)));
         var fitnessTestData = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.WeeklyData.Select(w => w.FitnessTest)));
         var writeTestData = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.WeeklyData.Select(w => w.WriteTest)));
         var attendancePercentage = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.WeeklyData.Select(w => w.AttendancePercentage)));
 
-      
+        // Calculate Average Performance
         var averagePerformance = [];
         for (var i = 0; i < labels.length; i++) {
-            var avg = (attendancePercentage[i] + writeTestData[i] + disciplineTestData[i] + fitnessTestData[i]) / 4; 
-            averagePerformance.push(avg.toFixed(2)); 
+            var avg = (attendancePercentage[i] + writeTestData[i] + disciplineTestData[i] + fitnessTestData[i]) / 4;
+            averagePerformance.push(avg.toFixed(2));
         }
 
        
+        function getPerformanceFeedback(averagePerformance) {
+            let lastAvgPerformance = averagePerformance[averagePerformance.length - 1];
+            let feedbackMessage = '';
+            let feedbackClass = '';
+
+            if (lastAvgPerformance < 40) {
+                feedbackMessage = "You need to work hard to meet the qualification standards. Keep pushing!";
+                feedbackClass = 'alert alert-warning';
+            } else if (lastAvgPerformance >= 40 && lastAvgPerformance < 60) {
+                feedbackMessage = "You are close to being qualified for the army. Keep improving!";
+                feedbackClass = 'alert alert-info';
+            } else if (lastAvgPerformance >= 60 && lastAvgPerformance < 80) {
+                feedbackMessage = "You are doing great, keep going!";
+                feedbackClass = 'alert alert-success';
+            } else if (lastAvgPerformance >= 80) {
+                feedbackMessage = "Outstanding performance! You are exceeding the standards. Keep it up!";
+                feedbackClass = 'alert alert-success';
+            }
+
+            return `<div class="${feedbackClass}" role="alert">${feedbackMessage}</div>`;
+        }
+
+      
+        document.getElementById('performanceFeedback').innerHTML = getPerformanceFeedback(averagePerformance);
+
+        // Line Chart
         const ctxLine = document.getElementById('lineChart').getContext('2d');
         const lineChart = new Chart(ctxLine, {
             type: 'line',
@@ -139,7 +180,7 @@
                         backgroundColor: 'rgba(0, 123, 255, 0.2)',
                         borderWidth: 2,
                         fill: true,
-                        tension: 0.4, 
+                        tension: 0.4,
                     }
                 ]
             },
@@ -172,6 +213,12 @@
                         beginAtZero: true,
                         grid: {
                             color: '#e9ecef'
+                        },
+                        ticks: {
+                            stepSize: 10,
+                            callback: function (value, index, values) {
+                                return value + '%';
+                            }
                         }
                     }
                 },
@@ -187,12 +234,27 @@
                         titleColor: '#fff',
                         bodyColor: '#fff',
                         footerColor: '#fff'
+                    },
+                    annotation: {
+                        annotations: {
+                            line1: {
+                                type: 'line',
+                                y: 60,
+                                borderColor: 'green',
+                                borderWidth: 2,
+                                label: {
+                                    enabled: true,
+                                    content: 'Benchmark 60%',
+                                    position: 'end'
+                                }
+                            }
+                        }
                     }
                 }
             }
         });
 
-      
+        // Bar Chart
         const ctxBar = document.getElementById('barChart').getContext('2d');
         const barChart = new Chart(ctxBar, {
             type: 'bar',
@@ -243,6 +305,5 @@
             }
         });
     </script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

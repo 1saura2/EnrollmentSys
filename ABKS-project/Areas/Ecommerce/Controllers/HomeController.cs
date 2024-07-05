@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System.Text;
 using System.Security.Claims;
+using Khalti;
 
 namespace ABKS_project.Areas.Ecommerce.Controllers
 {
@@ -34,7 +35,7 @@ namespace ABKS_project.Areas.Ecommerce.Controllers
         public IActionResult ListProduct()
         {
             var productsInStock = _context.Products
-                                          .Include(p => p.ProductCategory) // Ensure categories are included
+                                          .Include(p => p.ProductCategory) 
                                           .Where(p => p.InStock == true)
                                           .ToList();
             return View(productsInStock);
@@ -126,7 +127,7 @@ namespace ABKS_project.Areas.Ecommerce.Controllers
                     Name = model.Name,
                     Email = model.Email,
                     MobileNumber = model.MobileNumber,
-                    PaymentMethod = model.PaymentMethod, // Set PaymentMethod from model
+                    PaymentMethod = model.PaymentMethod, 
                     Address = model.Address,
                     IsPaid = false,
                     OrderStatusId = pendingRecord.Id
@@ -167,7 +168,12 @@ namespace ABKS_project.Areas.Ecommerce.Controllers
                 }
 
                 await transaction.CommitAsync();
-                return Json(new { success = true });
+                TempData["Order_Success"] = "Order Have Been Placed Successfully";
+
+
+                return RedirectToAction("GetOrdersByUserId", "UserOrder", new { area = "Ecommerce" });
+
+
             }
             catch (DbUpdateException dbEx)
             {
@@ -209,7 +215,7 @@ namespace ABKS_project.Areas.Ecommerce.Controllers
             var content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
 
             using var client = new HttpClient();
-            client.DefaultRequestHeaders.Add("Authorization", "Key test_secret_key_eab7dcb2a1fa41b3b413d6d89dd6a15d");
+            client.DefaultRequestHeaders.Add("Authorization", "Key test_secret_key_a50a3b1e01744d60ba828170b7d61962");
 
             try
             {
@@ -222,7 +228,9 @@ namespace ABKS_project.Areas.Ecommerce.Controllers
                 }
                 else
                 {
-                    // Handle error
+                    // Handle error response
+                    var responseContent = await response.Content.ReadAsStringAsync();
+                    Console.WriteLine($"Khalti API error: {response.StatusCode} - {responseContent}");
                     return null;
                 }
             }
