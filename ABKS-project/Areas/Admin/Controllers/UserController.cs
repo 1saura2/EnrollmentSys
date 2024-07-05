@@ -506,6 +506,63 @@ namespace ABKS_project.Areas.Admin.Controllers
             }
         }
 
+        [HttpPost]
+        public IActionResult ResetPassword(ResetPasswordViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var userId = model.UserId;
+                var credential = _context.Credentials.FirstOrDefault(c => c.UserId == userId);
+
+                if (credential == null)
+                {
+                    ModelState.AddModelError("", "User credential not found.");
+                    return RedirectToAction("Profile");
+                }
+
+                credential.Password = BCrypt.Net.BCrypt.HashPassword(model.NewPassword);
+
+                _context.SaveChanges();
+
+                TempData["PasswordChangeSuccess"] = "Password reset successfully!";
+                return RedirectToAction("ListActive");
+            }
+
+
+            return RedirectToAction("ListActive");
+        }
+
+
+        [HttpPost]
+        public IActionResult Edit(User user)
+        {
+            if (ModelState.IsValid)
+            {
+                var existingUser = _context.Users.FirstOrDefault(u => u.UserId == user.UserId);
+
+                if (existingUser == null)
+                {
+                    ModelState.AddModelError("", "User not found.");
+                    return RedirectToAction("ListActive");
+                }
+
+                // Update user properties
+                existingUser.FirstName = user.FirstName;
+                existingUser.LastName = user.LastName;
+                existingUser.Email = user.Email;
+                existingUser.Age = user.Age;
+                existingUser.ContactNumber = user.ContactNumber;
+                existingUser.Education = user.Education;
+
+                _context.SaveChanges();
+
+                TempData["EditSuccess"] = "User details updated successfully!";
+                return RedirectToAction("ListActive");
+            }
+
+
+            return RedirectToAction("ListActive");
+        }
 
 
 
