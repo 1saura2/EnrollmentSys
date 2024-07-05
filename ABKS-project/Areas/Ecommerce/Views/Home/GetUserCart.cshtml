@@ -4,7 +4,7 @@
     ViewData["Title"] = "GetUserCart";
 }
 <style>
-    h5 {
+    .mycart {
         font-size: 24px; /* Larger font size */
         font-weight: bold; /* Bold font */
         color: #ff5722; /* Orange color */
@@ -13,12 +13,37 @@
         padding: 10px; /* Padding for spacing */
         border-radius: 5px; /* Rounded corners */
         box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2); /* Subtle shadow */
-        margin-top: 6rem;
-    }</style>
+        margin-top:6rem;
+    }  
+    .cardemt {
+        font-size: 24px; /* Larger font size */
+        font-weight: bold; /* Bold font */
+        color: #ff5722; /* Orange color */
+        text-align: center; /* Center alignment */
+        background-color: #f1f1f1; /* Light grey background */
+        padding: 10px; /* Padding for spacing */
+        border-radius: 5px; /* Rounded corners */
+        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+        margin-top:8.5rem !important;
+        
+    }
+
+    .removweitem{
+        font-size: 24px; /* Larger font size */
+        font-weight: bold; /* Bold font */
+        color: #ff5722; /* Orange color */
+        text-align: center; /* Center alignment */
+        background-color: #f1f1f1; /* Light grey background */
+        padding: 10px; /* Padding for spacing */
+        border-radius: 5px; /* Rounded corners */
+        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+    }
+    
+</style>
 <div class="container mt-4">
     @if (Model != null && Model.CartDetails != null && Model.CartDetails.Count > 0)
     {
-        <h5>My Cart</h5>
+        <h5 class="mycart">My Cart</h5>
 
         <div class="table-responsive">
             <table class="table table-striped">
@@ -72,7 +97,7 @@
                             <div><strong>@(Model.CartDetails.Select(item => item.Product.ProductPrice * item.Quantity).Sum())</strong></div>
                         </td>
                         <td class="text-center">
-                            <a class="btn btn-primary w-90" href="/Ecommerce/Home/DoCheckout">Checkout</a>
+                            <a class="btn btn-primary w-90" href="~/Ecommerce/Home/DoCheckout">Checkout</a>
                         </td>
                     </tr>
                 </tfoot>
@@ -81,7 +106,7 @@
     }
     else
     {
-        <h5>Cart is empty</h5>
+        <h4 class="cardemt">Cart is empty</h4>
     }
 </div>
 
@@ -90,7 +115,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="confirmRemoveModalLabel">Confirm Remove Item</h5>
+                <h5 class="modal-title removweitem" id="confirmRemoveModalLabel" >Confirm Remove Item</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
