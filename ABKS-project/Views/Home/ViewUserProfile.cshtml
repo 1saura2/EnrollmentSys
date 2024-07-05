@@ -1,0 +1,132 @@
+﻿@model ABKS_project.ViewModels.UserProfileViewModel
+
+@{
+    ViewData["Title"] = "User Profile";
+}
+<style>
+    .pdf-preview {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 9999;
+        background-color: white;
+        padding: 10px;
+        border: 0.5px solid #ccc;
+    }
+
+        .pdf-preview iframe {
+            width: 800px;
+            height: 600px;
+            border: none;
+            position: relative;
+            margin-top: 20px;
+        }
+
+    .close-btn {
+        position: absolute;
+        top: 0px;
+        right: 5px;
+        cursor: pointer;
+        font-size: 20px;
+    }
+</style>
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">@Model.FirstName @Model.LastName</h3>
+                    <div class="d-flex justify-content-end">
+                        <a href="@Url.Action("EditUserProfile", new { id = Model.UserId })" class="btn btn-primary me-2">
+                            <i class="bi bi-pencil"></i> Edit
+                        </a>
+                        <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#changePasswordModal">
+                            <i class="bi bi-key"></i> Change Password
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <p><strong>Email:</strong> @Model.Email</p>
+                    <p><strong>Contact Number:</strong> @Model.ContactNumber</p>
+                    <p><strong>Education:</strong> @Model.Education</p>
+                    <h4>Batches</h4>
+                    <ul>
+                        @foreach (var batch in Model.Batches)
+                        {
+                            <li>@batch.BatchName</li>
+                        }
+                    </ul>
+                    <div class="text-center mt-4">
+                       
+                            <div class="pdf-container">
+                                <a href="#" class="pdf-link" data-pdf-url="/Documents/Citizenships/@Model.Citizenship"><i class="bi bi-file-earmark-pdf"></i> Citizenship PDF</a>
+                                <div class="pdf-preview">
+                                    <iframe src="" class="pdf-iframe"></iframe>
+                                    <button type="button" class="btn-close close-btn" aria-label="Close"></button>
+                                </div>
+                            </div>
+                       
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Change Password Modal -->
+<div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form asp-action="ChangePassword" method="post">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="changePasswordModalLabel">Change Password</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="oldPassword" class="form-label">Old Password</label>
+                        <input type="password" class="form-control" id="oldPassword" name="OldPassword" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="newPassword" class="form-label">New Password</label>
+                        <input type="password" class="form-control" id="newPassword" name="NewPassword" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="confirmPassword" class="form-label">Confirm Password</label>
+                        <input type="password" class="form-control" id="confirmPassword" name="ConfirmPassword" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Change Password</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            $('.pdf-link').click(function (e) {
+                e.preventDefault();
+                var pdfUrl = $(this).data('pdf-url');
+                var preview = $(this).siblings('.pdf-preview');
+                preview.find('.pdf-iframe').attr('src', pdfUrl);
+                preview.show();
+            });
+
+            $('.close-btn').click(function () {
+                $(this).closest('.pdf-preview').hide();
+            });
+
+            // Prevent closing PDF preview when clicking on the iframe
+            $('.pdf-preview iframe').click(function (e) {
+                e.stopPropagation();
+            });
+        });
+    </script>
+}

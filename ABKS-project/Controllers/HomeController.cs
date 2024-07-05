@@ -311,5 +311,127 @@ namespace ABKS_project.Controllers
         {
             return View();
         }
+
+
+        public IActionResult ViewUserProfile()
+        {
+            var userIdClaim = User.FindFirst("UserId")?.Value;
+
+            if (Guid.TryParse(userIdClaim, out var userId))
+            {
+                var user = _context.Users
+                    .Include(u => u.UserBatches)
+                        .ThenInclude(ub => ub.Batch)
+                    .FirstOrDefault(u => u.UserId == userId);
+
+                if (user == null)
+                {
+                    return NotFound();
+                }
+
+                var userProfileViewModel = new UserProfileViewModel
+                {
+                    UserId = user.UserId,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    Email = user.Email,
+                    ContactNumber = user.ContactNumber,
+                    Education = user.Education,
+                    Citizenship = user.Citizenship,
+                    Batches = user.UserBatches.Select(ub => ub.Batch).ToList()
+                };
+
+                return View(userProfileViewModel);
+            }
+            else
+            {
+                return Unauthorized();
+            }
+        }
+
+        public IActionResult EditUserProfile(Guid id)
+        {
+            var user = _context.Users.Find(id);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var userProfileViewModel = new UserProfileViewModel
+            {
+                UserId = user.UserId,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email,
+                ContactNumber = user.ContactNumber,
+                Education = user.Education,
+                Citizenship = user.Citizenship
+            };
+
+            return View(userProfileViewModel);
+        }
+
+        [HttpPost]
+        public IActionResult EditUserProfile(UserProfileViewModel model)
+        {
+
+            var user = _context.Users.Find(model.UserId);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            // Update user properties
+            user.FirstName = model.FirstName;
+            user.LastName = model.LastName;
+            user.Email = model.Email;
+            user.ContactNumber = model.ContactNumber;
+            user.Education = model.Education;
+
+
+            _context.Users.Update(user);
+
+            _context.SaveChanges();
+
+            return RedirectToAction("ViewUserProfile", new { id = user.UserId });
+
+        }
+
+
+
+        [HttpPost]
+        public IActionResult ChangePassword(ChangePasswordViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var userIdClaim = User.FindFirst("UserId")?.Value;
+
+                if (Guid.TryParse(userIdClaim, out var userId))
+                {
+                    var credential = _context.Credentials.FirstOrDefault(c => c.UserId == userId);
+
+                    if (credential == null || !BCrypt.Net.BCrypt.Verify(model.OldPassword, credential.Password))
+                    {
+                        ModelState.AddModelError("", "Old password is incorrect.");
+                        return RedirectToAction("ViewUserProfile");
+                    }
+
+                    credential.Password = BCrypt.Net.BCrypt.HashPassword(model.NewPassword);
+
+                    _context.SaveChanges();
+
+                    TempData["PasswordChangeSuccess"] = "Password changed successfully!";
+                    return RedirectToAction("ViewUserProfile");
+                }
+                else
+                {
+                    return Unauthorized();
+                }
+            }
+
+            return RedirectToAction("ViewUserProfile");
+        }
     }
 }

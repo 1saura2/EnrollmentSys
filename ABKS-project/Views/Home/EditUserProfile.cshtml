@@ -1,0 +1,52 @@
+﻿@model ABKS_project.ViewModels.UserProfileViewModel
+
+@{
+    ViewData["Title"] = "Edit User Profile";
+}
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Edit Profile</h3>
+                </div>
+                <div class="card-body">
+                    <form asp-action="EditUserProfile" method="post">
+                        <input type="hidden" asp-for="UserId" />
+
+                        <div class="mb-3">
+                            <label for="firstName" class="form-label">First Name</label>
+                            <input type="text" class="form-control" id="firstName" asp-for="FirstName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="lastName" class="form-label">Last Name</label>
+                            <input type="text" class="form-control" id="lastName" asp-for="LastName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" asp-for="Email" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="contactNumber" class="form-label">Contact Number</label>
+                            <input type="text" class="form-control" id="contactNumber" asp-for="ContactNumber" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="education" class="form-label">Education</label>
+                            <select asp-for="Education" id="education" class="form-select" required>
+                                <option value="" disabled selected>Select Education</option>
+                                <option value="SEE">SEE</option>
+                                <option value="High School">High School</option>
+                                <option value="Bachelors">Bachelors</option>
+                            </select>
+                        </div>
+                        <div class="d-flex justify-content-end">
+                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                            <a href="@Url.Action("ViewUserProfile", new { id = Model.UserId })" class="btn btn-secondary ms-2">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
