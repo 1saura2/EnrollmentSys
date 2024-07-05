@@ -16,6 +16,7 @@
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         margin-top: 2rem;
     }
+
     .form-container {
         width: 80%;
         margin: auto;
@@ -25,18 +26,22 @@
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         margin-top: 2rem;
     }
+
     .form-control {
         width: 100%;
     }
+
     .form-row {
         display: flex;
         flex-wrap: wrap;
         justify-content: space-between;
     }
+
     .form-group {
         flex: 0 0 48%;
         margin-bottom: 15px;
     }
+
     .form-group-full {
         flex: 0 0 100%;
         margin-bottom: 15px;
@@ -52,19 +57,18 @@
         cursor: pointer;
         display: block;
         margin: 20px auto 0;
-        width:25%;
+        width: 25%;
     }
 
         .btn-custom:hover {
             background-color: #005f53;
-            color:aqua;
+            color: aqua;
         }
-  
 </style>
 
 <div class="form-container">
     <h5>Checkout</h5>
-    <form asp-action="Checkout">
+    <form asp-action="DoCheckout">
         <div class="form-row">
             <div class="form-group">
                 <label asp-for="Name" class="form-label">Name*</label>
@@ -92,13 +96,12 @@
 
             <div class="form-group-full">
                 <label asp-for="PaymentMethod" class="form-label">Payment Method</label>
-                <select asp-for="PaymentMethod" class="form-select">
+                <select asp-for="PaymentMethod" class="form-control">
                     <option value="">Select Payment Method</option>
-                    @foreach (var method in Enum.GetValues(typeof(ABKS_project.Constants.PaymentMethods)))
-                    {
-                        <option value="@method.ToString()">@method.ToString()</option>
-                    }
+                    <option value="COD">Cash On Delivery</option>
+                    <option value="Khalti">Khalti</option>
                 </select>
+
                 <span asp-validation-for="PaymentMethod" class="text-danger"></span>
             </div>
 
