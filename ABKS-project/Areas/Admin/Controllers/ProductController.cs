@@ -7,9 +7,11 @@ using System.Threading.Tasks;
 using ABKS_project.Areas.Ecommerce.Models;
 using Microsoft.AspNetCore.Http;
 using ABKS_project.Areas.Ecommerce.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ABKS_project.Areas.Admin.Controllers
 {
+    [Authorize(Policy = "AdminOnly")]
     [Area("Admin")]
     public class ProductController : Controller
     {

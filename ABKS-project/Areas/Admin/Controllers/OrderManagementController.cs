@@ -1,9 +1,11 @@
 ﻿using ABKS_project.Areas.Ecommerce.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace ABKS_project.Areas.Admin.Controllers
 {
+    [Authorize(Policy = "AdminOnly")]
     [Area("Admin")]
     public class OrderManagementController : Controller
     {

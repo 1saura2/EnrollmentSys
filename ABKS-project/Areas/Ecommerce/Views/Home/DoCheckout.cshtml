@@ -68,7 +68,7 @@
 
 <div class="form-container">
     <h5>Checkout</h5>
-    <form asp-action="Checkout">
+    <form asp-action="DoCheckout">
         <div class="form-row">
             <div class="form-group">
                 <label asp-for="Name" class="form-label">Full Name*</label>
@@ -96,12 +96,10 @@
 
             <div class="form-group">
                 <label asp-for="PaymentMethod" class="form-label">Payment Method</label>
-                <select asp-for="PaymentMethod" class="form-select">
+                <select asp-for="PaymentMethod" class="form-control">
                     <option value="">Select Payment Method</option>
-                    @foreach (var method in Enum.GetValues(typeof(ABKS_project.Constants.PaymentMethods)))
-                    {
-                        <option value="@method.ToString()">@method.ToString()</option>
-                    }
+                    <option value="COD">Cash On Delivery</option>
+                    <option value="Khalti">Khalti</option>
                 </select>
                 <span asp-validation-for="PaymentMethod" class="text-danger"></span>
             </div>

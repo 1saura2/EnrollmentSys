@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using System.Text;
 using System.Security.Claims;
 using Khalti;
+using System.Diagnostics;
 
 namespace ABKS_project.Areas.Ecommerce.Controllers
 {
@@ -17,13 +18,14 @@ namespace ABKS_project.Areas.Ecommerce.Controllers
         private readonly productContext _context;
         private readonly ICartRepository _cartRepo;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IConfiguration _configuration;
 
-
-        public HomeController(productContext context, ICartRepository cartRepo, IHttpContextAccessor httpContextAccessor)
+        public HomeController(productContext context, ICartRepository cartRepo, IHttpContextAccessor httpContextAccessor, IConfiguration configuration)
         {
             _context = context;
             _cartRepo = cartRepo;
             _httpContextAccessor = httpContextAccessor;
+            _configuration = configuration;
         }
 
 
@@ -97,7 +99,7 @@ namespace ABKS_project.Areas.Ecommerce.Controllers
             return View();
         }
 
-        
+
         [HttpPost]
         public async Task<IActionResult> DoCheckout(Checkout model)
         {
@@ -127,7 +129,7 @@ namespace ABKS_project.Areas.Ecommerce.Controllers
                     Name = model.Name,
                     Email = model.Email,
                     MobileNumber = model.MobileNumber,
-                    PaymentMethod = model.PaymentMethod, 
+                    PaymentMethod = model.PaymentMethod,
                     Address = model.Address,
                     IsPaid = false,
                     OrderStatusId = pendingRecord.Id
@@ -156,49 +158,41 @@ namespace ABKS_project.Areas.Ecommerce.Controllers
                     if (khaltiPaymentResult != null && khaltiPaymentResult.payment_url != null)
                     {
                         await transaction.CommitAsync();
-                        return Json(new { success = true, paymentUrl = khaltiPaymentResult.payment_url });
+                        return View("Redirect", khaltiPaymentResult.payment_url);
                     }
                     else
                     {
                         await transaction.RollbackAsync();
-                        var errorMessage = "Khalti payment initiation failed.";
-                        Console.WriteLine(errorMessage);
-                        return BadRequest(errorMessage);
+                        return BadRequest("Khalti payment initiation failed.");
                     }
                 }
 
                 await transaction.CommitAsync();
                 TempData["Order_Success"] = "Order Have Been Placed Successfully";
 
-
                 return RedirectToAction("GetOrdersByUserId", "UserOrder", new { area = "Ecommerce" });
-
-
             }
             catch (DbUpdateException dbEx)
             {
                 await transaction.RollbackAsync();
-                // Log dbEx.InnerException.Message to inspect inner details
-                Console.WriteLine($"Database update exception: {dbEx.InnerException?.Message ?? dbEx.Message}");
-                return StatusCode(500, dbEx.InnerException?.Message ?? dbEx.Message);
+                return StatusCode(500, "Database update exception occurred.");
             }
             catch (Exception ex)
             {
                 await transaction.RollbackAsync();
-                Console.WriteLine($"Exception during checkout: {ex.Message}");
-                return StatusCode(500, ex.Message);
+                return StatusCode(500, "Exception occurred during checkout.");
             }
         }
-
         private async Task<dynamic> InitiateKhaltiPayment(Order order)
         {
-            var url = "https://a.khalti.com/api/v2/epayment/initiate/";
+            var khaltiKey = _configuration["KhaltiSettings:Key"];
+            var khaltiUrl = _configuration["KhaltiSettings:Url"];
 
             var amountInPaisa = (int)(order.OrderDetails.Sum(od => od.Quantity * od.UnitPrice));
 
             var payload = new
             {
-                return_url = "https://localhost:7200/Ecommerce/Home/KhaltiCallback",
+                return_url = "https://localhost:7200/Ecommerce/Home/KhaltiCallback/",
                 website_url = "https://localhost:7200/",
                 amount = amountInPaisa,
                 purchase_order_id = $"Order-{order.Id}",
@@ -208,57 +202,57 @@ namespace ABKS_project.Areas.Ecommerce.Controllers
                     name = order.Name,
                     email = order.Email,
                     phone = order.MobileNumber
-                }
+                },
             };
-
             var jsonPayload = JsonConvert.SerializeObject(payload);
             var content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
 
             using var client = new HttpClient();
-            client.DefaultRequestHeaders.Add("Authorization", "Key test_secret_key_a50a3b1e01744d60ba828170b7d61962");
+            client.DefaultRequestHeaders.Add("Authorization", $"Key {khaltiKey}");
 
             try
             {
-                var response = await client.PostAsync(url, content);
+                var response = await client.PostAsync(khaltiUrl, content);
 
                 if (response.IsSuccessStatusCode)
                 {
                     var responseContent = await response.Content.ReadAsStringAsync();
-                    return JsonConvert.DeserializeObject<dynamic>(responseContent);
+                    var responseObject = JsonConvert.DeserializeObject<dynamic>(responseContent);
+                    return responseObject;
                 }
                 else
                 {
-                    // Handle error response
-                    var responseContent = await response.Content.ReadAsStringAsync();
-                    Console.WriteLine($"Khalti API error: {response.StatusCode} - {responseContent}");
                     return null;
                 }
             }
             catch (Exception ex)
             {
-                // Log exception
-                Console.WriteLine($"Khalti payment initiation failed: {ex.Message}");
                 return null;
             }
         }
 
-        [HttpPost]
-        public async Task<IActionResult> KhaltiCallback(string token, string txn_id, string amount, string status)
+
+        public async Task<IActionResult> KhaltiCallback(string pidx, string transaction_id, string tidx, string amount, string total_amount, string mobile, string status, string purchase_order_id, string purchase_order_name)
         {
             if (status == "Completed")
             {
-                var orderId = int.Parse(token.Replace("Order-", ""));
+                var orderId = int.Parse(purchase_order_id.Replace("Order-", ""));
+
                 var order = await _context.Orders.FindAsync(orderId);
                 if (order != null)
                 {
                     order.IsPaid = true;
                     await _context.SaveChangesAsync();
-                    return RedirectToAction("OrderSuccess", new { orderId });
+
+                    TempData["Order_Success"] = "Order Have Been Placed Successfully";
+
+                    return RedirectToAction("GetOrdersByUserId", "UserOrder", new { area = "Ecommerce" });
                 }
             }
 
             return RedirectToAction("OrderFailed");
         }
+
 
 
         public IActionResult OrderSuccess(int orderId)

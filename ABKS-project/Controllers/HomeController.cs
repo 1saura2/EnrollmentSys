@@ -52,7 +52,33 @@ namespace ABKS_project.Controllers
         {
             return View();
         }
-        public IActionResult Images()
+
+
+        [HttpPost]
+        public async Task<IActionResult> Contact(string name, string email, string subject, string message)
+        {
+            string body = $"Name: {name}<br/>Email: {email}<br/>Subject: {subject}<br/><br/>{message}";
+
+            string toEmail = "bhishmapoudel408@gmail.com";
+
+            try
+            {
+                _emailService.SendEmail(toEmail, subject, body);
+
+                TempData["Feedback_success"] = "Your message has been sent succcessfully, Thank you for you time.";
+
+                return RedirectToAction("Contact");
+            }
+            catch (Exception ex)
+            {
+
+                TempData["Feedback_error"] = $"Failed to send message. Error: {ex.Message}";
+
+                return RedirectToAction("Contact");
+            }
+        }
+
+            public IActionResult Images()
         {
             return View();
         } 

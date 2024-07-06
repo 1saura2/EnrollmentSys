@@ -12,7 +12,7 @@ using ABKS_project.ViewModels;
 
 namespace ABKS_project.Areas.Admin.Controllers
 {
-    /* [Authorize(Policy = "AdminOnly")]*/
+    [Authorize(Policy = "AdminOnly")]
     [Area("Admin")]
     public class UserController : Controller
     {
